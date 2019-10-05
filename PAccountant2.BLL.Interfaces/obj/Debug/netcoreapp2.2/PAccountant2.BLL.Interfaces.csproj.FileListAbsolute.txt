@@ -1,8 +1,0 @@
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.BLL.Interfaces\bin\Debug\netcoreapp2.2\PAccountant2.BLL.Interfaces.deps.json
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.BLL.Interfaces\bin\Debug\netcoreapp2.2\PAccountant2.BLL.Interfaces.dll
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.BLL.Interfaces\bin\Debug\netcoreapp2.2\PAccountant2.BLL.Interfaces.pdb
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.BLL.Interfaces\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Interfaces.csproj.CoreCompileInputs.cache
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.BLL.Interfaces\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Interfaces.AssemblyInfoInputs.cache
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.BLL.Interfaces\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Interfaces.AssemblyInfo.cs
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.BLL.Interfaces\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Interfaces.dll
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.BLL.Interfaces\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Interfaces.pdb

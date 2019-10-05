@@ -1,1 +1,16 @@
 /.vs
+/PAccountantv2/bin
+/PAccountantv2/obj
+/PAccountant2.DAL.Context/obj
+/PAccountant2.DAL.Context/bin
+/PAccountant2.DAL.Migrations/obj
+/PAccountant2.DAL.Migrations/bin
+/PAccountant2.BLL.Domain/obj
+/PAccountant2.BLL.Domain/bin
+/PAccountant2.BLL.Interfaces/obj
+/PAccountant2.BLL.Interfaces/bin
+/PAccountant2.DAL.DBO/bin
+/PAccountant2.DAL.DBO/obj
+/PAccountant2.DAL.Services/obj
+/PAccountant2.DAL.Services/bin
+/packages
