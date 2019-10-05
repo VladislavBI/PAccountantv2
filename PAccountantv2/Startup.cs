@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Text;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -6,7 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using PAccountant2.DAL.Context;
+using PAccountantv2.Host.Api.Infrastructure.Models;
 
 namespace PAccountantv2.Host.Api
 {
@@ -29,15 +33,42 @@ namespace PAccountantv2.Host.Api
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            ConfigureJWT(services, appSettings);
+
             services.AddAutoMapper(typeof(Mapper));
 
             var connectionString = Configuration["ConnectionString:PAccountant"];
             services.AddDbContext<PaccountantContext>(opts =>
-                    opts.UseSqlServer(connectionString, 
+                    opts.UseSqlServer(connectionString,
                         x => x.MigrationsAssembly("PAccountant2.DAL.Migrations"))
                 );
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+        }
+
+        private static void ConfigureJWT(IServiceCollection services, AppSettings appSettings)
+        {
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(x =>
+                {
+                    x.RequireHttpsMetadata = false;
+                    x.SaveToken = true;
+                    x.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
