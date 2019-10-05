@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <Folder Include="Authentification\" />
-    <Folder Include="DTO\DataModel\" />
-    <Folder Include="DTO\ViewModel\" />
+    <Folder Include="DTO\DataItems\" />
+    <Folder Include="DTO\ViewItems\" />
   </ItemGroup>
 
 </Project>

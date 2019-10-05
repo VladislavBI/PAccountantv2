@@ -16,11 +16,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Infrastructure\Models\" />
-  </ItemGroup>
-
-
-  <ItemGroup>
     <ProjectReference Include="..\PAccountant2.DAL.Context\PAccountant2.DAL.Context.csproj" />
     <ProjectReference Include="..\PAccountant2.DAL.Migrations\PAccountant2.DAL.Migrations.csproj" />
   </ItemGroup>

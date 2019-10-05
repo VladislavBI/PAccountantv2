@@ -85,7 +85,6 @@ namespace PAccountantv2.Host.Api
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
