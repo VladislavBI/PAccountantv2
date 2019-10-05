@@ -9,8 +9,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using PAccountant2.BLL.Domain.Services;
+using PAccountant2.BLL.Interfaces.Authentification;
 using PAccountant2.DAL.Context;
+using PAccountant2.DAL.Services;
 using PAccountantv2.Host.Api.Infrastructure.Models;
+using PAccountantv2.Host.Api.Mapping;
 
 namespace PAccountantv2.Host.Api
 {
@@ -38,7 +42,10 @@ namespace PAccountantv2.Host.Api
             var appSettings = appSettingsSection.Get<AppSettings>();
             ConfigureJWT(services, appSettings);
 
-            services.AddAutoMapper(typeof(Mapper));
+            services.AddScoped<IAuthentificationDataService, AuthentificationDataService>();
+            services.AddScoped<IAuthentificationService, AuthentificationService>();
+
+            services.AddAutoMapper(typeof(MapperProfile));
 
             var connectionString = Configuration["ConnectionString:PAccountant"];
             services.AddDbContext<PaccountantContext>(opts =>
