@@ -1,0 +1,14 @@
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Context\bin\Debug\netcoreapp2.2\PAccountant2.DAL.Context.deps.json
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Context\bin\Debug\netcoreapp2.2\PAccountant2.DAL.Context.runtimeconfig.json
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Context\bin\Debug\netcoreapp2.2\PAccountant2.DAL.Context.runtimeconfig.dev.json
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Context\bin\Debug\netcoreapp2.2\PAccountant2.DAL.Context.dll
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Context\bin\Debug\netcoreapp2.2\PAccountant2.DAL.DBO.dll
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Context\bin\Debug\netcoreapp2.2\PAccountant2.DAL.DBO.pdb
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Context\obj\Debug\netcoreapp2.2\PAccountant2.DAL.Context.csprojAssemblyReference.cache
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Context\obj\Debug\netcoreapp2.2\PAccountant2.DAL.Context.csproj.CoreCompileInputs.cache
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Context\obj\Debug\netcoreapp2.2\PAccountant2.DAL.Context.AssemblyInfoInputs.cache
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Context\obj\Debug\netcoreapp2.2\PAccountant2.DAL.Context.AssemblyInfo.cs
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Context\obj\Debug\netcoreapp2.2\PAccountant2.DAL.Context.csproj.CopyComplete
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Context\bin\Debug\netcoreapp2.2\PAccountant2.DAL.Context.pdb
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Context\obj\Debug\netcoreapp2.2\PAccountant2.DAL.Context.dll
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Context\obj\Debug\netcoreapp2.2\PAccountant2.DAL.Context.pdb

@@ -1,0 +1,8 @@
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.DBO\bin\Debug\netcoreapp2.2\PAccountant2.DAL.DBO.deps.json
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.DBO\bin\Debug\netcoreapp2.2\PAccountant2.DAL.DBO.dll
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.DBO\bin\Debug\netcoreapp2.2\PAccountant2.DAL.DBO.pdb
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.DBO\obj\Debug\netcoreapp2.2\PAccountant2.DAL.DBO.csproj.CoreCompileInputs.cache
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.DBO\obj\Debug\netcoreapp2.2\PAccountant2.DAL.DBO.AssemblyInfoInputs.cache
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.DBO\obj\Debug\netcoreapp2.2\PAccountant2.DAL.DBO.AssemblyInfo.cs
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.DBO\obj\Debug\netcoreapp2.2\PAccountant2.DAL.DBO.dll
+C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.DBO\obj\Debug\netcoreapp2.2\PAccountant2.DAL.DBO.pdb

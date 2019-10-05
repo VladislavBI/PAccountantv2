@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <RootNamespace>PAccountantv2.Host.Api</RootNamespace>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Infrastructure\Models\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\PAccountant2.DAL.Context\PAccountant2.DAL.Context.csproj" />
+    <ProjectReference Include="..\PAccountant2.DAL.Migrations\PAccountant2.DAL.Migrations.csproj" />
+  </ItemGroup>
+
+</Project>
