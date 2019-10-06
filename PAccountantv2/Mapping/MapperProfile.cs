@@ -9,6 +9,7 @@ namespace PAccountantv2.Host.Api.Mapping
         public MapperProfile()
         {
             CreateMap<RegistrationViewModel, RegisterViewItem>();
+            CreateMap<LoginViewModel, LoginViewItem>();
         }
     }
 }

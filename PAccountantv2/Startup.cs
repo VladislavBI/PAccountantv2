@@ -42,6 +42,7 @@ namespace PAccountantv2.Host.Api
             var appSettings = appSettingsSection.Get<AppSettings>();
             ConfigureJWT(services, appSettings);
 
+
             services.AddScoped<IAuthentificationDataService, AuthentificationDataService>();
             services.AddScoped<IAuthentificationService, AuthentificationService>();
 
@@ -94,6 +95,7 @@ namespace PAccountantv2.Host.Api
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

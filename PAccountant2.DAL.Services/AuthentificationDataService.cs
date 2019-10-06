@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using PAccountant2.BLL.Interfaces.Authentification;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Authentification;
 using PAccountant2.DAL.Context;
@@ -27,6 +30,12 @@ namespace PAccountant2.DAL.Services
             };
             context.Users.Add(newUser);
             context.SaveChanges();
+        }
+
+        public async Task<byte[]> GetPaswordByEmailAsync(string email)
+        {
+            var user = await context.Users.FirstOrDefaultAsync(x => string.Equals(x.Email, email));
+            return user?.Password ?? null;
         }
     }
 }
