@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using PAccountant2.BLL.Interfaces.Authentification;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Authentification;
@@ -21,15 +17,18 @@ namespace PAccountant2.DAL.Services
             this.context = context;
         }
 
-        public void RegisterUser(RegisterDataItem item)
+        public async Task<string> RegisterUserAsync(RegisterDataItem item)
         {
             var newUser = new UserDbo
             {
                 Email = item.Email,
                 Password = item.Password
             };
+
             context.Users.Add(newUser);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
+
+            return newUser.Email;
         }
 
         public async Task<byte[]> GetPaswordByEmailAsync(string email)

@@ -1,20 +1,15 @@
-﻿using System.Text;
-using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using PAccountant2.BLL.Domain.Services;
-using PAccountant2.BLL.Interfaces.Authentification;
-using PAccountant2.DAL.Context;
-using PAccountant2.DAL.Services;
-using PAccountantv2.Host.Api.Infrastructure.Models;
-using PAccountantv2.Host.Api.Mapping;
+using PAccountant2.Host.Domain.Models;
+using PAccountant2.Host.Setup.DI;
+using PAccountant2.Host.Setup.EntityFramework;
+using PAccountant2.Host.Setup.Jwt;
+using PAccountant2.Host.Setup.Mapping;
 
 namespace PAccountantv2.Host.Api
 {
@@ -37,47 +32,31 @@ namespace PAccountantv2.Host.Api
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            var appSettingsSection = Configuration.GetSection("AppSettings");
-            services.Configure<AppSettings>(appSettingsSection);
-            var appSettings = appSettingsSection.Get<AppSettings>();
-            ConfigureJWT(services, appSettings);
-
-
-            services.AddScoped<IAuthentificationDataService, AuthentificationDataService>();
-            services.AddScoped<IAuthentificationService, AuthentificationService>();
-
+            DiProfile.InitilizeDI(services);
             services.AddAutoMapper(typeof(MapperProfile));
-
-            var connectionString = Configuration["ConnectionString:PAccountant"];
-            services.AddDbContext<PaccountantContext>(opts =>
-                    opts.UseSqlServer(connectionString,
-                        x => x.MigrationsAssembly("PAccountant2.DAL.Migrations"))
-                );
+            InitilizeJwt(services);
+            InitializeDb(services);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
-        private static void ConfigureJWT(IServiceCollection services, AppSettings appSettings)
+        private void InitializeDb(IServiceCollection services)
         {
-            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(x =>
-                {
-                    x.RequireHttpsMetadata = false;
-                    x.SaveToken = true;
-                    x.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
+            var dbSettingsSection = Configuration.GetSection("DBSettings");
+            services.Configure<DbSettings>(dbSettingsSection);
+            var dbSettings = dbSettingsSection.Get<DbSettings>();
+            EFProfile.InitilizeEf(services, dbSettings);
         }
+
+        private void InitilizeJwt(IServiceCollection services)
+        {
+            var jwtSettingsSection = Configuration.GetSection("JwtSettings");
+            services.Configure<JwtSettings>(jwtSettingsSection);
+            var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
+            JwtProfile.InitilizeJwt(services, jwtSettings);
+        }
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

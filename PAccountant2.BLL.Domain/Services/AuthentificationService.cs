@@ -26,7 +26,7 @@ namespace PAccountant2.BLL.Domain.Services
             this.mapper = mapper;
             this.authDataService = authDataService;
         }
-        public void RegisterUser(RegisterViewItem item)
+        public async Task<string> RegisterUserAsync(RegisterViewItem item)
         {
             MD5 md5 = EncryptPassword(item.Password);
 
@@ -36,7 +36,9 @@ namespace PAccountant2.BLL.Domain.Services
                 Password = md5.Hash
             };
 
-            authDataService.RegisterUser(registerModel);
+            var newUserEmail = await authDataService.RegisterUserAsync(registerModel);
+
+            return newUserEmail;
         }
 
         private static MD5 EncryptPassword(string password)

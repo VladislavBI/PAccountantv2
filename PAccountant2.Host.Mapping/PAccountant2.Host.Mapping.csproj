@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PAccountant2.Host.Domain\PAccountant2.Host.Domain.csproj" />
+    <ProjectReference Include="..\PAccountantv2\PAccountantv2.Host.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\..\..\.nuget\packages\automapper\9.0.0\lib\netstandard2.0\AutoMapper.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

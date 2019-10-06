@@ -8,7 +8,7 @@ namespace PAccountant2.BLL.Interfaces.Authentification
 {
     public interface IAuthentificationDataService
     {
-        void RegisterUser(RegisterDataItem item);
+        Task<string> RegisterUserAsync(RegisterDataItem item);
 
         Task<byte[]> GetPaswordByEmailAsync(string email);
 

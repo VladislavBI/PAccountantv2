@@ -1,19 +1,14 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 using PAccountant2.BLL.Domain.Exceptions.Authentification;
 using PAccountant2.BLL.Interfaces.Authentification;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Authentification;
+using PAccountant2.Host.Domain.Models;
+using PAccountant2.Host.Domain.ViewModels.Authentification;
 using PAccountantv2.Host.Api.Infrastructure.Helper;
-using PAccountantv2.Host.Api.Infrastructure.Models;
-using PAccountantv2.Host.Api.ViewModels.Authentification;
 
 namespace PAccountantv2.Host.Api.Controllers
 {
@@ -22,26 +17,26 @@ namespace PAccountantv2.Host.Api.Controllers
     [ApiController]
     public class AuthentificationController : ControllerBase
     {
-        private readonly IMapper mapper;
-        private readonly IAuthentificationService authService;
-        private readonly AppSettings appSettings;
+        private readonly IMapper _mapper;
+        private readonly IAuthentificationService _authService;
+        private readonly JwtSettings _jwtSettings;
 
         public AuthentificationController(IMapper mapper,
             IAuthentificationService authService,
-            IOptions<AppSettings> appSettings)
+            IOptions<JwtSettings> jwtSettings)
         {
-            this.mapper = mapper;
-            this.authService = authService;
-            this.appSettings = appSettings.Value;
+            this._mapper = mapper;
+            this._authService = authService;
+            this._jwtSettings = jwtSettings.Value;
         }
 
         [AllowAnonymous]
         [Route("register")]
         [HttpPost]
-        public IActionResult RegisterUser(RegistrationViewModel model)
+        public async Task<IActionResult> RegisterUser(RegistrationViewModel model)
         {
-            var registerItem = mapper.Map<RegisterViewItem>(model);
-            authService.RegisterUser(registerItem);
+            var registerItem = _mapper.Map<RegisterViewItem>(model);
+            _authService.RegisterUserAsync(registerItem);
 
             return Ok();
         }
@@ -51,17 +46,17 @@ namespace PAccountantv2.Host.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> LoginUser(LoginViewModel model)
         {
-            var userItem = mapper.Map<LoginViewItem>(model);
+            var userItem = _mapper.Map<LoginViewItem>(model);
             try
             {
-                await authService.LoginUserAsync(userItem);
+                await _authService.LoginUserAsync(userItem);
             }
             catch (WrongCredentialsException e)
             {
                 return BadRequest(e.Message);
             }
 
-            var token = new TokenHelper().CreateToken(userItem.Email, appSettings.Secret);
+            var token = new TokenHelper().CreateToken(userItem.Email, _jwtSettings.Key );
             return Ok(token);
         }
 
