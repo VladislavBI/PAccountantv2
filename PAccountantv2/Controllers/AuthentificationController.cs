@@ -19,15 +19,18 @@ namespace PAccountantv2.Host.Api.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IAuthentificationService _authService;
+        private readonly ITokenService _tokenService;
         private readonly JwtSettings _jwtSettings;
 
         public AuthentificationController(IMapper mapper,
             IAuthentificationService authService,
+            ITokenService tokenService,
             IOptions<JwtSettings> jwtSettings)
         {
             this._mapper = mapper;
             this._authService = authService;
             this._jwtSettings = jwtSettings.Value;
+            this._tokenService = tokenService;
         }
 
         [AllowAnonymous]
@@ -36,9 +39,9 @@ namespace PAccountantv2.Host.Api.Controllers
         public async Task<IActionResult> RegisterUser(RegistrationViewModel model)
         {
             var registerItem = _mapper.Map<RegisterViewItem>(model);
-            _authService.RegisterUserAsync(registerItem);
+            var newUserEmail = await _authService.RegisterUserAsync(registerItem);
 
-            return Ok();
+            return Ok(newUserEmail);
         }
 
         [AllowAnonymous]
@@ -56,7 +59,7 @@ namespace PAccountantv2.Host.Api.Controllers
                 return BadRequest(e.Message);
             }
 
-            var token = new TokenHelper().CreateToken(userItem.Email, _jwtSettings.Key );
+            var token = _tokenService.CreateToken(userItem.Email, _jwtSettings.Key );
             return Ok(token);
         }
 

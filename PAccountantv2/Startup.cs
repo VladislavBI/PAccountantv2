@@ -10,6 +10,7 @@ using PAccountant2.Host.Setup.DI;
 using PAccountant2.Host.Setup.EntityFramework;
 using PAccountant2.Host.Setup.Jwt;
 using PAccountant2.Host.Setup.Mapping;
+using PAccountantv2.Host.Api.Infrastructure.Helper;
 
 namespace PAccountantv2.Host.Api
 {
@@ -32,6 +33,8 @@ namespace PAccountantv2.Host.Api
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            // TODO: remove after find solution for jwt create bug
+            services.AddScoped<ITokenService, JwtTokenService>();
             DiProfile.InitilizeDI(services);
             services.AddAutoMapper(typeof(MapperProfile));
             InitilizeJwt(services);
@@ -42,6 +45,7 @@ namespace PAccountantv2.Host.Api
 
         private void InitializeDb(IServiceCollection services)
         {
+
             var dbSettingsSection = Configuration.GetSection("DBSettings");
             services.Configure<DbSettings>(dbSettingsSection);
             var dbSettings = dbSettingsSection.Get<DbSettings>();
