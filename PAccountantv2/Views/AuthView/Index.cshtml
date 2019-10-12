@@ -1,0 +1,48 @@
+﻿@model object
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Login</h2>
+<div>
+    <label for="login">Email: </label><input type="text" id="login" />
+</div>
+<div>
+    <label for="password">Password: </label><input type="password" id="password" />
+</div>
+<div>
+    <button onclick="login()">Login</button>
+</div>
+<div>
+    <button onclick="redirectRegister()">Register</button>
+</div>
+
+<script>
+    async function  login() {
+        var creds = {};
+
+        creds.email = $("#login").val();
+        creds.password = $("#password").val();
+
+        var loginUrl = window.location.origin + '/api/authentification/login';
+
+        let response = await fetch(loginUrl,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(creds)
+            });
+
+        let result = await response.json();
+    }
+
+    function redirectRegister() {
+        var registerUrl = window.location.origin + '/login/register';
+
+        window.location.replace(registerUrl);
+    }
+</script>

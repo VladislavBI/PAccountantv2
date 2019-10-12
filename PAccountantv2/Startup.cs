@@ -39,28 +39,10 @@ namespace PAccountantv2.Host.Api
             services.AddAutoMapper(typeof(MapperProfile));
             InitilizeJwt(services);
             InitializeDb(services);
-
+ 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
         }
-
-        private void InitializeDb(IServiceCollection services)
-        {
-
-            var dbSettingsSection = Configuration.GetSection("DBSettings");
-            services.Configure<DbSettings>(dbSettingsSection);
-            var dbSettings = dbSettingsSection.Get<DbSettings>();
-            EFProfile.InitilizeEf(services, dbSettings);
-        }
-
-        private void InitilizeJwt(IServiceCollection services)
-        {
-            var jwtSettingsSection = Configuration.GetSection("JwtSettings");
-            services.Configure<JwtSettings>(jwtSettingsSection);
-            var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
-            JwtProfile.InitilizeJwt(services, jwtSettings);
-        }
-
-
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -79,7 +61,7 @@ namespace PAccountantv2.Host.Api
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
-
+           
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -87,5 +69,26 @@ namespace PAccountantv2.Host.Api
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
+        private void InitializeDb(IServiceCollection services)
+        {
+
+            var dbSettingsSection = Configuration.GetSection("DBSettings");
+            services.Configure<DbSettings>(dbSettingsSection);
+            var dbSettings = dbSettingsSection.Get<DbSettings>();
+            EFProfile.InitilizeEf(services, dbSettings);
+        }
+
+        private void InitilizeJwt(IServiceCollection services)
+        {
+
+
+            var jwtSettingsSection = Configuration.GetSection("JwtSettings");
+            services.Configure<JwtSettings>(jwtSettingsSection);
+            var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
+            JwtProfile.InitilizeJwt(services, jwtSettings);
+        }
+
+
     }
 }

@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Text;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PAccountant2.BLL.Domain.Exceptions.Authentification;
@@ -60,12 +62,17 @@ namespace PAccountantv2.Host.Api.Controllers
             }
 
             var token = _tokenService.CreateToken(userItem.Email, _jwtSettings.Key );
-            return Ok(token);
+            var tokenModel = new TokenViewModel
+            {
+                Token = token
+            };
+
+            return Ok(tokenModel);
         }
 
         [Route("test")]
         [HttpGet]
-        public async Task<IActionResult> Test()
+        public IActionResult TestAuth()
         {
             return Ok();
         }

@@ -1,8 +1,9 @@
-﻿using System.Diagnostics;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace PAccountantv2.Controllers
+namespace PAccountantv2.Host.Api.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public IActionResult Index()
