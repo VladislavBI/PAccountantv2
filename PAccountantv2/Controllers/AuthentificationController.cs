@@ -1,8 +1,5 @@
-﻿using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PAccountant2.BLL.Domain.Exceptions.Authentification;
@@ -11,6 +8,7 @@ using PAccountant2.BLL.Interfaces.DTO.ViewItems.Authentification;
 using PAccountant2.Host.Domain.Models;
 using PAccountant2.Host.Domain.ViewModels.Authentification;
 using PAccountantv2.Host.Api.Infrastructure.Helper;
+using System.Threading.Tasks;
 
 namespace PAccountantv2.Host.Api.Controllers
 {
@@ -52,16 +50,9 @@ namespace PAccountantv2.Host.Api.Controllers
         public async Task<IActionResult> LoginUser(LoginViewModel model)
         {
             var userItem = _mapper.Map<LoginViewItem>(model);
-            try
-            {
-                await _authService.LoginUserAsync(userItem);
-            }
-            catch (WrongCredentialsException e)
-            {
-                return BadRequest(e.Message);
-            }
-
-            var token = _tokenService.CreateToken(userItem.Email, _jwtSettings.Key );
+            await _authService.CheckRightCredentialsAsync(userItem);
+            
+            var token = _tokenService.CreateToken(userItem.Email, _jwtSettings.Key);
             var tokenModel = new TokenViewModel
             {
                 Token = token
