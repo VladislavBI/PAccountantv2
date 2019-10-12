@@ -8,6 +8,9 @@ namespace PAccountant2.DAL.Context
     {
         public DbSet<UserDbo> Users { get; set; }
 
+        public DbSet<AccountDbo> Accounts { get; set; }
+
+
         public PaccountantContext(DbContextOptions options): base(options)
         {
                 

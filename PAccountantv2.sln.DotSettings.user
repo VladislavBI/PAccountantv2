@@ -5,4 +5,5 @@
   &lt;Assembly Path="C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.authentication\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Authentication.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.aspnetcore.authentication.jwtbearer\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\Администратор\.nuget\packages\microsoft.aspnetcore.http.abstractions\2.2.0\lib\netstandard2.0\Microsoft.AspNetCore.Http.Abstractions.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Администратор\.nuget\packages\microsoft.entityframeworkcore\2.2.6\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>
