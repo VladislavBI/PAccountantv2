@@ -42,5 +42,15 @@ namespace PAccountantv2.Host.Api.Controllers
 
             return Ok();
         }
+
+        [Route("{id}/withdraw")]
+        [HttpPost]
+        public async Task<IActionResult> withdrawMoneyFromAccount(int id, MoneyChangeViewModel model)
+        {
+            var viewItem = _mapper.Map<MoneyChangeViewItem>(model);
+            await _service.WithdrawMoneyAsync(id, viewItem);
+
+            return Ok();
+        }
     }
 }
