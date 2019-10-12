@@ -38,22 +38,6 @@
             });
 
         let result = await response.json();
-
-        var tokenUrl = window.location.origin + '/api/authentification/token';
-
-        await fetch(tokenUrl,
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: JSON.stringify(result)
-            }).then(response => {
-
-            var registerUrl = window.location.origin;
-            window.location.replace(registerUrl);
-
-        });
     }
 
     function redirectRegister() {

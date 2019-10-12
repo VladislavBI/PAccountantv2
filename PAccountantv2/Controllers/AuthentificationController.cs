@@ -14,7 +14,7 @@ using PAccountantv2.Host.Api.Infrastructure.Helper;
 
 namespace PAccountantv2.Host.Api.Controllers
 {
-    [AllowAnonymous]
+    [Authorize]
     [Route("api/authentification")]
     [ApiController]
     public class AuthentificationController : ControllerBase
@@ -35,6 +35,7 @@ namespace PAccountantv2.Host.Api.Controllers
             this._tokenService = tokenService;
         }
 
+        [AllowAnonymous]
         [Route("register")]
         [HttpPost]
         public async Task<IActionResult> RegisterUser(RegistrationViewModel model)
@@ -45,6 +46,7 @@ namespace PAccountantv2.Host.Api.Controllers
             return Ok(newUserEmail);
         }
 
+        [AllowAnonymous]
         [Route("login")]
         [HttpPost]
         public async Task<IActionResult> LoginUser(LoginViewModel model)
@@ -63,13 +65,10 @@ namespace PAccountantv2.Host.Api.Controllers
             return Ok(new {token});
         }
 
-        [Route("token")]
-        [HttpPost]
-        public IActionResult SetToken(TokenModel tokenModel)
+        [Route("test")]
+        [HttpGet]
+        public IActionResult TestAuth()
         {
-            var authorizationToken = Encoding.Default.GetBytes(tokenModel.Token);
-            HttpContext.Session.Set("Authorization", authorizationToken);
-
             return Ok();
         }
     }

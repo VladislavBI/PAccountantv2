@@ -43,15 +43,7 @@ namespace PAccountantv2.Host.Api
             services.AddAutoMapper(typeof(MapperProfile));
             InitilizeJwt(services);
             InitializeDb(services);
-            services.AddAuthentication().AddCookie(options =>
-            {
-                options.LoginPath = "/login";
-            });
-            //services.AddSession(options =>
-            //{
-            //    // Set a short timeout for easy testing.
-            //    options.IdleTimeout = TimeSpan.FromHours(1);
-            //});
+ 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
         }
@@ -73,50 +65,12 @@ namespace PAccountantv2.Host.Api
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
-            //app.UseSession();
-
-            ////TODO: find better not register redirect solution
-            //app.Use(async (context, next) =>
-            //{
-            //    var authorizationHeader = context.Request.Headers["Authorization"];
-
-            //    if (context.Request.Path.ToString().Contains("authentification"))
-            //    {
-            //        await next();
-            //    }
-
-            //    if (!authorizationHeader.Any())
-            //    {
-            //        var authorizationToken = context.Session.GetString("Authorization");
-
-            //        if (!string.IsNullOrEmpty(authorizationToken))
-            //        {
-            //            context.Request.Headers.Add("Authorization", authorizationToken);
-            //        }
-            //        else
-            //        {
-            //            context.Request.Path = "/login";
-            //        }
-
-            //    }
-            //    else
-            //    {
-            //        if (!context.Session.Keys.Any(key => string.Equals(key, authorizationHeader.FirstOrDefault(), StringComparison.CurrentCultureIgnoreCase)))
-            //        {
-            //            var tokenEncoded = Encoding.Default.GetBytes(authorizationHeader.FirstOrDefault());
-            //            context.Session.Set("Authorization", tokenEncoded);
-            //        }
-            //    }
-
-
-            //    await next();
-            //});
-
+           
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=AuthView}/{action=Index}");
             });
         }
 
