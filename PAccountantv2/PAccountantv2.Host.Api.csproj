@@ -6,6 +6,10 @@
     <RootNamespace>PAccountantv2.Host.Api</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Include="Controllers\HomeController.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
@@ -22,6 +26,11 @@
     <ProjectReference Include="..\PAccountant2.DAL.Migrations\PAccountant2.DAL.Migrations.csproj" />
     <ProjectReference Include="..\PAccountant2.DAL.Services\PAccountant2.DAL.Services.csproj" />
     <ProjectReference Include="..\PAccountant2.Host.Setup\PAccountant2.Host.Setup.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Pages\" />
   </ItemGroup>
 
 </Project>

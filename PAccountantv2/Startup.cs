@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Linq;
+using System.Text;
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -39,28 +43,18 @@ namespace PAccountantv2.Host.Api
             services.AddAutoMapper(typeof(MapperProfile));
             InitilizeJwt(services);
             InitializeDb(services);
-
+            services.AddAuthentication().AddCookie(options =>
+            {
+                options.LoginPath = "/login";
+            });
+            //services.AddSession(options =>
+            //{
+            //    // Set a short timeout for easy testing.
+            //    options.IdleTimeout = TimeSpan.FromHours(1);
+            //});
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
         }
-
-        private void InitializeDb(IServiceCollection services)
-        {
-
-            var dbSettingsSection = Configuration.GetSection("DBSettings");
-            services.Configure<DbSettings>(dbSettingsSection);
-            var dbSettings = dbSettingsSection.Get<DbSettings>();
-            EFProfile.InitilizeEf(services, dbSettings);
-        }
-
-        private void InitilizeJwt(IServiceCollection services)
-        {
-            var jwtSettingsSection = Configuration.GetSection("JwtSettings");
-            services.Configure<JwtSettings>(jwtSettingsSection);
-            var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
-            JwtProfile.InitilizeJwt(services, jwtSettings);
-        }
-
-
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -79,6 +73,44 @@ namespace PAccountantv2.Host.Api
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+            //app.UseSession();
+
+            ////TODO: find better not register redirect solution
+            //app.Use(async (context, next) =>
+            //{
+            //    var authorizationHeader = context.Request.Headers["Authorization"];
+
+            //    if (context.Request.Path.ToString().Contains("authentification"))
+            //    {
+            //        await next();
+            //    }
+
+            //    if (!authorizationHeader.Any())
+            //    {
+            //        var authorizationToken = context.Session.GetString("Authorization");
+
+            //        if (!string.IsNullOrEmpty(authorizationToken))
+            //        {
+            //            context.Request.Headers.Add("Authorization", authorizationToken);
+            //        }
+            //        else
+            //        {
+            //            context.Request.Path = "/login";
+            //        }
+
+            //    }
+            //    else
+            //    {
+            //        if (!context.Session.Keys.Any(key => string.Equals(key, authorizationHeader.FirstOrDefault(), StringComparison.CurrentCultureIgnoreCase)))
+            //        {
+            //            var tokenEncoded = Encoding.Default.GetBytes(authorizationHeader.FirstOrDefault());
+            //            context.Session.Set("Authorization", tokenEncoded);
+            //        }
+            //    }
+
+
+            //    await next();
+            //});
 
             app.UseMvc(routes =>
             {
@@ -87,5 +119,26 @@ namespace PAccountantv2.Host.Api
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
+        private void InitializeDb(IServiceCollection services)
+        {
+
+            var dbSettingsSection = Configuration.GetSection("DBSettings");
+            services.Configure<DbSettings>(dbSettingsSection);
+            var dbSettings = dbSettingsSection.Get<DbSettings>();
+            EFProfile.InitilizeEf(services, dbSettings);
+        }
+
+        private void InitilizeJwt(IServiceCollection services)
+        {
+
+
+            var jwtSettingsSection = Configuration.GetSection("JwtSettings");
+            services.Configure<JwtSettings>(jwtSettingsSection);
+            var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
+            JwtProfile.InitilizeJwt(services, jwtSettings);
+        }
+
+
     }
 }

@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Text;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using PAccountant2.BLL.Domain.Exceptions.Authentification;
@@ -12,7 +14,7 @@ using PAccountantv2.Host.Api.Infrastructure.Helper;
 
 namespace PAccountantv2.Host.Api.Controllers
 {
-    [Authorize]
+    [AllowAnonymous]
     [Route("api/authentification")]
     [ApiController]
     public class AuthentificationController : ControllerBase
@@ -33,7 +35,6 @@ namespace PAccountantv2.Host.Api.Controllers
             this._tokenService = tokenService;
         }
 
-        [AllowAnonymous]
         [Route("register")]
         [HttpPost]
         public async Task<IActionResult> RegisterUser(RegistrationViewModel model)
@@ -44,7 +45,6 @@ namespace PAccountantv2.Host.Api.Controllers
             return Ok(newUserEmail);
         }
 
-        [AllowAnonymous]
         [Route("login")]
         [HttpPost]
         public async Task<IActionResult> LoginUser(LoginViewModel model)
@@ -60,13 +60,16 @@ namespace PAccountantv2.Host.Api.Controllers
             }
 
             var token = _tokenService.CreateToken(userItem.Email, _jwtSettings.Key );
-            return Ok(token);
+            return Ok(new {token});
         }
 
-        [Route("test")]
-        [HttpGet]
-        public async Task<IActionResult> Test()
+        [Route("token")]
+        [HttpPost]
+        public IActionResult SetToken(TokenModel tokenModel)
         {
+            var authorizationToken = Encoding.Default.GetBytes(tokenModel.Token);
+            HttpContext.Session.Set("Authorization", authorizationToken);
+
             return Ok();
         }
     }
