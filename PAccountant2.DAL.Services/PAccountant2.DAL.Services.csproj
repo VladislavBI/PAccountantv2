@@ -9,4 +9,10 @@
     <ProjectReference Include="..\PAccountant2.DAL.Context\PAccountant2.DAL.Context.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\..\..\..\.nuget\packages\automapper\9.0.0\lib\netstandard2.0\AutoMapper.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

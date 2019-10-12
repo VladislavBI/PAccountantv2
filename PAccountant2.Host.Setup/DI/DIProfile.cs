@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using PAccountant2.BLL.Domain.Services;
+using PAccountant2.BLL.Interfaces.Account;
 using PAccountant2.BLL.Interfaces.Authentification;
 using PAccountant2.DAL.Services;
 
@@ -11,6 +12,8 @@ namespace PAccountant2.Host.Setup.DI
         {
             services.AddScoped<IAuthentificationDataService, AuthentificationDataService>();
             services.AddScoped<IAuthentificationService, AuthentificationService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IAccountDataService, AccountDataService>();
         }
     }
 }
