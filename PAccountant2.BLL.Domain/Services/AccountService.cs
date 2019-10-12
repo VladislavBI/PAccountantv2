@@ -23,13 +23,21 @@ namespace PAccountant2.BLL.Domain.Services
 
         public async Task AddMoneyAsync(int accountId, MoneyChangeViewItem model)
         {
-            var currentMoneyAmount = await _dataService.GetMoneyAmountAsync(accountId);
+            var currentMoneyAmount = await _dataService.GetBalanceAsync(accountId);
             var account = _mapper.Map<AccountEntity>(currentMoneyAmount);
 
             account.AddMoney(model.Amount);
 
             var newAmountDataItem = _mapper.Map<MoneyChangeDataItem>(account);
             await _dataService.SaveNewMoneyAmountAsync(newAmountDataItem);
+        }
+
+        public async Task<AccountBalanceViewItem> GetBalanceAsync(int accountId)
+        {
+            var dbBalance = await _dataService.GetBalanceAsync(accountId);
+            var viewItem = _mapper.Map<AccountBalanceViewItem>(dbBalance);
+
+            return viewItem;
         }
     }
 }

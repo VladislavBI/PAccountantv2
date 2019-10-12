@@ -20,10 +20,10 @@ namespace PAccountant2.DAL.Services
         }
 
 
-        public async Task<MoneyChangeDataItem> GetMoneyAmountAsync(int accountId)
+        public async Task<AccountBalanceDataItem> GetBalanceAsync(int accountId)
         {
             var dbData = await _context.Accounts.FirstOrDefaultAsync(acc => acc.Id == accountId);
-            var dataItem = _mapper.Map<MoneyChangeDataItem>(dbData);
+            var dataItem = _mapper.Map<AccountBalanceDataItem>(dbData);
 
             return dataItem;
         }

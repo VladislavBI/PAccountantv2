@@ -23,6 +23,16 @@ namespace PAccountantv2.Host.Api.Controllers
             _service = service;
         }
 
+        [Route("{id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetAccountBalance(int id)
+        {
+            var viewItem = await _service.GetBalanceAsync(id);
+            var viewModel = _mapper.Map<AccountBalanceViewModel>(viewItem);
+
+            return Ok(viewModel);
+        }
+
         [Route("{id}/add")]
         [HttpPost]
         public async Task<IActionResult> AddMoneyToAccount(int id, MoneyChangeViewModel model)

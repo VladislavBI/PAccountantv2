@@ -4,9 +4,9 @@
     {
         public int Id { get; set; }
 
-        public float Amount { get; set; }
+        public decimal Amount { get; set; }
 
-        public void AddMoney(float addModelAmount)
+        public void AddMoney(decimal addModelAmount)
         {
             Amount += addModelAmount;
         }
