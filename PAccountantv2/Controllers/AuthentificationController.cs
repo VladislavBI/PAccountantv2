@@ -62,7 +62,12 @@ namespace PAccountantv2.Host.Api.Controllers
             }
 
             var token = _tokenService.CreateToken(userItem.Email, _jwtSettings.Key );
-            return Ok(new {token});
+            var tokenModel = new TokenViewModel
+            {
+                Token = token
+            };
+
+            return Ok(tokenModel);
         }
 
         [Route("test")]

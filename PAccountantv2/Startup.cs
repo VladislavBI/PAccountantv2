@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Text;
-using AutoMapper;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -70,7 +66,7 @@ namespace PAccountantv2.Host.Api
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=AuthView}/{action=Index}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
 

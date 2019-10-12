@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PAccountant2.Host.Domain.ViewModels.Authentification
 {
-    public class TokenModel
+    public class TokenViewModel
     {
         public string Token { get; set; }
     }
