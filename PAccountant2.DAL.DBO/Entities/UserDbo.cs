@@ -7,6 +7,9 @@ namespace PAccountant2.DAL.DBO.Entities
     public class UserDbo
     {
         public string Email { get; set; }
+
         public byte[] Password { get; set; }
+
+        public ICollection<AccountDbo> Accounts { get; set; }
     }
 }
