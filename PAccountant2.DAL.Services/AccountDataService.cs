@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PAccountant2.BLL.Interfaces.Account;
@@ -24,18 +20,18 @@ namespace PAccountant2.DAL.Services
         }
 
 
-        public async Task<AddMoneyDataItem> GetMoneyAmountAsync(int addModelId)
+        public async Task<MoneyChangeDataItem> GetMoneyAmountAsync(int accountId)
         {
-            var dbData = await _context.Accounts.FirstOrDefaultAsync(acc => acc.Id == addModelId);
-            var dataItem = _mapper.Map<AddMoneyDataItem>(dbData);
+            var dbData = await _context.Accounts.FirstOrDefaultAsync(acc => acc.Id == accountId);
+            var dataItem = _mapper.Map<MoneyChangeDataItem>(dbData);
 
             return dataItem;
         }
 
-        public async Task SaveNewMoneyAmountAync(AddMoneyDataItem newAmountDataItem)
+        public async Task SaveNewMoneyAmountAsync(MoneyChangeDataItem dataItem)
         {
-            var dbAccount = await _context.Accounts.FirstOrDefaultAsync(acc => acc.Id == newAmountDataItem.Id);
-            dbAccount.Amount = newAmountDataItem.Amount;
+            var dbAccount = await _context.Accounts.FirstOrDefaultAsync(acc => acc.Id == dataItem.Id);
+            dbAccount.Amount = dataItem.Amount;
 
             await _context.SaveChangesAsync();
         }

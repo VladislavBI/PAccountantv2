@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PAccountant2.BLL.Interfaces.Account;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
-using PAccountant2.BLL.Interfaces.DTO.ViewItems.Authentification;
 using PAccountant2.Host.Domain.ViewModels.Account;
-using PAccountant2.Host.Domain.ViewModels.Authentification;
 
 namespace PAccountantv2.Host.Api.Controllers
 {
@@ -25,12 +23,12 @@ namespace PAccountantv2.Host.Api.Controllers
             _service = service;
         }
 
-        [Route("add")]
+        [Route("{id}/add")]
         [HttpPost]
-        public async Task<IActionResult> AddMoneyToAccount(AddMoneyViewModel model)
+        public async Task<IActionResult> AddMoneyToAccount(int id, MoneyChangeViewModel model)
         {
-            var viewItem = _mapper.Map<AddMoneyViewItem>(model);
-            await _service.AddMoneyAsync(viewItem);
+            var viewItem = _mapper.Map<MoneyChangeViewItem>(model);
+            await _service.AddMoneyAsync(id, viewItem);
 
             return Ok();
         }

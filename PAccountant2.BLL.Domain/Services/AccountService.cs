@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using PAccountant2.BLL.Domain.Entities;
 using PAccountant2.BLL.Interfaces.Account;
@@ -24,15 +21,15 @@ namespace PAccountant2.BLL.Domain.Services
         }
 
 
-        public async Task AddMoneyAsync(AddMoneyViewItem addModel)
+        public async Task AddMoneyAsync(int accountId, MoneyChangeViewItem model)
         {
-            var currentMoneyAmount = await _dataService.GetMoneyAmountAsync(addModel.Id);
+            var currentMoneyAmount = await _dataService.GetMoneyAmountAsync(accountId);
             var account = _mapper.Map<AccountEntity>(currentMoneyAmount);
 
-            account.AddMoney(addModel.Amount);
+            account.AddMoney(model.Amount);
 
-            var newAmountDataItem = _mapper.Map<AddMoneyDataItem>(account);
-            await _dataService.SaveNewMoneyAmountAync(newAmountDataItem);
+            var newAmountDataItem = _mapper.Map<MoneyChangeDataItem>(account);
+            await _dataService.SaveNewMoneyAmountAsync(newAmountDataItem);
         }
     }
 }

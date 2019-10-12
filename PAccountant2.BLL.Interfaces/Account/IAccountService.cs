@@ -8,6 +8,6 @@ namespace PAccountant2.BLL.Interfaces.Account
 {
     public interface IAccountService
     {
-        Task AddMoneyAsync(AddMoneyViewItem addModel);
+        Task AddMoneyAsync(int accountId, MoneyChangeViewItem model);
     }
 }
