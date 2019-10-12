@@ -18,10 +18,12 @@ namespace PAccountant2.Host.Setup.Mapping
 
             CreateMap<MoneyChangeViewModel, MoneyChangeViewItem>();
             CreateMap<MoneyChangeViewItem, MoneyChangeDataItem>();
-            CreateMap<MoneyChangeDataItem, AccountEntity>();
+            CreateMap<AccountDbo, AccountBalanceDataItem>();
+            CreateMap<AccountBalanceDataItem, AccountEntity>();
+            CreateMap<AccountBalanceDataItem, AccountBalanceViewItem>();
+            CreateMap<AccountBalanceViewItem, AccountBalanceViewModel>();
             CreateMap<AccountEntity, MoneyChangeDataItem>();
             CreateMap<MoneyChangeDataItem, AccountDbo>();
-            CreateMap<AccountDbo, MoneyChangeDataItem>();
 
         }
     }

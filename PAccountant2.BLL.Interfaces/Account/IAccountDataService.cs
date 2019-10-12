@@ -8,7 +8,7 @@ namespace PAccountant2.BLL.Interfaces.Account
 {
     public interface IAccountDataService
     {
-        Task<MoneyChangeDataItem> GetMoneyAmountAsync(int accountId);
+        Task<AccountBalanceDataItem> GetBalanceAsync(int accountId);
         Task SaveNewMoneyAmountAsync(MoneyChangeDataItem dataItem);
     }
 }

@@ -25,7 +25,7 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<float>("Amount");
+                    b.Property<decimal>("Amount");
 
                     b.Property<string>("UserId");
 

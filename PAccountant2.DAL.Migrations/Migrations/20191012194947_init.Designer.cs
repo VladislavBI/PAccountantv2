@@ -10,7 +10,7 @@ using PAccountant2.DAL.Context;
 namespace PAccountant2.DAL.Migrations.Migrations
 {
     [DbContext(typeof(PaccountantContext))]
-    [Migration("20191005211229_init")]
+    [Migration("20191012194947_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,23 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.AccountDbo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Account");
+                });
 
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.UserDbo", b =>
                 {
@@ -31,6 +48,13 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     b.HasKey("Email");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.AccountDbo", b =>
+                {
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.UserDbo", "User")
+                        .WithMany("Accounts")
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }
