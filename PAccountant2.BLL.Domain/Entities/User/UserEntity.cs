@@ -11,7 +11,7 @@ namespace PAccountant2.BLL.Domain.Entities.User
 
         public string StringPassword { get; set; }
 
-        public CredentialsValueObject CreateCreadentials()
+        public CredentialsValueObject CreateCredentials()
         {
             Password = Password != null && Password.Any() ? Password : Encryption.Encrypt(StringPassword);
             var credentialsModel = new CredentialsValueObject

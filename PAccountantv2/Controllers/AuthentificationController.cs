@@ -50,15 +50,8 @@ namespace PAccountantv2.Host.Api.Controllers
         public async Task<IActionResult> LoginUser(LoginViewModel model)
         {
             var userItem = _mapper.Map<LoginViewItem>(model);
-            try
-            {
-                await _authService.CheckRightCredentialsAsync(userItem);
-            }
-            catch (WrongCredentialsException e)
-            {
-                return BadRequest(e.Message);
-            }
-
+            await _authService.CheckRightCredentialsAsync(userItem);
+            
             var token = _tokenService.CreateToken(userItem.Email, _jwtSettings.Key);
             var tokenModel = new TokenViewModel
             {

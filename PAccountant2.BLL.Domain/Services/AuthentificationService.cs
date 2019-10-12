@@ -27,7 +27,7 @@ namespace PAccountant2.BLL.Domain.Services
             }
 
             var user = _mapper.Map<UserEntity>(item);
-            var credentials = user.CreateCreadentials();
+            var credentials = user.CreateCredentials();
 
             var registerModel = _mapper.Map<RegisterDataItem>(credentials);
             var newUserEmail = await _authDataService.RegisterUserAsync(registerModel);
@@ -41,7 +41,7 @@ namespace PAccountant2.BLL.Domain.Services
 
             var user = _mapper.Map<UserEntity>(item);
             user.Password = currentPassword;
-            var credentials = user.CreateCreadentials();
+            var credentials = user.CreateCredentials();
 
             if (!credentials.IsPasswordCorrect(item.Password))
             {
