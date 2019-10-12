@@ -16,13 +16,12 @@
 
 
   <ItemGroup>
-    <Folder Include="Infrastructure\Models\" />
-  </ItemGroup>
-
-
-  <ItemGroup>
+    <ProjectReference Include="..\PAccountant2.BLL.Domain\PAccountant2.BLL.Domain.csproj" />
+    <ProjectReference Include="..\PAccountant2.BLL.Interfaces\PAccountant2.BLL.Interfaces.csproj" />
     <ProjectReference Include="..\PAccountant2.DAL.Context\PAccountant2.DAL.Context.csproj" />
     <ProjectReference Include="..\PAccountant2.DAL.Migrations\PAccountant2.DAL.Migrations.csproj" />
+    <ProjectReference Include="..\PAccountant2.DAL.Services\PAccountant2.DAL.Services.csproj" />
+    <ProjectReference Include="..\PAccountant2.Host.Setup\PAccountant2.Host.Setup.csproj" />
   </ItemGroup>
 
 </Project>

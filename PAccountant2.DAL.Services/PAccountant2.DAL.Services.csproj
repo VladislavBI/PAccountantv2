@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PAccountant2.BLL.Interfaces\PAccountant2.BLL.Interfaces.csproj" />
+    <ProjectReference Include="..\PAccountant2.DAL.Context\PAccountant2.DAL.Context.csproj" />
+  </ItemGroup>
+
 </Project>

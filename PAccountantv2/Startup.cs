@@ -3,10 +3,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PAccountant2.DAL.Context;
+using PAccountant2.Host.Domain.Models;
+using PAccountant2.Host.Setup.DI;
+using PAccountant2.Host.Setup.EntityFramework;
+using PAccountant2.Host.Setup.Jwt;
+using PAccountant2.Host.Setup.Mapping;
+using PAccountantv2.Host.Api.Infrastructure.Helper;
 
 namespace PAccountantv2.Host.Api
 {
@@ -29,16 +33,34 @@ namespace PAccountantv2.Host.Api
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddAutoMapper(typeof(Mapper));
-
-            var connectionString = Configuration["ConnectionString:PAccountant"];
-            services.AddDbContext<PaccountantContext>(opts =>
-                    opts.UseSqlServer(connectionString, 
-                        x => x.MigrationsAssembly("PAccountant2.DAL.Migrations"))
-                );
+            // TODO: remove after find solution for jwt create bug
+            services.AddScoped<ITokenService, JwtTokenService>();
+            DiProfile.InitilizeDI(services);
+            services.AddAutoMapper(typeof(MapperProfile));
+            InitilizeJwt(services);
+            InitializeDb(services);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
+
+        private void InitializeDb(IServiceCollection services)
+        {
+
+            var dbSettingsSection = Configuration.GetSection("DBSettings");
+            services.Configure<DbSettings>(dbSettingsSection);
+            var dbSettings = dbSettingsSection.Get<DbSettings>();
+            EFProfile.InitilizeEf(services, dbSettings);
+        }
+
+        private void InitilizeJwt(IServiceCollection services)
+        {
+            var jwtSettingsSection = Configuration.GetSection("JwtSettings");
+            services.Configure<JwtSettings>(jwtSettingsSection);
+            var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
+            JwtProfile.InitilizeJwt(services, jwtSettings);
+        }
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -54,9 +76,9 @@ namespace PAccountantv2.Host.Api
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

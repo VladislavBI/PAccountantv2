@@ -6,7 +6,7 @@ namespace PAccountant2.DAL.Context
 {
     public class PaccountantContext: DbContext
     {
-        public UserDbo Type { get; set; }
+        public DbSet<UserDbo> Users { get; set; }
 
         public PaccountantContext(DbContextOptions options): base(options)
         {

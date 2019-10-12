@@ -1,8 +1,0 @@
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Services\bin\Debug\netcoreapp2.2\PAccountant2.DAL.Services.deps.json
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Services\bin\Debug\netcoreapp2.2\PAccountant2.DAL.Services.dll
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Services\bin\Debug\netcoreapp2.2\PAccountant2.DAL.Services.pdb
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Services\obj\Debug\netcoreapp2.2\PAccountant2.DAL.Services.csproj.CoreCompileInputs.cache
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Services\obj\Debug\netcoreapp2.2\PAccountant2.DAL.Services.AssemblyInfoInputs.cache
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Services\obj\Debug\netcoreapp2.2\PAccountant2.DAL.Services.AssemblyInfo.cs
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Services\obj\Debug\netcoreapp2.2\PAccountant2.DAL.Services.dll
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.DAL.Services\obj\Debug\netcoreapp2.2\PAccountant2.DAL.Services.pdb

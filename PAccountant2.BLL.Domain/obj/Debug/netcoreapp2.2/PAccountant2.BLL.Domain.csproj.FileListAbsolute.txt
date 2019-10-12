@@ -1,8 +1,0 @@
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.BLL.Domain\bin\Debug\netcoreapp2.2\PAccountant2.BLL.Domain.deps.json
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.BLL.Domain\bin\Debug\netcoreapp2.2\PAccountant2.BLL.Domain.dll
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.BLL.Domain\bin\Debug\netcoreapp2.2\PAccountant2.BLL.Domain.pdb
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.BLL.Domain\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Domain.csproj.CoreCompileInputs.cache
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.BLL.Domain\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Domain.AssemblyInfoInputs.cache
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.BLL.Domain\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Domain.AssemblyInfo.cs
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.BLL.Domain\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Domain.dll
-C:\Users\Администратор\source\repos\PAccountantv2\PAccountant2.BLL.Domain\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Domain.pdb
