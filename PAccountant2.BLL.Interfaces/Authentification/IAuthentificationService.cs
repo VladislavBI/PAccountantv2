@@ -10,6 +10,6 @@ namespace PAccountant2.BLL.Interfaces.Authentification
     {
         Task<string> RegisterUserAsync(RegisterViewItem item);
 
-        Task LoginUserAsync(LoginViewItem item);
+        Task CheckRightCredentialsAsync(LoginViewItem item);
     }
 }

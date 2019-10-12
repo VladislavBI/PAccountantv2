@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PAccountant2.Host.Domain.Constants;
 using PAccountant2.Host.Domain.Models;
 using PAccountant2.Host.Setup.DI;
 using PAccountant2.Host.Setup.EntityFramework;
@@ -39,7 +40,7 @@ namespace PAccountantv2.Host.Api
             services.AddAutoMapper(typeof(MapperProfile));
             InitilizeJwt(services);
             InitializeDb(services);
- 
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
         }
@@ -61,7 +62,7 @@ namespace PAccountantv2.Host.Api
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
-           
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -72,9 +73,9 @@ namespace PAccountantv2.Host.Api
 
         private void InitializeDb(IServiceCollection services)
         {
-
-            var dbSettingsSection = Configuration.GetSection("DBSettings");
+            var dbSettingsSection = Configuration.GetSection(ConfigSectionsNames.DbSettings);
             services.Configure<DbSettings>(dbSettingsSection);
+
             var dbSettings = dbSettingsSection.Get<DbSettings>();
             EFProfile.InitilizeEf(services, dbSettings);
         }
@@ -83,8 +84,9 @@ namespace PAccountantv2.Host.Api
         {
 
 
-            var jwtSettingsSection = Configuration.GetSection("JwtSettings");
+            var jwtSettingsSection = Configuration.GetSection(ConfigSectionsNames.JwtSettings);
             services.Configure<JwtSettings>(jwtSettingsSection);
+
             var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
             JwtProfile.InitilizeJwt(services, jwtSettings);
         }
