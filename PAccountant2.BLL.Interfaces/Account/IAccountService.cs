@@ -5,9 +5,11 @@ namespace PAccountant2.BLL.Interfaces.Account
 {
     public interface IAccountService
     {
+        Task<AccountBalanceViewItem> GetBalanceAsync(int accountId);
+
         Task AddMoneyAsync(int accountId, MoneyChangeViewItem model);
 
-        Task<AccountBalanceViewItem> GetBalanceAsync(int accountId);
+        Task WithdrawMoneyAsync(int accountId, MoneyChangeViewItem model);
 
     }
 }
