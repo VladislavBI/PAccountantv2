@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -45,12 +47,22 @@ namespace PAccountantv2.Host.Api.Controllers
 
         [Route("{id}/withdraw")]
         [HttpPost]
-        public async Task<IActionResult> withdrawMoneyFromAccount(int id, MoneyChangeViewModel model)
+        public async Task<IActionResult> WithdrawMoneyFromAccount(int id, MoneyChangeViewModel model)
         {
             var viewItem = _mapper.Map<MoneyChangeViewItem>(model);
             await _service.WithdrawMoneyAsync(id, viewItem);
 
             return Ok();
+        }
+
+        [Route("{id}/history")]
+        [HttpGet]
+        public async Task<IActionResult> GetAccountHistory(int id)
+        {
+            var historyItems = await _service.GetHistoryAsync(id);
+            var historyViewModel = _mapper.Map<IEnumerable<AccountOperationViewModel>>(historyItems);
+
+            return Ok(historyViewModel);
         }
     }
 }

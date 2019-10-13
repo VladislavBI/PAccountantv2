@@ -9,6 +9,11 @@ namespace PAccountant2.BLL.Interfaces.Account
     public interface IAccountDataService
     {
         Task<AccountBalanceDataItem> GetBalanceAsync(int accountId);
+
         Task SaveNewMoneyAmountAsync(MoneyChangeDataItem dataItem);
+
+        Task<AccountWithHistotyDataItem> GetHistoryAsync(int accountId);
+
+        Task CreateOperationAsync(int accountId, AccountOperationDataItem operation);
     }
 }
