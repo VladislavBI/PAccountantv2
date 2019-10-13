@@ -13,7 +13,8 @@ namespace PAccountant2.BLL.Domain.Entities.User
 
         public CredentialsValueObject CreateCredentials()
         {
-            Password = Password != null && Password.Any() ? Password : Encryption.Encrypt(StringPassword);
+            Password = GetEncryptedPassword();
+
             var credentialsModel = new CredentialsValueObject
             {
                 Email = Email,
@@ -22,5 +23,8 @@ namespace PAccountant2.BLL.Domain.Entities.User
 
             return credentialsModel;
         }
+
+        public byte[] GetEncryptedPassword()
+            => Password != null && Password.Any() ? Password : Encryption.Encrypt(StringPassword);
     }
 }
