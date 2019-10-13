@@ -10,7 +10,6 @@ namespace PAccountant2.DAL.Context
 
         public DbSet<AccountDbo> Accounts { get; set; }
 
-
         public PaccountantContext(DbContextOptions options): base(options)
         {
                 
@@ -24,6 +23,12 @@ namespace PAccountant2.DAL.Context
 
             modelBuilder.Entity<AccountDbo>().ToTable(TablesNames.Account);
             modelBuilder.Entity<AccountDbo>().Property(x => x.Id).UseSqlServerIdentityColumn();
+            modelBuilder.Entity<AccountDbo>().HasMany(entity => entity.AccountHistory).WithOne(entity => entity.Account)
+                .HasForeignKey(prop => prop.AccountId);
+
+
+            modelBuilder.Entity<AccountOperationDbo>().ToTable(TablesNames.AccountOperation);
+            modelBuilder.Entity<AccountOperationDbo>().Property(prop => prop.Id).UseSqlServerIdentityColumn();
 
         }
     }
