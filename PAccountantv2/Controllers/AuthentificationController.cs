@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using PAccountant2.BLL.Domain.Exceptions.Authentification;
 using PAccountant2.BLL.Interfaces.Authentification;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Authentification;
 using PAccountant2.Host.Domain.Models;
@@ -27,10 +26,10 @@ namespace PAccountantv2.Host.Api.Controllers
             ITokenService tokenService,
             IOptions<JwtSettings> jwtSettings)
         {
-            this._mapper = mapper;
-            this._authService = authService;
-            this._jwtSettings = jwtSettings.Value;
-            this._tokenService = tokenService;
+            _mapper = mapper;
+            _authService = authService;
+            _jwtSettings = jwtSettings.Value;
+            _tokenService = tokenService;
         }
 
         [AllowAnonymous]

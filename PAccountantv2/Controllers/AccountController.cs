@@ -1,17 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PAccountant2.BLL.Interfaces.Account;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
 using PAccountant2.Host.Domain.ViewModels.Account;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PAccountantv2.Host.Api.Controllers
 {
     [AllowAnonymous]
-    [Route("api/account")]
+    [Route("api/accounting/{acctingId}/account")]
     [ApiController]
     public class AccountController : ControllerBase
     {

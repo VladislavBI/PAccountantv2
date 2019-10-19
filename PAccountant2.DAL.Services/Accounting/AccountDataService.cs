@@ -8,7 +8,7 @@ using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.DAL.Context;
 using PAccountant2.DAL.DBO.Entities;
 
-namespace PAccountant2.DAL.Services
+namespace PAccountant2.DAL.Services.Accounting
 {
     public class AccountDataService: IAccountDataService
     {
