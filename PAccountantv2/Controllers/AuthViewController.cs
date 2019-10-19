@@ -1,22 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PAccountantv2.Host.Api.Controllers
 {
     [AllowAnonymous]
-    [Route("/login")]
+    [Route("/auth")]
     public class AuthViewController : Controller
     {
-        public IActionResult Index()
+        [Route("login")]
+        [HttpGet]
+        public IActionResult Login()
         {
             return View();
         }
 
         [Route("register")]
+        [HttpGet]
         public IActionResult Register()
         {
             return View();

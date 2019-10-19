@@ -13,6 +13,7 @@ using PAccountant2.Host.Setup.EntityFramework;
 using PAccountant2.Host.Setup.Jwt;
 using PAccountant2.Host.Setup.Mapping;
 using PAccountantv2.Host.Api.Infrastructure.Helper;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace PAccountantv2.Host.Api
 {
@@ -44,6 +45,22 @@ namespace PAccountantv2.Host.Api
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "My API",
+                    Description = "My First ASP.NET Core Web API",
+                    TermsOfService = "None",
+                    Contact = new Contact()
+                    {
+                        Name = "Talking Dotnet",
+                        Email = "contact@talkingdotnet.com",
+                        Url = "www.talkingdotnet.com"
+                    }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,6 +88,12 @@ namespace PAccountantv2.Host.Api
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
         }
 
