@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PAccountant2.Host.Domain.Constants;
+using PAccountant2.Host.Domain.Middleware;
 using PAccountant2.Host.Domain.Models;
 using PAccountant2.Host.Setup.DI;
 using PAccountant2.Host.Setup.EntityFramework;
@@ -62,6 +63,8 @@ namespace PAccountantv2.Host.Api
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseMvc(routes =>
             {
