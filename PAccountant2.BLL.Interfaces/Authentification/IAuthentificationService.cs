@@ -8,8 +8,8 @@ namespace PAccountant2.BLL.Interfaces.Authentification
 {
     public interface IAuthentificationService
     {
-        void RegisterUser(RegisterViewItem item);
+        Task<string> RegisterUserAsync(RegisterViewItem item);
 
-        Task LoginUserAsync(LoginViewItem item);
+        Task CheckRightCredentialsAsync(LoginViewItem item);
     }
 }

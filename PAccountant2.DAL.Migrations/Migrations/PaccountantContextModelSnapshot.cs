@@ -19,6 +19,44 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.AccountDbo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Account");
+                });
+
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.AccountOperationDbo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccountId");
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("OperationType");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountId");
+
+                    b.ToTable("AccountOperation");
+                });
+
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.UserDbo", b =>
                 {
                     b.Property<string>("Email")
@@ -29,6 +67,21 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     b.HasKey("Email");
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.AccountDbo", b =>
+                {
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.UserDbo", "User")
+                        .WithMany("Accounts")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.AccountOperationDbo", b =>
+                {
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.AccountDbo", "Account")
+                        .WithMany("AccountHistory")
+                        .HasForeignKey("AccountId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
