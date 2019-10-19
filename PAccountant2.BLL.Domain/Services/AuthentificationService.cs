@@ -48,6 +48,7 @@ namespace PAccountant2.BLL.Domain.Services
 
             var user = _mapper.Map<UserEntity>(item);
             user.Password = currentPassword;
+
             var credentials = user.CreateCredentials();
 
             if (!credentials.IsPasswordCorrect(item.Password))

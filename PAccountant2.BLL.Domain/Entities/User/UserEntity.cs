@@ -1,6 +1,7 @@
 ﻿using PAccountant2.Common.Encription;
 using System.Linq;
 using PAccountant2.BLL.Domain.Entities.Accounting;
+using PAccountant2.BLL.Domain.Exceptions.Authentification;
 
 namespace PAccountant2.BLL.Domain.Entities.User
 {
@@ -14,6 +15,11 @@ namespace PAccountant2.BLL.Domain.Entities.User
 
         public CredentialsValueObject CreateCredentials()
         {
+            if (Password == null)
+            {
+                throw new WrongCredentialsException(Email);
+            }
+
             Password = GetEncryptedPassword();
 
             var credentialsModel = new CredentialsValueObject
