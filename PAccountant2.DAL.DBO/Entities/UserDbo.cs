@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Text;
 
 namespace PAccountant2.DAL.DBO.Entities
@@ -10,6 +11,6 @@ namespace PAccountant2.DAL.DBO.Entities
 
         public byte[] Password { get; set; }
 
-        public ICollection<AccountDbo> Accounts { get; set; }
+        public  AccountingDbo Accounting { get; set; }
     }
 }

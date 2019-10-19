@@ -5,6 +5,7 @@ using PAccountant2.BLL.Interfaces.Authentification;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Authentification;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Authentification;
 using System.Threading.Tasks;
+using PAccountant2.BLL.Interfaces.Account;
 
 namespace PAccountant2.BLL.Domain.Services
 {
@@ -12,11 +13,15 @@ namespace PAccountant2.BLL.Domain.Services
     {
         private readonly IMapper _mapper;
         private readonly IAuthentificationDataService _authDataService;
+        private readonly IAccountingDataService _accountingDataService;
 
-        public AuthentificationService(IAuthentificationDataService authDataService, IMapper mapper)
+        public AuthentificationService(IAuthentificationDataService authDataService,
+            IMapper mapper, 
+            IAccountingDataService accountingDataService)
         {
             _authDataService = authDataService;
             _mapper = mapper;
+            _accountingDataService = accountingDataService;
         }
 
         public async Task<string> RegisterUserAsync(RegisterViewItem item)
@@ -31,6 +36,8 @@ namespace PAccountant2.BLL.Domain.Services
 
             var registerModel = _mapper.Map<RegisterDataItem>(credentials);
             var newUserEmail = await _authDataService.RegisterUserAsync(registerModel);
+
+            await _accountingDataService.CreateAccountingForUser(newUserEmail);
 
             return newUserEmail;
         }

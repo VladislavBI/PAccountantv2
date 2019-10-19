@@ -1,5 +1,6 @@
 ﻿using PAccountant2.Common.Encription;
 using System.Linq;
+using PAccountant2.BLL.Domain.Entities.Accounting;
 
 namespace PAccountant2.BLL.Domain.Entities.User
 {
@@ -22,6 +23,14 @@ namespace PAccountant2.BLL.Domain.Entities.User
             };
 
             return credentialsModel;
+        }
+
+        public AccountingEntity CreateNewAccounting()
+        {
+            return new AccountingEntity
+            {
+                User = this
+            };
         }
 
         public byte[] GetEncryptedPassword()
