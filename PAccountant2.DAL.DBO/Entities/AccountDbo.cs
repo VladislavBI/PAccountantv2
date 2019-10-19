@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace PAccountant2.DAL.DBO.Entities
 {
@@ -9,10 +7,6 @@ namespace PAccountant2.DAL.DBO.Entities
         public int Id { get; set; }
 
         public decimal Amount { get; set; }
-
-        public UserDbo User { get; set; }
-
-        public string UserId { get; set; }
 
         public AccountingDbo Accounting { get; set; }
 
