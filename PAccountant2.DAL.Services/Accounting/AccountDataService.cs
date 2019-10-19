@@ -67,5 +67,18 @@ namespace PAccountant2.DAL.Services.Accounting
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task<int> CreateAccountAsync(int accountingId)
+        {
+            var newAccount = new AccountDbo
+            {
+                AccountingId = accountingId
+            };
+
+            _context.Accounts.Add(newAccount);
+            await _context.SaveChangesAsync();
+
+            return newAccount.Id;
+        }
     }
 }

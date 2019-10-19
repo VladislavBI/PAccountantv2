@@ -24,6 +24,14 @@ namespace PAccountantv2.Host.Api.Controllers
             _service = service;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddNewAccount(int acctingId)
+        {
+           var acId = await _service.CreateNewAccountAsync(acctingId);
+
+            return Ok(acId);
+        }
+
         [Route("{id}")]
         [HttpGet]
         public async Task<IActionResult> GetAccountBalance(int id)
@@ -35,7 +43,7 @@ namespace PAccountantv2.Host.Api.Controllers
         }
 
         [Route("{id}/add")]
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> AddMoneyToAccount(int id, MoneyChangeViewModel model)
         {
             var viewItem = _mapper.Map<MoneyChangeViewItem>(model);
@@ -45,7 +53,7 @@ namespace PAccountantv2.Host.Api.Controllers
         }
 
         [Route("{id}/withdraw")]
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> WithdrawMoneyFromAccount(int id, MoneyChangeViewModel model)
         {
             var viewItem = _mapper.Map<MoneyChangeViewItem>(model);

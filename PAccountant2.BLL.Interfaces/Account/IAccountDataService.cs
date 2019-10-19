@@ -15,5 +15,7 @@ namespace PAccountant2.BLL.Interfaces.Account
         Task<AccountWithHistotyDataItem> GetHistoryAsync(int accountId);
 
         Task CreateOperationAsync(int accountId, AccountOperationDataItem operation);
+
+        Task<int> CreateAccountAsync(int accountingId);
     }
 }

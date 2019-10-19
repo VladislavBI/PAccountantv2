@@ -79,5 +79,8 @@ namespace PAccountant2.BLL.Domain.Services
             var lastOperationDataItem = _mapper.Map<AccountOperationDataItem>(lastOperation);
             await _dataService.CreateOperationAsync(account.Id, lastOperationDataItem);
         }
+
+        public async Task<int> CreateNewAccountAsync(int accountingId)
+            => await _dataService.CreateAccountAsync(accountingId);
     }
 }
