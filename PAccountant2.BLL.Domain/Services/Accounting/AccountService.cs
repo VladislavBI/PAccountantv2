@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using PAccountant2.BLL.Domain.Entities.Accounting;
 using PAccountant2.BLL.Interfaces.Account;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
@@ -7,7 +6,7 @@ using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace PAccountant2.BLL.Domain.Services
+namespace PAccountant2.BLL.Domain.Services.Accounting
 {
     public class AccountService : IAccountService
     {
