@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PAccountant2.BLL.Interfaces.Account;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.DAL.Context;
 using PAccountant2.DAL.DBO.Entities;
+using System.Threading.Tasks;
 
 namespace PAccountant2.DAL.Services.Accounting
 {
@@ -41,6 +41,17 @@ namespace PAccountant2.DAL.Services.Accounting
 
             return dataItem;
 
+        }
+
+        public async Task TransferMoneyToOtherAccountAsync(AccountTransferDataItem dbTransfer)
+        {
+            var fromAccount = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == dbTransfer.IdAccountFrom);
+            var toAccount = await _context.Accounts.FirstOrDefaultAsync(x => x.Id == dbTransfer.IdAccountTo);
+
+            fromAccount.Amount -= dbTransfer.Amount;
+            toAccount.Amount += dbTransfer.Amount;
+
+            await _context.SaveChangesAsync();
         }
     }
 }
