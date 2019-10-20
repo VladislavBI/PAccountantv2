@@ -47,6 +47,10 @@ namespace PAccountant2.Host.Setup.Mapping
             CreateMap<AccountingWithAccountsDataItem, AccountingWithAccountsViewItem>();
             CreateMap<AccountingWithAccountsViewItem, AccountingWithAccountsViewModel>();
 
+            CreateMap<AccountTransferViewModel, AccountTransferViewItem>();
+            CreateMap<AccountingWithAccountsDataItem, AccountingEntity>();
+            CreateMap<AccountTransferValueObject, AccountTransferDataItem>();
+
         }
     }
 }
