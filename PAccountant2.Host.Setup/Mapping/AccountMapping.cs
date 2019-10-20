@@ -18,6 +18,7 @@ namespace PAccountant2.Host.Setup.Mapping
 
             CreateMap<AccountDbo, AccountBalanceDataItem>();
             CreateMap<AccountBalanceDataItem, AccountEntity>();
+            CreateMap<AccountEntity, AccountBalanceViewItem>();
             CreateMap<AccountBalanceDataItem, AccountBalanceViewItem>();
             CreateMap<AccountBalanceViewItem, AccountBalanceViewModel>();
 

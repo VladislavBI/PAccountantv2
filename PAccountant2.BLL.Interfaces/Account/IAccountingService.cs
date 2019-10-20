@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
+﻿using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
+using System.Threading.Tasks;
 
 namespace PAccountant2.BLL.Interfaces.Account
 {

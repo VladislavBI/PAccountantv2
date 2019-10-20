@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using PAccountant2.Host.Domain.ViewModels;
+using System;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using PAccountant2.Host.Domain.ViewModels;
 
 namespace PAccountant2.Host.Domain.Middleware
 {

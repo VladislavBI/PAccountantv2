@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PAccountant2.BLL.Interfaces.Account;
-using System.Threading.Tasks;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
 using PAccountant2.Host.Domain.ViewModels.Account;
+using System.Threading.Tasks;
 
 namespace PAccountantv2.Host.Api.Controllers
 {

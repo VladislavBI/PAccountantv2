@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using PAccountant2.BLL.Domain.Enum;
+﻿using PAccountant2.BLL.Domain.Enum;
 using PAccountant2.BLL.Domain.Exceptions.Account;
+using System.Collections.Generic;
 
 namespace PAccountant2.BLL.Domain.Entities.Accounting
 {
@@ -29,17 +28,21 @@ namespace PAccountant2.BLL.Domain.Entities.Accounting
 
         public void WithdrawMoney(decimal withdrawAmount)
         {
-            if (!IsOperationAvailable(withdrawAmount))
-            {
-                throw new NotEnoughMoneyException();
-            }
+            CheckIsOperationAvailable(withdrawAmount);
 
             Amount -= withdrawAmount;
 
             CreateAccountOperation(withdrawAmount, AccountBalanceChangeType.Withdraw);
         }
 
-        public bool IsOperationAvailable(decimal neededAmount)
+        public void CheckIsOperationAvailable(decimal withdrawAmount)
+        {
+            if (!IsOperationAvailable(withdrawAmount))
+            {
+                throw new NotEnoughMoneyException();
+            }
+        }
+        private bool IsOperationAvailable(decimal neededAmount)
             => Amount >= neededAmount;
 
         private void CreateAccountOperation(decimal amount, AccountBalanceChangeType operationType)

@@ -1,13 +1,14 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
+using PAccountant2.BLL.Domain.Entities.Accounting;
 using PAccountant2.BLL.Interfaces.Account;
+using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
 using System.Threading.Tasks;
-using PAccountant2.BLL.Domain.Entities.Accounting;
-using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 
-namespace PAccountant2.BLL.Domain.Services
+namespace PAccountant2.BLL.Domain.Services.Accounting
 {
-    public class AccountingService: IAccountingService
+    public class AccountingService : IAccountingService
     {
         private readonly IAccountingDataService _accountingDataService;
 
@@ -23,7 +24,11 @@ namespace PAccountant2.BLL.Domain.Services
         {
             var dbData = await _accountingDataService.GetAccountingWithAccounts(id);
 
-            var viewAccounting = _mapper.Map<AccountingWithAccountsViewItem>(dbData);
+            var accounting = new AccountingEntity();
+            _mapper.Map(dbData, accounting);
+            accounting.CheckMissingAccounting();
+
+            var viewAccounting = _mapper.Map<AccountingWithAccountsViewItem>(accounting);
 
             return viewAccounting;
         }
@@ -31,7 +36,9 @@ namespace PAccountant2.BLL.Domain.Services
         public async Task TransferMoneyToOtherAccountAsync(int accId, int fromId, AccountTransferViewItem viewData)
         {
             var accountingWithAccounts = await _accountingDataService.GetAccountingWithAccounts(accId);
-            var accounting = _mapper.Map<AccountingEntity>(accountingWithAccounts);
+
+            var accounting = new AccountingEntity();
+            _mapper.Map(accountingWithAccounts, accounting);
 
             var transferValueObject = accounting.TransferMoneyBeetwenAccount(fromId, viewData.IdAccountForTranser, viewData.Amount);
 

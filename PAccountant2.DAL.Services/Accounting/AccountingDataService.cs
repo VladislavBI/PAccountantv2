@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PAccountant2.DAL.Services.Accounting
 {
-    public class AccountingDataService: IAccountingDataService
+    public class AccountingDataService : IAccountingDataService
     {
         private readonly PaccountantContext _context;
 
