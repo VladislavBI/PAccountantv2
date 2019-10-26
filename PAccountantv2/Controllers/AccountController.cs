@@ -71,5 +71,14 @@ namespace PAccountantv2.Host.Api.Controllers
 
             return Ok(historyViewModel);
         }
+
+        [Route("{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAccount(int id)
+        {
+            await _service.DeleteAccount(id);
+
+            return Ok();
+        }
     }
 }

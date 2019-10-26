@@ -42,6 +42,14 @@ namespace PAccountant2.BLL.Domain.Entities.Accounting
                 throw new NotEnoughMoneyException();
             }
         }
+
+        public void CheckIsDeletePossible()
+        {
+            if (Amount > 0)
+            {
+                throw new CanNotDeleteException(CanNotDeleteReasons.NotNullBalance);
+            }
+        }
         private bool IsOperationAvailable(decimal neededAmount)
             => Amount >= neededAmount;
 

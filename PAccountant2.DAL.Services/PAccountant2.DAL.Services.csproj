@@ -13,6 +13,9 @@
     <Reference Include="AutoMapper">
       <HintPath>..\..\..\..\.nuget\packages\automapper\9.0.0\lib\netstandard2.0\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="Z.EntityFramework.Plus.EFCore">
+      <HintPath>..\..\..\..\.nuget\packages\z.entityframework.plus.efcore\2.0.17\lib\netstandard2.0\Z.EntityFramework.Plus.EFCore.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,7 @@ using PAccountant2.BLL.Interfaces.Account;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.DAL.Context;
 using PAccountant2.DAL.DBO.Entities;
+using Z.EntityFramework.Plus;
 
 namespace PAccountant2.DAL.Services.Accounting
 {
@@ -79,6 +80,14 @@ namespace PAccountant2.DAL.Services.Accounting
             await _context.SaveChangesAsync();
 
             return newAccount.Id;
+        }
+
+        public async Task DeleteAccount(int id)
+        {
+            
+            _context.Accounts.Where(acc => acc.Id == id).Delete();
+
+            await _context.SaveChangesAsync();
         }
     }
 }
