@@ -1,12 +1,15 @@
 ﻿using System;
 using PAccountant2.BLL.Domain.Entities.User;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PAccountant2.BLL.Domain.Entities.Accounting
 {
     public class AccountingEntity
     {
         public int? Id { get; set; }
+
+        public decimal Summ { get; set; }
 
         public UserEntity User { get; set; }
 
@@ -34,6 +37,11 @@ namespace PAccountant2.BLL.Domain.Entities.Accounting
             {
                 throw new NullReferenceException($"accounting with id {Id} was not found");
             }
+        }
+
+        public decimal CalculateSumm()
+        {
+            return Accounts.Sum(acc => acc.Amount);
         }
     }
 }

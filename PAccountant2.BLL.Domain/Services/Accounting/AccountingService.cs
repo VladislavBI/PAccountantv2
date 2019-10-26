@@ -26,7 +26,9 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
 
             var accounting = new AccountingEntity();
             _mapper.Map(dbData, accounting);
+
             accounting.CheckMissingAccounting();
+            accounting.Summ = accounting.CalculateSumm();
 
             var viewAccounting = _mapper.Map<AccountingWithAccountsViewItem>(accounting);
 

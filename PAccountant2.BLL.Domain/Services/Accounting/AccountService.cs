@@ -81,5 +81,15 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
 
         public async Task<int> CreateNewAccountAsync(int accountingId)
             => await _dataService.CreateAccountAsync(accountingId);
+
+        public async Task DeleteAccount(int id)
+        {
+            var currentMoneyAmount = await _dataService.GetBalanceAsync(id);
+            var account = _mapper.Map<AccountEntity>(currentMoneyAmount);
+
+            account.CheckIsDeletePossible();
+
+            await _dataService.DeleteAccount(id);
+        }
     }
 }

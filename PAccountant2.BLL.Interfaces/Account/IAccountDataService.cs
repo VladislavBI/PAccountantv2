@@ -17,5 +17,7 @@ namespace PAccountant2.BLL.Interfaces.Account
         Task CreateOperationAsync(int accountId, AccountOperationDataItem operation);
 
         Task<int> CreateAccountAsync(int accountingId);
+        
+         Task DeleteAccount(int id);
     }
 }
