@@ -30,8 +30,10 @@ namespace PAccountant2.Host.Setup.Mapping
             CreateMap<AccountWithHistotyDataItem, AccountEntity>();
             CreateMap<AccountOperationDataItem, AccountHistoryValueObject>();
             CreateMap<AccountOperationDbo, AccountOperationDataItem>();
+            CreateMap<AccountHistoryFiltersDataItem, AccountOperationDataItem>();
             CreateMap<AccountOperationDataItem, AccountOperationDbo>();
             CreateMap<AccountOperationValueObject, AccountOperationDataItem>();
+            CreateMap<AccountHistoryFiltersViewModel, AccountHistoryFiltersViewItem>();
         }
     }
 }

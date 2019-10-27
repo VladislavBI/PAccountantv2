@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
+using PAccountant2.BLL.Interfaces.Specifications;
 
 namespace PAccountant2.BLL.Interfaces.Account
 {
@@ -12,7 +13,7 @@ namespace PAccountant2.BLL.Interfaces.Account
 
         Task SaveNewMoneyAmountAsync(MoneyChangeDataItem dataItem);
 
-        Task<AccountWithHistotyDataItem> GetHistoryAsync(int accountId);
+        Task<AccountWithHistotyDataItem> GetHistoryAsync(int accountId, ISpecification<AccountHistoryFiltersDataItem> specification);
 
         Task CreateOperationAsync(int accountId, AccountOperationDataItem operation);
 

@@ -12,7 +12,7 @@ namespace PAccountant2.BLL.Interfaces.Account
 
         Task WithdrawMoneyAsync(int accountId, MoneyChangeViewItem model);
 
-        Task<IEnumerable<AccountOperationViewItem>> GetHistoryAsync(int accountId);
+        Task<IEnumerable<AccountOperationViewItem>> GetHistoryAsync(int accountId, AccountHistoryFiltersViewItem filters);
 
         Task<int> CreateNewAccountAsync(int accountingId);
         

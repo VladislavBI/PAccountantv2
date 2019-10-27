@@ -49,12 +49,11 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
 
         }
 
-        public async Task<IEnumerable<AccountOperationViewItem>> GetHistoryAsync(int accountId)
+        public async Task<IEnumerable<AccountOperationViewItem>> GetHistoryAsync(int accountId, AccountHistoryFiltersViewItem filters)
         {
-            var dbData = await _dataService.GetHistoryAsync(accountId);
+            var accountEntity = new AccountEntity {Id = accountId};
+            var accountHistory = await accountEntity.GetAccountHistoryFiltered(filters, _dataService);
 
-            var account = _mapper.Map<AccountEntity>(dbData);
-            var accountHistory = account.CreateAccountHistory();
             var accountOperation = accountHistory.AccountOperations;
 
             var mappedHistory = _mapper.Map<IEnumerable<AccountOperationViewItem>>(accountOperation);
