@@ -10,6 +10,8 @@ namespace PAccountant2.DAL.Context
 
         public DbSet<AccountDbo> Accounts { get; set; }
 
+        public DbSet<AccountOperationDbo> AccountsOperations { get; set; }
+
         public DbSet<AccountingDbo> Accountings { get; set; }
 
         public PaccountantContext(DbContextOptions options): base(options)

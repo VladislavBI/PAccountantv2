@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PAccountant2.BLL.Interfaces.Account;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
+using PAccountant2.BLL.Interfaces.Specifications;
 using PAccountant2.DAL.Context;
 using PAccountant2.DAL.DBO.Entities;
 using Z.EntityFramework.Plus;
@@ -40,18 +41,30 @@ namespace PAccountant2.DAL.Services.Accounting
             await _context.SaveChangesAsync();
         }
 
-        public async Task<AccountWithHistotyDataItem> GetHistoryAsync(int accountId)
+        public async Task<AccountWithHistotyDataItem> GetHistoryAsync(int accountId, 
+            ISpecification<AccountHistoryFiltersDataItem> specification)
         {
-            var dbData = await _context.Accounts.Select(acc => new
-            {
-                acc.Id,
-                acc.AccountHistory
-            }).FirstOrDefaultAsync(acc => acc.Id == accountId);
+            var dbData = await _context.AccountsOperations.
+                
+                Where(hist => hist.AccountId == accountId)
+                .Select(hist => new AccountHistoryFiltersDataItem
+                {
+                    Amount = hist.Amount,
+                    Date = hist.Date,
+                    OperationType = (int)hist.OperationType,
+                    Id = hist.Id
+                })
+
+                .Where(hist => specification.IsSatisfied(hist))
+                .OrderByDescending(hist => hist.Date)
+                .ToListAsync();
+
+
 
             var accountWithHistory = new AccountWithHistotyDataItem
             {
-                Id = dbData.Id,
-                AccountOperations = _mapper.Map<IEnumerable<AccountOperationDataItem>>(dbData.AccountHistory)
+                Id = accountId,
+                AccountOperations = _mapper.Map<IEnumerable<AccountOperationDataItem>>(dbData)
             };
 
             return accountWithHistory;

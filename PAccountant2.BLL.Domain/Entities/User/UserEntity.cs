@@ -1,7 +1,7 @@
-﻿using PAccountant2.Common.Encription;
-using System.Linq;
-using PAccountant2.BLL.Domain.Entities.Accounting;
+﻿using PAccountant2.BLL.Domain.Entities.Accounting;
 using PAccountant2.BLL.Domain.Exceptions.Authentification;
+using PAccountant2.Common.Encription;
+using System.Linq;
 
 namespace PAccountant2.BLL.Domain.Entities.User
 {

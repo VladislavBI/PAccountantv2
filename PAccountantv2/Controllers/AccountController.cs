@@ -64,9 +64,11 @@ namespace PAccountantv2.Host.Api.Controllers
 
         [Route("{id}/history")]
         [HttpGet]
-        public async Task<IActionResult> GetAccountHistory(int id)
+        public async Task<IActionResult> GetAccountHistory(int id, [FromQuery]AccountHistoryFiltersViewModel filters)
         {
-            var historyItems = await _service.GetHistoryAsync(id);
+            var dataFilters = _mapper.Map<AccountHistoryFiltersViewItem>(filters);
+
+            var historyItems = await _service.GetHistoryAsync(id, dataFilters);
             var historyViewModel = _mapper.Map<IEnumerable<AccountOperationViewModel>>(historyItems);
 
             return Ok(historyViewModel);
