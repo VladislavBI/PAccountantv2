@@ -13,7 +13,5 @@
         public static string Investment = "Investment";
 
         public static string InvestmentOperation = "InvestmentOperation";
-
-
     }
 }
