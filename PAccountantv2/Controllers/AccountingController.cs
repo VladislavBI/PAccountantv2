@@ -23,9 +23,10 @@ namespace PAccountantv2.Host.Api.Controllers
 
         [Route("{id}")]
         [HttpGet]
-        public async Task<IActionResult> GetAccountingWithAccounts(int id)
+        public async Task<IActionResult> GetAccountingWithAccounts(int id, [FromQuery]AccountFilterViewModel filters)
         {
-            var accountingModel = await _accountingService.GetAccountingWithAccountsAsync(id);
+            var mappedFilters = _mapper.Map<AccountFilterViewItem>(filters);
+            var accountingModel = await _accountingService.GetAccountingWithAccountsAsync(id, mappedFilters);
 
             var mappedData = _mapper.Map<AccountingWithAccountsViewModel>(accountingModel);
 

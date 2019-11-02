@@ -1,10 +1,12 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PAccountant2.BLL.Interfaces.Account;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.DAL.Context;
 using PAccountant2.DAL.DBO.Entities;
 using System.Threading.Tasks;
+using PAccountant2.BLL.Interfaces.Specifications;
 
 namespace PAccountant2.DAL.Services.Accounting
 {
@@ -31,13 +33,24 @@ namespace PAccountant2.DAL.Services.Accounting
             await _context.SaveChangesAsync();
         }
 
-        public async Task<AccountingWithAccountsDataItem> GetAccountingWithAccounts(int id)
+        public async Task<AccountingWithAccountsDataItem> GetAccountingWithAccounts(int id,
+            AndSpecification<AccountBalanceDataItem> accountingSpecification)
         {
             var dbAccounting = await _context.Accountings
-                .Include(accting => accting.Accounts)
                 .FirstOrDefaultAsync(accting => accting.Id == id);
 
+            var accounts = await _context.Accounts
+                .Where(acc => acc.AccountingId == id)
+                .Select(acc => new AccountBalanceDataItem
+                {
+                    Id = acc.Id,
+                    Amount = acc.Amount
+                })
+                .Where(acc => accountingSpecification == null || accountingSpecification.IsSatisfied(acc))
+                .ToListAsync();
+
             var dataItem = _mapper.Map<AccountingWithAccountsDataItem>(dbAccounting);
+            dataItem.Accounts = accounts;
 
             return dataItem;
 

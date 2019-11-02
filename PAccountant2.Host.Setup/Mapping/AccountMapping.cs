@@ -34,6 +34,9 @@ namespace PAccountant2.Host.Setup.Mapping
             CreateMap<AccountOperationDataItem, AccountOperationDbo>();
             CreateMap<AccountOperationValueObject, AccountOperationDataItem>();
             CreateMap<AccountHistoryFiltersViewModel, AccountHistoryFiltersViewItem>();
+
+            CreateMap<AccountFilterViewModel, AccountFilterViewItem>();
+            CreateMap<AccountHistoryFiltersViewModel, AccountHistoryFiltersViewItem>();
         }
     }
 }

@@ -7,7 +7,7 @@ namespace PAccountant2.BLL.Interfaces.Account
     {
         Task CreateAccountingForUser(string newUserEmail);
 
-        Task<AccountingWithAccountsDataItem> GetAccountingWithAccounts(int id);
+        Task<AccountingWithAccountsDataItem> GetAccountingWithAccounts(int id, Specifications.AndSpecification<AccountBalanceDataItem> accountingSpecification);
 
         Task TransferMoneyToOtherAccountAsync(AccountTransferDataItem dbTransfer);
     }

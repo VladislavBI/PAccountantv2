@@ -2,6 +2,11 @@
 using PAccountant2.BLL.Domain.Entities.User;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
+using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
+using PAccountant2.BLL.Interfaces.Specifications;
+using PAccountant2.BLL.Interfaces.Specifications.Accounting;
 
 namespace PAccountant2.BLL.Domain.Entities.Accounting
 {
@@ -42,6 +47,15 @@ namespace PAccountant2.BLL.Domain.Entities.Accounting
         public decimal CalculateSumm()
         {
             return Accounts.Sum(acc => acc.Amount);
+        }
+
+        public AndSpecification<AccountBalanceDataItem> CreateSpecification(AccountFilterViewItem filters)
+        {
+            var amountFilter = new AccountMatchesAmount(filters);
+
+            var compositeSpecification = new AndSpecification<AccountBalanceDataItem>(amountFilter, amountFilter);
+
+            return compositeSpecification;
         }
     }
 }
