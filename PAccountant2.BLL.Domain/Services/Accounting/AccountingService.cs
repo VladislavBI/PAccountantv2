@@ -20,11 +20,13 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
             _mapper = mapper;
         }
 
-        public async Task<AccountingWithAccountsViewItem> GetAccountingWithAccountsAsync(int id)
+        public async Task<AccountingWithAccountsViewItem> GetAccountingWithAccountsAsync(int id, AccountFilterViewItem mappedFilters)
         {
-            var dbData = await _accountingDataService.GetAccountingWithAccounts(id);
-
             var accounting = new AccountingEntity();
+            var accountingSpecification = accounting.CreateSpecification(mappedFilters);
+
+            var dbData = await _accountingDataService.GetAccountingWithAccounts(id, accountingSpecification);
+
             _mapper.Map(dbData, accounting);
 
             accounting.CheckMissingAccounting();
@@ -37,7 +39,7 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
 
         public async Task TransferMoneyToOtherAccountAsync(int accId, int fromId, AccountTransferViewItem viewData)
         {
-            var accountingWithAccounts = await _accountingDataService.GetAccountingWithAccounts(accId);
+            var accountingWithAccounts = await _accountingDataService.GetAccountingWithAccounts(accId, null);
 
             var accounting = new AccountingEntity();
             _mapper.Map(accountingWithAccounts, accounting);
