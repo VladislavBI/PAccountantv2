@@ -20,3 +20,5 @@
 /PAccountant2.Host.Setup/bin
 /PAccountant2.Common/bin
 /PAccountant2.Common/obj
+/PAccountant2.BLL.Tests/obj
+/PAccountant2.BLL.Tests/bin
