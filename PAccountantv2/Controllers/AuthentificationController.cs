@@ -32,6 +32,11 @@ namespace PAccountantv2.Host.Api.Controllers
             _tokenService = tokenService;
         }
 
+        /// <summary>
+        /// Registration of new user
+        /// </summary>
+        /// <param name="model">new user params</param>
+        /// <response code="200">new users email</response>
         [AllowAnonymous]
         [Route("register")]
         [HttpPost]
@@ -43,6 +48,11 @@ namespace PAccountantv2.Host.Api.Controllers
             return Ok(newUserEmail);
         }
 
+        /// <summary>
+        /// User login
+        /// </summary>
+        /// <param name="model">User's credentials</param>
+        /// <response code="200">login token</response>
         [AllowAnonymous]
         [Route("login")]
         [HttpPost]
@@ -60,11 +70,5 @@ namespace PAccountantv2.Host.Api.Controllers
             return Ok(tokenModel);
         }
 
-        [Route("test")]
-        [HttpGet]
-        public IActionResult TestAuth()
-        {
-            return Ok();
-        }
     }
 }

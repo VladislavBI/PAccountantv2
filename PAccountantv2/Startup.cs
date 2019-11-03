@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +15,7 @@ using PAccountant2.Host.Setup.DI;
 using PAccountant2.Host.Setup.EntityFramework;
 using PAccountant2.Host.Setup.Jwt;
 using PAccountant2.Host.Setup.Mapping;
+using PAccountant2.Host.Setup.Swagger;
 using PAccountantv2.Host.Api.Infrastructure.Helper;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -42,25 +46,10 @@ namespace PAccountantv2.Host.Api
             services.AddAutoMapper(typeof(MapperProfile));
             InitilizeJwt(services);
             InitializeDb(services);
+            InitializeSwagger(services);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info
-                {
-                    Version = "v1",
-                    Title = "My API",
-                    Description = "My First ASP.NET Core Web API",
-                    TermsOfService = "None",
-                    Contact = new Contact()
-                    {
-                        Name = "Talking Dotnet",
-                        Email = "contact@talkingdotnet.com",
-                        Url = "www.talkingdotnet.com"
-                    }
-                });
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,7 +82,7 @@ namespace PAccountantv2.Host.Api
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v2/swagger.json", "PAccountant v2");
             });
         }
 
@@ -117,6 +106,11 @@ namespace PAccountantv2.Host.Api
             JwtProfile.InitilizeJwt(services, jwtSettings);
         }
 
-
+        private static void InitializeSwagger(IServiceCollection services)
+        {
+            var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+            var baseDirectoryName = AppContext.BaseDirectory;
+            SwaggerProfile.ConfigureSwagger(services, assemblyName, baseDirectoryName);
+        }
     }
 }
