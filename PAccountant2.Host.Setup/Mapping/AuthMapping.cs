@@ -13,7 +13,7 @@ namespace PAccountant2.Host.Setup.Mapping
             CreateMap<RegistrationViewModel, RegisterViewItem>();
             CreateMap<RegisterViewItem, UserEntity>()
                 .ForMember(member => member.Password, opt => opt.Ignore())
-                .ForMember(member => member.StringPassword, opt => opt.MapFrom(reg => reg.Email));
+                .ForMember(member => member.StringPassword, opt => opt.MapFrom(reg => reg.Password));
             CreateMap<CredentialsValueObject, RegisterDataItem>();
             CreateMap<LoginViewModel, LoginViewItem>();
             CreateMap<LoginViewItem, UserEntity>()

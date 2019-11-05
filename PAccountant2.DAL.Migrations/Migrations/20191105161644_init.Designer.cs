@@ -10,8 +10,8 @@ using PAccountant2.DAL.Context;
 namespace PAccountant2.DAL.Migrations.Migrations
 {
     [DbContext(typeof(PaccountantContext))]
-    [Migration("20191019110209_accounting")]
-    partial class accounting
+    [Migration("20191105161644_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,13 +31,9 @@ namespace PAccountant2.DAL.Migrations.Migrations
 
                     b.Property<decimal>("Amount");
 
-                    b.Property<string>("UserId");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AccountingId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Account");
                 });
@@ -52,6 +48,8 @@ namespace PAccountant2.DAL.Migrations.Migrations
 
                     b.Property<decimal>("Amount");
 
+                    b.Property<int>("ContragentId");
+
                     b.Property<DateTime>("Date");
 
                     b.Property<int>("OperationType");
@@ -59,6 +57,8 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("ContragentId");
 
                     b.ToTable("AccountOperation");
                 });
@@ -80,6 +80,77 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     b.ToTable("Accounting");
                 });
 
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.ContragentDbo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccountingId");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountingId");
+
+                    b.ToTable("Contragent");
+                });
+
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Investment.InvestmentDbo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccountingId");
+
+                    b.Property<decimal>("BodyAmount");
+
+                    b.Property<string>("Comment");
+
+                    b.Property<int>("InvestmentType");
+
+                    b.Property<int>("PaymentPeriod");
+
+                    b.Property<float>("Percent");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<TimeSpan>("Term");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountingId");
+
+                    b.ToTable("Investment");
+                });
+
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Investment.InvestmentOperationDbo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<int>("ContragentId");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("InvestmentId");
+
+                    b.Property<int>("OperationType");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContragentId");
+
+                    b.HasIndex("InvestmentId");
+
+                    b.ToTable("InvestmentOperation");
+                });
+
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.UserDbo", b =>
                 {
                     b.Property<string>("Email")
@@ -98,10 +169,6 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         .WithMany("Accounts")
                         .HasForeignKey("AccountingId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("PAccountant2.DAL.DBO.Entities.UserDbo", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.AccountOperationDbo", b =>
@@ -110,6 +177,11 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         .WithMany("AccountHistory")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.ContragentDbo", "Contragent")
+                        .WithMany("AccountOperations")
+                        .HasForeignKey("ContragentId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.AccountingDbo", b =>
@@ -117,6 +189,35 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     b.HasOne("PAccountant2.DAL.DBO.Entities.UserDbo", "User")
                         .WithOne("Accounting")
                         .HasForeignKey("PAccountant2.DAL.DBO.Entities.AccountingDbo", "UserEmail");
+                });
+
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.ContragentDbo", b =>
+                {
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.AccountingDbo", "Accounting")
+                        .WithMany()
+                        .HasForeignKey("AccountingId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Investment.InvestmentDbo", b =>
+                {
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.AccountingDbo", "Accounting")
+                        .WithMany("Investments")
+                        .HasForeignKey("AccountingId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Investment.InvestmentOperationDbo", b =>
+                {
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.ContragentDbo", "Contragent")
+                        .WithMany("InvestmentOperations")
+                        .HasForeignKey("ContragentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Investment.InvestmentDbo", "Investment")
+                        .WithMany("Operations")
+                        .HasForeignKey("InvestmentId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

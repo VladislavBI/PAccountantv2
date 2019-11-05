@@ -46,6 +46,13 @@ namespace PAccountant2.DAL.Context
 
             modelBuilder.Entity<InvestmentOperationDbo>().ToTable(TablesNames.InvestmentOperation);
             modelBuilder.Entity<InvestmentOperationDbo>().Property(prop => prop.Id).UseSqlServerIdentityColumn();
+
+            modelBuilder.Entity<ContragentDbo>().ToTable(TablesNames.Contragent);
+            modelBuilder.Entity<ContragentDbo>().Property(prop => prop.Id).UseSqlServerIdentityColumn();
+            modelBuilder.Entity<ContragentDbo>().HasMany(prop => prop.AccountOperations).WithOne(prop => prop.Contragent).HasForeignKey(prop => prop.ContragentId).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ContragentDbo>().HasMany(prop => prop.InvestmentOperations).WithOne(prop => prop.Contragent).HasForeignKey(prop => prop.ContragentId).OnDelete(DeleteBehavior.Restrict);
+
+
         }
     }
 }

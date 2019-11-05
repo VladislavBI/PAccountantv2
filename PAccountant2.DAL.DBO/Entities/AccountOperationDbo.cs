@@ -16,5 +16,9 @@ namespace PAccountant2.DAL.DBO.Entities
         public AccountDbo Account { get; set; }
 
         public int AccountId { get; set; }
+
+        public int ContragentId { get; set; }
+
+        public ContragentDbo Contragent { get; set; }
     }
 }
