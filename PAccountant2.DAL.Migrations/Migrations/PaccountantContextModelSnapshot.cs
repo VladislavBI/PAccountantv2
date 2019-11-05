@@ -115,7 +115,7 @@ namespace PAccountant2.DAL.Migrations.Migrations
 
                     b.Property<DateTime>("StartDate");
 
-                    b.Property<TimeSpan>("Term");
+                    b.Property<long>("Term");
 
                     b.HasKey("Id");
 

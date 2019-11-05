@@ -15,6 +15,10 @@ namespace PAccountant2.DAL.Context
 
         public DbSet<AccountingDbo> Accountings { get; set; }
 
+        public DbSet<ContragentDbo> Contragents { get; set; }
+
+        public DbSet<InvestmentDbo> Investments { get; set; }
+
         public PaccountantContext(DbContextOptions options): base(options)
         {
                 

@@ -23,6 +23,7 @@ namespace PAccountant2.Host.Setup.DI
             services.AddScoped<IAccountingService, AccountingService>();
             services.AddScoped<IInvestmentService, InvestmentService>();
             services.AddScoped<IInvestmentDataService, InvestmentDataService>();
+            services.AddScoped<IContragentDataService, ContragentDataService>();
         }
     }
 }

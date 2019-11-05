@@ -10,8 +10,8 @@ using PAccountant2.DAL.Context;
 namespace PAccountant2.DAL.Migrations.Migrations
 {
     [DbContext(typeof(PaccountantContext))]
-    [Migration("20191105161644_init")]
-    partial class init
+    [Migration("20191105173019_investTermChanges")]
+    partial class investTermChanges
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -117,7 +117,7 @@ namespace PAccountant2.DAL.Migrations.Migrations
 
                     b.Property<DateTime>("StartDate");
 
-                    b.Property<TimeSpan>("Term");
+                    b.Property<long>("Term");
 
                     b.HasKey("Id");
 
