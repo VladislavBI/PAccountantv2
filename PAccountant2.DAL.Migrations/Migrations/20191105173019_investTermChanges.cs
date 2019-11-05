@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PAccountant2.DAL.Migrations.Migrations
 {
-    public partial class init : Migration
+    public partial class investTermChanges : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -90,7 +90,7 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     BodyAmount = table.Column<decimal>(nullable: false),
                     Percent = table.Column<float>(nullable: false),
                     StartDate = table.Column<DateTime>(nullable: false),
-                    Term = table.Column<TimeSpan>(nullable: false),
+                    Term = table.Column<long>(nullable: false),
                     Comment = table.Column<string>(nullable: true),
                     AccountingId = table.Column<int>(nullable: false)
                 },

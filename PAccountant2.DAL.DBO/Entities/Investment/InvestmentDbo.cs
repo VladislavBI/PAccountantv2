@@ -17,7 +17,7 @@ namespace PAccountant2.DAL.DBO.Entities.Investment
 
         public DateTime StartDate { get; set; }
 
-        public TimeSpan Term { get; set; }
+        public long Term { get; set; }
 
         public string Comment { get; set; }
 
