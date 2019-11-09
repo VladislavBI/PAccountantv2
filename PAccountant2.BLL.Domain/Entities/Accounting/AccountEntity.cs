@@ -66,9 +66,9 @@ namespace PAccountant2.BLL.Domain.Entities.Accounting
             CreateAccountOperation(withdrawAmount, AccountBalanceChangeType.Withdraw);
         }
 
-        public void CheckIsOperationAvailable(decimal withdrawAmount)
+        public void CheckIsOperationAvailable(decimal amount)
         {
-            if (!IsOperationAvailable(withdrawAmount))
+            if (!IsOperationAvailable(amount))
             {
                 throw new NotEnoughMoneyException();
             }
