@@ -8,6 +8,8 @@
 
         SimpleDeposit = 3,
 
-        SimpleCreadit = 4
+        SimpleCreadit = 4,
+
+        ComplexCredit = 5
     }
 }

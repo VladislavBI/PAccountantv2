@@ -69,5 +69,53 @@ namespace PAccountant2.BLL.Domain.Services.Investment
 
             return newLoanId;
         }
+
+        public async Task<int> AddSimpleDeposit(int acctingId, AddLoanViewItem mappedModel)
+        {
+            var contragent = new ContragentEntity();
+            var contragentId = await contragent.GetOrCreateContragentIdByName
+                (_contragentService, mappedModel.ContragentName, acctingId);
+
+            var term = DateHelper.CreateTimeSpan(mappedModel.From, mappedModel.To);
+
+            var dbInvestment = new AddLoanDataItem
+            {
+                BodyAmount = mappedModel.Sum,
+                PaymentType = mappedModel.PaymentType,
+                ContragentId = contragentId,
+                Percent = mappedModel.Percent,
+                StartDate = mappedModel.From,
+                Term = term,
+                AccountingId = acctingId
+            };
+
+            int newLoanId = await _investmentService.AddSimpleDeposit(dbInvestment);
+
+            return newLoanId;
+        }
+
+        public async Task<int> AddComplexDeposit(int acctingId, AddLoanViewItem mappedModel)
+        {
+            var contragent = new ContragentEntity();
+            var contragentId = await contragent.GetOrCreateContragentIdByName
+                (_contragentService, mappedModel.ContragentName, acctingId);
+
+            var term = DateHelper.CreateTimeSpan(mappedModel.From, mappedModel.To);
+
+            var dbInvestment = new AddLoanDataItem
+            {
+                BodyAmount = mappedModel.Sum,
+                PaymentType = mappedModel.PaymentType,
+                ContragentId = contragentId,
+                Percent = mappedModel.Percent,
+                StartDate = mappedModel.From,
+                Term = term,
+                AccountingId = acctingId
+            };
+
+            int newLoanId = await _investmentService.AddSimpleDeposit(dbInvestment);
+
+            return newLoanId;
+        }
     }
 }

@@ -8,5 +8,9 @@ namespace PAccountant2.BLL.Interfaces.Investment
         Task<int> AddLoanTo(AddLoanDataItem dbInvestment);
 
         Task<int> AddLoanFrom(AddLoanDataItem dbInvestment);
+
+        Task<int> AddSimpleDeposit(AddLoanDataItem dbInvestment);
+
+        Task<int> AddComplexDeposit(AddLoanDataItem dbInvestment);
     }
 }
