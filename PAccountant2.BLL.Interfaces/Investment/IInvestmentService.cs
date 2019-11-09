@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
-using PAccountant2.BLL.Interfaces.DTO.ViewItems.Investment;
+﻿using PAccountant2.BLL.Interfaces.DTO.ViewItems.Investment;
+using System.Threading.Tasks;
 
 namespace PAccountant2.BLL.Interfaces.Investment
 {
     public interface IInvestmentService
     {
         Task<int> AddLoanToAsync(int acctingId, AddLoanViewItem mappedModel);
+
+        Task<int> AddLoanFromAsync(int acctingId, AddLoanViewItem mappedModel);
     }
 }
