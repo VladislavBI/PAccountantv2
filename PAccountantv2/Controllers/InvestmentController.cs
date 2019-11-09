@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using PAccountant2.BLL.Interfaces.Investment;
-using System.Threading.Tasks;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Investment;
+using PAccountant2.BLL.Interfaces.Investment;
 using PAccountant2.Host.Domain.ViewModels.Investment;
+using System.Threading.Tasks;
 
 namespace PAccountantv2.Host.Api.Controllers
 {
@@ -23,43 +23,13 @@ namespace PAccountantv2.Host.Api.Controllers
         }
 
         [HttpPost]
-        [Route("loan/to")]
-        public async Task<IActionResult> AddLoanTo(int acctingId, AddLoanViewModel model)
+        [Route("{invType}")]
+        public async Task<IActionResult> AddNewInvestment(int acctingId, int invType, AddInvestmentViewModel model)
         {
             var mappedModel = _mapper.Map<AddLoanViewItem>(model);
-            var newLoanId = await _service.AddLoanToAsync(acctingId, mappedModel);
+            int newInvestmentId = await _service.AddNewInvestment(acctingId, invType, mappedModel);
 
-            return Ok(newLoanId);
-        }
-
-        [HttpPost]
-        [Route("loan/from")]
-        public async Task<IActionResult> AddLoanFrom(int acctingId, AddLoanViewModel model)
-        {
-            var mappedModel = _mapper.Map<AddLoanViewItem>(model);
-            var newLoanId = await _service.AddLoanFromAsync(acctingId, mappedModel);
-
-            return Ok(newLoanId);
-        }
-
-        [HttpPost]
-        [Route("deposit/simple")]
-        public async Task<IActionResult> AddSimpleDeposit(int acctingId, AddLoanViewModel model)
-        {
-            var mappedModel = _mapper.Map<AddLoanViewItem>(model);
-            var newLoanId = await _service.AddSimpleDeposit(acctingId, mappedModel);
-
-            return Ok(newLoanId);
-        }
-
-        [HttpPost]
-        [Route("deposit/complex")]
-        public async Task<IActionResult> AddComplexDeposit(int acctingId, AddLoanViewModel model)
-        {
-            var mappedModel = _mapper.Map<AddLoanViewItem>(model);
-            var newLoanId = await _service.AddComplexDeposit(acctingId, mappedModel);
-
-            return Ok(newLoanId);
+            return Ok(newInvestmentId);
         }
     }
 }

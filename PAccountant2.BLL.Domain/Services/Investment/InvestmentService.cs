@@ -22,7 +22,7 @@ namespace PAccountant2.BLL.Domain.Services.Investment
             _contragentService = contragentService;
         }
 
-        public async Task<int> AddLoanToAsync(int acctingId, AddLoanViewItem mappedModel)
+        public async Task<int> AddNewInvestment(int acctingId, int invType, AddLoanViewItem mappedModel)
         {
             var contragent = new ContragentEntity();
             var contragentId = await contragent.GetOrCreateContragentIdByName
@@ -30,90 +30,13 @@ namespace PAccountant2.BLL.Domain.Services.Investment
 
             var term = DateHelper.CreateTimeSpan(mappedModel.From, mappedModel.To);
 
-            var dbInvestment = new AddLoanDataItem
-            {
-                BodyAmount = mappedModel.Sum,
-                PaymentType = mappedModel.PaymentType,
-                ContragentId = contragentId,
-                Percent = mappedModel.Percent,
-                StartDate = mappedModel.From,
-                Term = term,
-                AccountingId = acctingId
-            };
+            var dbInvestment = _mapper.Map<AddInvestmentDataItem>(mappedModel);
+            dbInvestment.ContragentId = contragentId;
+            dbInvestment.Term = term;
+            dbInvestment.AccountingId = acctingId;
+            dbInvestment.InvestmentType = invType;
 
-            int newLoanId = await _investmentService.AddLoanTo(dbInvestment);
-
-            return newLoanId;
-        }
-
-        public async Task<int> AddLoanFromAsync(int acctingId, AddLoanViewItem mappedModel)
-        {
-            var contragent = new ContragentEntity();
-            var contragentId = await contragent.GetOrCreateContragentIdByName
-                (_contragentService, mappedModel.ContragentName, acctingId);
-
-            var term = DateHelper.CreateTimeSpan(mappedModel.From, mappedModel.To);
-
-            var dbInvestment = new AddLoanDataItem
-            {
-                BodyAmount = mappedModel.Sum,
-                PaymentType = mappedModel.PaymentType,
-                ContragentId = contragentId,
-                Percent = mappedModel.Percent,
-                StartDate = mappedModel.From,
-                Term = term,
-                AccountingId = acctingId
-            };
-
-            int newLoanId = await _investmentService.AddLoanFrom(dbInvestment);
-
-            return newLoanId;
-        }
-
-        public async Task<int> AddSimpleDeposit(int acctingId, AddLoanViewItem mappedModel)
-        {
-            var contragent = new ContragentEntity();
-            var contragentId = await contragent.GetOrCreateContragentIdByName
-                (_contragentService, mappedModel.ContragentName, acctingId);
-
-            var term = DateHelper.CreateTimeSpan(mappedModel.From, mappedModel.To);
-
-            var dbInvestment = new AddLoanDataItem
-            {
-                BodyAmount = mappedModel.Sum,
-                PaymentType = mappedModel.PaymentType,
-                ContragentId = contragentId,
-                Percent = mappedModel.Percent,
-                StartDate = mappedModel.From,
-                Term = term,
-                AccountingId = acctingId
-            };
-
-            int newLoanId = await _investmentService.AddSimpleDeposit(dbInvestment);
-
-            return newLoanId;
-        }
-
-        public async Task<int> AddComplexDeposit(int acctingId, AddLoanViewItem mappedModel)
-        {
-            var contragent = new ContragentEntity();
-            var contragentId = await contragent.GetOrCreateContragentIdByName
-                (_contragentService, mappedModel.ContragentName, acctingId);
-
-            var term = DateHelper.CreateTimeSpan(mappedModel.From, mappedModel.To);
-
-            var dbInvestment = new AddLoanDataItem
-            {
-                BodyAmount = mappedModel.Sum,
-                PaymentType = mappedModel.PaymentType,
-                ContragentId = contragentId,
-                Percent = mappedModel.Percent,
-                StartDate = mappedModel.From,
-                Term = term,
-                AccountingId = acctingId
-            };
-
-            int newLoanId = await _investmentService.AddSimpleDeposit(dbInvestment);
+            int newLoanId = await _investmentService.AddNewInvestment(dbInvestment);
 
             return newLoanId;
         }

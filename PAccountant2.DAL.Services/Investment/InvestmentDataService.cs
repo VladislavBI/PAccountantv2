@@ -1,11 +1,10 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Investment;
 using PAccountant2.BLL.Interfaces.Investment;
 using PAccountant2.DAL.Context;
 using PAccountant2.DAL.DBO.Entities.Investment;
+using System.Threading.Tasks;
 
 namespace PAccountant2.DAL.Services.Investment
 {
@@ -20,7 +19,7 @@ namespace PAccountant2.DAL.Services.Investment
             _mapper = mapper;
         }
 
-        public async Task<int> AddLoanTo(AddLoanDataItem dbInvestment)
+        public async Task<int> AddNewInvestment(AddInvestmentDataItem dbInvestment)
         {
             var accounting = await _context.Accountings
                 .Include(acc => acc.Investments)
@@ -30,73 +29,7 @@ namespace PAccountant2.DAL.Services.Investment
             {
                 Term = (long)dbInvestment.Term.TotalDays,
                 BodyAmount = dbInvestment.BodyAmount,
-                InvestmentType = 1,
-                Percent = dbInvestment.Percent,
-                PaymentPeriod = dbInvestment.PaymentType,
-                StartDate = dbInvestment.StartDate
-            };
-
-            accounting.Investments.Add(dbData);
-            await _context.SaveChangesAsync();
-
-            return dbData.Id;
-        }
-
-        public async Task<int> AddLoanFrom(AddLoanDataItem dbInvestment)
-        {
-            var accounting = await _context.Accountings
-                .Include(acc => acc.Investments)
-                .FirstOrDefaultAsync(acc => acc.Id == dbInvestment.AccountingId);
-
-            var dbData = new InvestmentDbo
-            {
-                Term = (long)dbInvestment.Term.TotalDays,
-                BodyAmount = dbInvestment.BodyAmount,
-                InvestmentType = 2,
-                Percent = dbInvestment.Percent,
-                PaymentPeriod = dbInvestment.PaymentType,
-                StartDate = dbInvestment.StartDate
-            };
-
-            accounting.Investments.Add(dbData);
-            await _context.SaveChangesAsync();
-
-            return dbData.Id;
-        }
-
-        public async Task<int> AddSimpleDeposit(AddLoanDataItem dbInvestment)
-        {
-            var accounting = await _context.Accountings
-                .Include(acc => acc.Investments)
-                .FirstOrDefaultAsync(acc => acc.Id == dbInvestment.AccountingId);
-
-            var dbData = new InvestmentDbo
-            {
-                Term = (long)dbInvestment.Term.TotalDays,
-                BodyAmount = dbInvestment.BodyAmount,
-                InvestmentType = 3,
-                Percent = dbInvestment.Percent,
-                PaymentPeriod = dbInvestment.PaymentType,
-                StartDate = dbInvestment.StartDate
-            };
-
-            accounting.Investments.Add(dbData);
-            await _context.SaveChangesAsync();
-
-            return dbData.Id;
-        }
-
-        public async Task<int> AddComplexDeposit(AddLoanDataItem dbInvestment)
-        {
-            var accounting = await _context.Accountings
-                .Include(acc => acc.Investments)
-                .FirstOrDefaultAsync(acc => acc.Id == dbInvestment.AccountingId);
-
-            var dbData = new InvestmentDbo
-            {
-                Term = (long)dbInvestment.Term.TotalDays,
-                BodyAmount = dbInvestment.BodyAmount,
-                InvestmentType = 5,
+                InvestmentType = dbInvestment.InvestmentType,
                 Percent = dbInvestment.Percent,
                 PaymentPeriod = dbInvestment.PaymentType,
                 StartDate = dbInvestment.StartDate
