@@ -63,5 +63,49 @@ namespace PAccountant2.DAL.Services.Investment
 
             return dbData.Id;
         }
+
+        public async Task<int> AddSimpleDeposit(AddLoanDataItem dbInvestment)
+        {
+            var accounting = await _context.Accountings
+                .Include(acc => acc.Investments)
+                .FirstOrDefaultAsync(acc => acc.Id == dbInvestment.AccountingId);
+
+            var dbData = new InvestmentDbo
+            {
+                Term = (long)dbInvestment.Term.TotalDays,
+                BodyAmount = dbInvestment.BodyAmount,
+                InvestmentType = 3,
+                Percent = dbInvestment.Percent,
+                PaymentPeriod = dbInvestment.PaymentType,
+                StartDate = dbInvestment.StartDate
+            };
+
+            accounting.Investments.Add(dbData);
+            await _context.SaveChangesAsync();
+
+            return dbData.Id;
+        }
+
+        public async Task<int> AddComplexDeposit(AddLoanDataItem dbInvestment)
+        {
+            var accounting = await _context.Accountings
+                .Include(acc => acc.Investments)
+                .FirstOrDefaultAsync(acc => acc.Id == dbInvestment.AccountingId);
+
+            var dbData = new InvestmentDbo
+            {
+                Term = (long)dbInvestment.Term.TotalDays,
+                BodyAmount = dbInvestment.BodyAmount,
+                InvestmentType = 5,
+                Percent = dbInvestment.Percent,
+                PaymentPeriod = dbInvestment.PaymentType,
+                StartDate = dbInvestment.StartDate
+            };
+
+            accounting.Investments.Add(dbData);
+            await _context.SaveChangesAsync();
+
+            return dbData.Id;
+        }
     }
 }

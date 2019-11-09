@@ -41,5 +41,25 @@ namespace PAccountantv2.Host.Api.Controllers
 
             return Ok(newLoanId);
         }
+
+        [HttpPost]
+        [Route("deposit/simple")]
+        public async Task<IActionResult> AddSimpleDeposit(int acctingId, AddLoanViewModel model)
+        {
+            var mappedModel = _mapper.Map<AddLoanViewItem>(model);
+            var newLoanId = await _service.AddSimpleDeposit(acctingId, mappedModel);
+
+            return Ok(newLoanId);
+        }
+
+        [HttpPost]
+        [Route("deposit/complex")]
+        public async Task<IActionResult> AddComplexDeposit(int acctingId, AddLoanViewModel model)
+        {
+            var mappedModel = _mapper.Map<AddLoanViewItem>(model);
+            var newLoanId = await _service.AddComplexDeposit(acctingId, mappedModel);
+
+            return Ok(newLoanId);
+        }
     }
 }
