@@ -74,6 +74,7 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
             var lastOperation = account
                 .CreateAccountHistory()
                 .GetLastOperation();
+
             var lastOperationDataItem = _mapper.Map<AccountOperationDataItem>(lastOperation);
             await _dataService.CreateOperationAsync(account.Id, lastOperationDataItem);
         }
