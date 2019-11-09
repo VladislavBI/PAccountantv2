@@ -32,5 +32,14 @@ namespace PAccountantv2.Host.Api.Controllers
             return Ok(newLoanId);
         }
 
+        [HttpPost]
+        [Route("loan/from")]
+        public async Task<IActionResult> AddLoanFrom(int acctingId, AddLoanViewModel model)
+        {
+            var mappedModel = _mapper.Map<AddLoanViewItem>(model);
+            var newLoanId = await _service.AddLoanFromAsync(acctingId, mappedModel);
+
+            return Ok(newLoanId);
+        }
     }
 }
