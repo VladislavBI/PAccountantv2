@@ -22,3 +22,7 @@
 /PAccountant2.Common/obj
 /PAccountant2.BLL.Tests/obj
 /PAccountant2.BLL.Tests/bin
+/CurrenctyRateUtil.Tests/obj
+/CurrenctyRateUtil.Tests/bin
+/CurrenctyRateUtil/bin
+/CurrenctyRateUtil/obj

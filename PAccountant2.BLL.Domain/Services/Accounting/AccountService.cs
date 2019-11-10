@@ -5,6 +5,8 @@ using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CurrenctyRateUtil.Enums;
+using CurrenctyRateUtil.Services;
 
 namespace PAccountant2.BLL.Domain.Services.Accounting
 {
@@ -24,6 +26,7 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
 
         public async Task AddMoneyAsync(int accountId, MoneyChangeViewItem model)
         {
+
             var currentMoneyAmount = await _dataService.GetBalanceAsync(accountId);
             var account = _mapper.Map<AccountEntity>(currentMoneyAmount);
 

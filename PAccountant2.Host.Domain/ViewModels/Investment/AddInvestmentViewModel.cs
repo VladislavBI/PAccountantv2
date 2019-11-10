@@ -2,7 +2,7 @@
 
 namespace PAccountant2.Host.Domain.ViewModels.Investment
 {
-    public class AddLoanViewModel
+    public class AddInvestmentViewModel
     {
         public decimal Sum { get; set; }
 

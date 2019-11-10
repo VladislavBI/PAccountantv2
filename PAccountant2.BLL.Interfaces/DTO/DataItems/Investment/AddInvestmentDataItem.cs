@@ -2,7 +2,7 @@
 
 namespace PAccountant2.BLL.Interfaces.DTO.DataItems.Investment
 {
-    public class AddLoanDataItem
+    public class AddInvestmentDataItem
     {
         public decimal BodyAmount { get; set; }
 
@@ -17,5 +17,7 @@ namespace PAccountant2.BLL.Interfaces.DTO.DataItems.Investment
         public int AccountingId { get; set; }
 
         public int PaymentType { get; set; }
+
+        public int InvestmentType { get; set; }
     }
 }
