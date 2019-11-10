@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PAccountant2.BLL.Domain.Entities;
 using PAccountant2.DAL.DBO.Constants;
 using PAccountant2.DAL.DBO.Entities;
 using PAccountant2.DAL.DBO.Entities.Investment;
@@ -18,6 +19,8 @@ namespace PAccountant2.DAL.Context
         public DbSet<ContragentDbo> Contragents { get; set; }
 
         public DbSet<InvestmentDbo> Investments { get; set; }
+
+        public DbSet<CurrencyEntity> Currencies { get; set; }
 
         public PaccountantContext(DbContextOptions options): base(options)
         {
@@ -56,7 +59,8 @@ namespace PAccountant2.DAL.Context
             modelBuilder.Entity<ContragentDbo>().HasMany(prop => prop.AccountOperations).WithOne(prop => prop.Contragent).HasForeignKey(prop => prop.ContragentId).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ContragentDbo>().HasMany(prop => prop.InvestmentOperations).WithOne(prop => prop.Contragent).HasForeignKey(prop => prop.ContragentId).OnDelete(DeleteBehavior.Restrict);
 
-
+            modelBuilder.Entity<CurrencyEntity>().ToTable(TablesNames.Currency);
+            modelBuilder.Entity<CurrencyEntity>().Property(cur => cur.Id).UseSqlServerIdentityColumn();
         }
     }
 }
