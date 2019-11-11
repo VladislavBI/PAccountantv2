@@ -1,6 +1,8 @@
-﻿namespace CurrenctyRateUtil.Models
+﻿using System;
+
+namespace CurrenctyRateUtil.Models
 {
-    public class SimpleRateModel
+    public class SimpleRateModel: ICloneable
     {
         public string BaseCurrency { get; set; }
 
@@ -9,5 +11,10 @@
         public float Buy { get; set; }
 
         public float Sell { get; set; }
+
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
     }
 }
