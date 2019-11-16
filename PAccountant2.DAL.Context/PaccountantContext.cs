@@ -20,7 +20,7 @@ namespace PAccountant2.DAL.Context
 
         public DbSet<InvestmentDbo> Investments { get; set; }
 
-        public DbSet<CurrencyEntity> Currencies { get; set; }
+        public DbSet<CurrencyDbo> Currencies { get; set; }
 
         public PaccountantContext(DbContextOptions options): base(options)
         {
@@ -59,8 +59,8 @@ namespace PAccountant2.DAL.Context
             modelBuilder.Entity<ContragentDbo>().HasMany(prop => prop.AccountOperations).WithOne(prop => prop.Contragent).HasForeignKey(prop => prop.ContragentId).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ContragentDbo>().HasMany(prop => prop.InvestmentOperations).WithOne(prop => prop.Contragent).HasForeignKey(prop => prop.ContragentId).OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<CurrencyEntity>().ToTable(TablesNames.Currency);
-            modelBuilder.Entity<CurrencyEntity>().Property(cur => cur.Id).UseSqlServerIdentityColumn();
+            modelBuilder.Entity<CurrencyDbo>().ToTable(TablesNames.Currency);
+            modelBuilder.Entity<CurrencyDbo>().Property(cur => cur.Id).UseSqlServerIdentityColumn();
         }
     }
 }

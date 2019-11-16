@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace CurrenctyRateUtil.Models
+﻿namespace PAccountant2.BLL.Interfaces.DTO.DataItems.Migration
 {
-    public class SimpleRateModel: ICloneable
+    public class CurrencyMigrationDataItem
     {
         public string BaseCurrency { get; set; }
 
@@ -11,10 +9,5 @@ namespace CurrenctyRateUtil.Models
         public float Buy { get; set; }
 
         public float Sell { get; set; }
-
-        public object Clone()
-        {
-            return this.MemberwiseClone();
-        }
     }
 }

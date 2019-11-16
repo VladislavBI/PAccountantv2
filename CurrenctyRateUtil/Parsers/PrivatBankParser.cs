@@ -7,6 +7,7 @@ using CurrenctyRateUtil.Constants;
 using CurrenctyRateUtil.Models;
 using CurrenctyRateUtil.Models.ResponseModels;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace CurrenctyRateUtil.Parsers
 {
@@ -20,7 +21,7 @@ namespace CurrenctyRateUtil.Parsers
 
             if (pbRates?.ExchangeRate == null || !pbRates.ExchangeRate.Any())
             {
-                throw new Exception("No rates were loaded");
+                throw new NullReferenceException("No rates were loaded");
             }
 
             var rates = MapToSimpleModel(pbRates);
@@ -33,7 +34,10 @@ namespace CurrenctyRateUtil.Parsers
             WebClient client = new WebClient();
             var respJson = await client.DownloadStringTaskAsync(uriString);
 
-            var pbResponse = JsonConvert.DeserializeObject<PBResponseModel>(respJson);
+            var format = "dd.MM.yyyy";
+            var dateTimeConverter = new IsoDateTimeConverter { DateTimeFormat = format };
+
+            var pbResponse = JsonConvert.DeserializeObject<PBResponseModel>(respJson, dateTimeConverter);
             return pbResponse;
         }
 
