@@ -1,19 +1,23 @@
-﻿using System;
-using CurrenctyRateUtil.Enums;
+﻿using CurrenctyRateUtil.Enums;
 using CurrenctyRateUtil.Models;
 using CurrenctyRateUtil.Parsers;
+using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CurrenctyRateUtil.Services
 {
-    public class RateService
+    public class RateService : IRateService
     {
         public RateSource RateSource { get; set; }
         public IRateParser Parser { get; set; }
 
+        public RateService()
+        {
+            RateSource = RateSource.PrivatBankUa;
+            Parser = new PrivatBankParser();
+        }
         public RateService(RateSource source)
         {
             RateSource = source;
@@ -35,13 +39,14 @@ namespace CurrenctyRateUtil.Services
 
         public SimpleRateModel ConvertRate(List<SimpleRateModel> rates, string from, string to)
         {
-            SimpleRateModel resultRate = null;
-            var copiedRates = rates.ConvertAll(x => x.Clone() as SimpleRateModel);
 
             if (rates == null || !rates.Any())
             {
                 throw new NullReferenceException("no rates were sent");
             }
+
+            SimpleRateModel resultRate = null;
+            var copiedRates = rates.ConvertAll(x => x.Clone() as SimpleRateModel);
 
             resultRate = TryGetStraightRate(copiedRates, from, to);
             resultRate = resultRate ?? TryGetRevertRate(copiedRates, from, to);
@@ -100,6 +105,7 @@ namespace CurrenctyRateUtil.Services
             if (rates.Any(RevertRateExpr))
             {
                 resultRate = rates.FirstOrDefault(RevertRateExpr);
+
                 resultRate.BaseCurrency = from;
                 resultRate.Currency = to;
                 resultRate.Buy = 1 / resultRate.Buy;

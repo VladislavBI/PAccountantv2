@@ -13,5 +13,6 @@ namespace PAccountant2.DAL.DBO.Entities
         public int AccountingId { get; set; }
 
         public ICollection<AccountOperationDbo> AccountHistory { get; set; }
+
     }
 }
