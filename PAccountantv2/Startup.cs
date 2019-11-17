@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,8 +14,8 @@ using PAccountant2.Host.Setup.Jwt;
 using PAccountant2.Host.Setup.Mapping;
 using PAccountant2.Host.Setup.Swagger;
 using PAccountantv2.Host.Api.Infrastructure.Helper;
-using PAccountantv2.Host.Api.Services;
-using Swashbuckle.AspNetCore.Swagger;
+using System;
+using System.Reflection;
 
 namespace PAccountantv2.Host.Api
 {
@@ -48,9 +45,6 @@ namespace PAccountantv2.Host.Api
             InitilizeJwt(services);
             InitializeDb(services);
             InitializeSwagger(services);
-
-
-            services.AddHostedService<CurrencyUpdateBackgroundService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
