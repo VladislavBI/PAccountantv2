@@ -6,7 +6,7 @@
 
         public string Name { get; set; }
 
-        public decimal Purchase { get; set; }
+        public decimal Buy { get; set; }
 
         public decimal Sale { get; set; }
 

@@ -12,5 +12,7 @@ namespace PAccountant2.BLL.Domain.Entities.Accounting
         public AccountBalanceChangeType OperationType { get; set; }
 
         public decimal Amount { get; set; }
+
+        public CurrencyEntity Currency { get; set; }
     }
 }

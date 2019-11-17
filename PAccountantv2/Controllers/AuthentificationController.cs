@@ -60,7 +60,7 @@ namespace PAccountantv2.Host.Api.Controllers
         {
             var userItem = _mapper.Map<LoginViewItem>(model);
             await _authService.CheckRightCredentialsAsync(userItem);
-            
+
             var token = _tokenService.CreateToken(userItem.Email, _jwtSettings.Key);
             var tokenModel = new TokenViewModel
             {

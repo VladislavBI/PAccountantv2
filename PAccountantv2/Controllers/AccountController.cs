@@ -24,6 +24,11 @@ namespace PAccountantv2.Host.Api.Controllers
             _service = service;
         }
 
+        /// <summary>
+        /// Create new account in the accounting
+        /// </summary>
+        /// <param name="acctingId">id of accounting to create in</param>
+        /// <response code="200">new account id</response>
         [HttpPost]
         public async Task<IActionResult> AddNewAccount(int acctingId)
         {
@@ -32,6 +37,11 @@ namespace PAccountantv2.Host.Api.Controllers
             return Ok(acId);
         }
 
+        /// <summary>
+        /// Get balance of the account
+        /// </summary>
+        /// <param name="id">account to get id</param>
+        /// <response code="200">account balance</response>
         [Route("{id}")]
         [HttpGet]
         public async Task<IActionResult> GetAccountBalance(int id)
@@ -42,6 +52,11 @@ namespace PAccountantv2.Host.Api.Controllers
             return Ok(viewModel);
         }
 
+        /// <summary>
+        /// Add money to account
+        /// </summary>
+        /// <param name="id">id of account to get</param>
+        /// <param name="model">model of money amount to add</param>
         [Route("{id}/add")]
         [HttpPut]
         public async Task<IActionResult> AddMoneyToAccount(int id, MoneyChangeViewModel model)
@@ -52,6 +67,11 @@ namespace PAccountantv2.Host.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Withdraw money from account
+        /// </summary>
+        /// <param name="id">id of account to withdraw</param>
+        /// <param name="model">model of money amount to widthdraw</param>
         [Route("{id}/withdraw")]
         [HttpPut]
         public async Task<IActionResult> WithdrawMoneyFromAccount(int id, MoneyChangeViewModel model)
@@ -62,6 +82,12 @@ namespace PAccountantv2.Host.Api.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Get account history by filters
+        /// </summary>
+        /// <param name="id">id of account to get</param>
+        /// <param name="filters">filters model</param>
+        /// <response code="200">history of account operations filtered</response>
         [Route("{id}/history")]
         [HttpGet]
         public async Task<IActionResult> GetAccountHistory(int id, [FromQuery]AccountHistoryFiltersViewModel filters)
@@ -74,6 +100,10 @@ namespace PAccountantv2.Host.Api.Controllers
             return Ok(historyViewModel);
         }
 
+        /// <summary>
+        /// Delete account from accounting
+        /// </summary>
+        /// <param name="id">id of account to delete</param>
         [Route("{id}")]
         [HttpDelete]
         public async Task<IActionResult> DeleteAccount(int id)
