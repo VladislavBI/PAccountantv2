@@ -34,7 +34,16 @@ namespace CurrenctyRateUtil.Services
                     break;
             }
 
+            rateModel = RemoveNullRates(rateModel).ToList();
+
             return rateModel;
+        }
+
+        private static IEnumerable<SimpleRateModel> RemoveNullRates(List<SimpleRateModel> rateModel)
+        {
+            var notNulRates = rateModel.Where(r => Math.Abs(r.Buy) > 0 && Math.Abs(r.Sell) > 0);
+
+            return notNulRates;
         }
 
         public SimpleRateModel ConvertRate(List<SimpleRateModel> rates, string from, string to)

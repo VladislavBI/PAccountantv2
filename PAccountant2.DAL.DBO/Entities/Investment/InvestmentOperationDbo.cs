@@ -19,5 +19,9 @@ namespace PAccountant2.DAL.DBO.Entities.Investment
         public int ContragentId { get; set; }
 
         public ContragentDbo Contragent { get; set; }
+
+        public int CurrencyId { get; set; }
+
+        public CurrencyDbo Currency { get; set; }
     }
 }
