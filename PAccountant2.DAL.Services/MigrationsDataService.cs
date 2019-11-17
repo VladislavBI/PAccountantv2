@@ -6,6 +6,7 @@ using PAccountant2.BLL.Interfaces.DTO.DataItems.Migration;
 using PAccountant2.BLL.Interfaces.Migration;
 using PAccountant2.DAL.Context;
 using PAccountant2.DAL.DBO.Entities;
+using PAccountant2.DAL.Services.Constants;
 
 namespace PAccountant2.DAL.Services
 {
@@ -66,7 +67,6 @@ namespace PAccountant2.DAL.Services
             }
         }
 
- 
         private void AddCurrency(CurrencyDbo rate)
         {
             var newCurrency = new CurrencyDbo
@@ -83,6 +83,11 @@ namespace PAccountant2.DAL.Services
         private static void UpdateCurrency(List<CurrencyDbo> savedCurrencies, CurrencyDbo rate, Func<CurrencyDbo, CurrencyDbo, bool> currencyRateExists)
         {
             var updatedCurrency = savedCurrencies.FirstOrDefault(cur => currencyRateExists(cur, rate));
+
+            if (updatedCurrency == null)
+            {
+                throw new NullReferenceException(ExceptionsNames.CurrecyNotFound);
+            }
 
             updatedCurrency.Buy = rate.Buy;
             updatedCurrency.Sell = rate.Sell;

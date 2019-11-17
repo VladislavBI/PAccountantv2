@@ -10,6 +10,7 @@ using PAccountant2.BLL.Interfaces.Migration;
 using PAccountant2.DAL.Services;
 using PAccountant2.DAL.Services.Accounting;
 using PAccountant2.DAL.Services.Investment;
+using PAccountant2.Host.Domain.Services;
 
 
 namespace PAccountant2.Host.Setup.DI
@@ -30,6 +31,8 @@ namespace PAccountant2.Host.Setup.DI
 
             services.AddScoped<IMigrationService, MigrationService>();
             services.AddScoped<IMigrationDataService, MigrationsDataService>();
+
+            services.AddHostedService<CurrencyUpdateBackgroundService>();
 
             services.AddScoped<IRateService, RateService>();
 
