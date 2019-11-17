@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using CurrenctyRateUtil.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using CurrenctyRateUtil.Models;
 
 namespace CurrenctyRateUtil.Services
 {

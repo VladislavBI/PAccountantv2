@@ -1,6 +1,4 @@
-﻿using CurrenctyRateUtil.Parsers;
-
-namespace CurrenctyRateUtil.Constants
+﻿namespace CurrenctyRateUtil.Constants
 {
     static class RequestUris
     {

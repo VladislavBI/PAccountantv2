@@ -1,20 +1,19 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using CurrenctyRateUtil.Parsers;
-using Moq;
+﻿using CurrenctyRateUtil.Parsers;
 using NUnit.Framework;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace CurrenctyRateUtil.Tests
 {
     public class GetRateTests
     {
-        private IRateParser parser;
+        private IRateParser _parser;
 
         [Test]
         public async Task GetSimpleRatesPb()
         {
-            parser = new PrivatBankParser();
-            var model = await parser.GetSimpleRateData();
+            _parser = new PrivatBankParser();
+            var model = await _parser.GetSimpleRateData();
             var baseRates = model.Select(x => x.BaseCurrency);
 
             Assert.IsNotNull(model);
