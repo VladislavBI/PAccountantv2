@@ -6,6 +6,8 @@
 
         public static string Accounting = "Accounting";
 
+        public static string AccountingOptions = "AccountingOptions";
+
         public static string Currency = "Currency";
 
         public static string Account = "Account";

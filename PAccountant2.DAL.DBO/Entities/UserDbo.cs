@@ -1,4 +1,6 @@
-﻿namespace PAccountant2.DAL.DBO.Entities
+﻿using PAccountant2.DAL.DBO.Entities.Accounting;
+
+namespace PAccountant2.DAL.DBO.Entities
 {
     public class UserDbo
     {

@@ -8,6 +8,7 @@ using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.BLL.Interfaces.Specifications;
 using PAccountant2.DAL.Context;
 using PAccountant2.DAL.DBO.Entities;
+using PAccountant2.DAL.DBO.Entities.Accounting;
 using Z.EntityFramework.Plus;
 
 namespace PAccountant2.DAL.Services.Accounting

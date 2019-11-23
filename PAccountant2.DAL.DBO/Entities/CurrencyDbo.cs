@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using PAccountant2.DAL.DBO.Entities.Accounting;
 using PAccountant2.DAL.DBO.Entities.Investment;
 
 namespace PAccountant2.DAL.DBO.Entities
@@ -18,6 +19,8 @@ namespace PAccountant2.DAL.DBO.Entities
         public ICollection<AccountOperationDbo> AccountOperations { get; set; }
 
         public ICollection<InvestmentOperationDbo> InvestmentOperations { get; set; }
+
+        public ICollection<AccountingOptionsDbo> AccountingOptions { get; set; }
 
     }
 }

@@ -2,6 +2,7 @@
 using PAccountant2.BLL.Domain.Entities;
 using PAccountant2.DAL.DBO.Constants;
 using PAccountant2.DAL.DBO.Entities;
+using PAccountant2.DAL.DBO.Entities.Accounting;
 using PAccountant2.DAL.DBO.Entities.Investment;
 
 namespace PAccountant2.DAL.Context
@@ -33,11 +34,16 @@ namespace PAccountant2.DAL.Context
             modelBuilder.Entity<UserDbo>().HasKey(x => x.Email);
             modelBuilder.Entity<UserDbo>().HasOne(x => x.Accounting).WithOne(x => x.User).HasForeignKey<AccountingDbo>(x => x.UserEmail);
 
-
             modelBuilder.Entity<AccountingDbo>().ToTable(TablesNames.Accounting);
-            modelBuilder.Entity<AccountingDbo>().HasKey(x => x.Id);
+            modelBuilder.Entity<AccountingDbo>().Property(x => x.Id).UseSqlServerIdentityColumn();
             modelBuilder.Entity<AccountingDbo>().HasMany(x => x.Accounts).WithOne(x => x.Accounting).HasForeignKey(x => x.AccountingId);
             modelBuilder.Entity<AccountingDbo>().HasMany(x => x.Investments).WithOne(x => x.Accounting).HasForeignKey(x => x.AccountingId);
+
+
+            modelBuilder.Entity<AccountingOptionsDbo>().ToTable(TablesNames.AccountingOptions);
+            modelBuilder.Entity<AccountingOptionsDbo>().HasKey(x => x.AccountingId);
+            modelBuilder.Entity<AccountingOptionsDbo>().HasOne(x => x.Accounting).WithOne(x => x.Options).HasForeignKey<AccountingOptionsDbo>(x => x.AccountingId);
+            modelBuilder.Entity<AccountingOptionsDbo>().HasOne(x => x.AccountingBaseCurrency).WithMany(x => x.AccountingOptions).HasForeignKey(x => x.AccountingBaseCurrencyId);
 
             modelBuilder.Entity<AccountDbo>().ToTable(TablesNames.Account);
             modelBuilder.Entity<AccountDbo>().Property(x => x.Id).UseSqlServerIdentityColumn();

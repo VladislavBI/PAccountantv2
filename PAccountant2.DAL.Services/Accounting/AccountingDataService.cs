@@ -7,6 +7,7 @@ using PAccountant2.DAL.Context;
 using PAccountant2.DAL.DBO.Entities;
 using System.Threading.Tasks;
 using PAccountant2.BLL.Interfaces.Specifications;
+using PAccountant2.DAL.DBO.Entities.Accounting;
 
 namespace PAccountant2.DAL.Services.Accounting
 {

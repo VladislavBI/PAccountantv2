@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using PAccountant2.DAL.DBO.Entities.Accounting;
 
 namespace PAccountant2.DAL.DBO.Entities.Investment
 {

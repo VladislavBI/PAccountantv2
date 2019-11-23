@@ -1,7 +1,7 @@
-﻿using PAccountant2.BLL.Domain.Enum;
-using System;
+﻿using System;
+using PAccountant2.BLL.Domain.Enum;
 
-namespace PAccountant2.DAL.DBO.Entities
+namespace PAccountant2.DAL.DBO.Entities.Accounting
 {
     public class AccountOperationDbo
     {
