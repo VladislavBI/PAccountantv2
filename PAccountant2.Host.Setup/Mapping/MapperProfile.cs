@@ -9,6 +9,7 @@ using PAccountant2.BLL.Interfaces.DTO.ViewItems.Authentification;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Migration;
 using PAccountant2.DAL.DBO.Entities;
 using PAccountant2.DAL.DBO.Entities.Accounting;
+using PAccountant2.DAL.DBO.Entities.Currency;
 using PAccountant2.Host.Domain.ViewModels.Account;
 using PAccountant2.Host.Domain.ViewModels.Authentification;
 

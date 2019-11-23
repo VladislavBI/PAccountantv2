@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PAccountant2.DAL.Migrations.Migrations
 {
-    public partial class currency_migration : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,10 +14,8 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    BaseCurrency = table.Column<string>(nullable: true),
-                    Currency = table.Column<string>(nullable: true),
-                    Buy = table.Column<float>(nullable: false),
-                    Sell = table.Column<float>(nullable: false)
+                    Name = table.Column<string>(nullable: true),
+                    FullName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -34,6 +32,34 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Email);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ExchangeRate",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    BaseCurrencyId = table.Column<int>(nullable: false),
+                    ResultCurrencyId = table.Column<int>(nullable: false),
+                    Buy = table.Column<float>(nullable: false),
+                    Sell = table.Column<float>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExchangeRate", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ExchangeRate_Currency_BaseCurrencyId",
+                        column: x => x.BaseCurrencyId,
+                        principalTable: "Currency",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ExchangeRate_Currency_ResultCurrencyId",
+                        column: x => x.ResultCurrencyId,
+                        principalTable: "Currency",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,6 +95,30 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     table.PrimaryKey("PK_Account", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Account_Accounting_AccountingId",
+                        column: x => x.AccountingId,
+                        principalTable: "Accounting",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AccountingOptions",
+                columns: table => new
+                {
+                    AccountingId = table.Column<int>(nullable: false),
+                    AccountingBaseCurrencyId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AccountingOptions", x => x.AccountingId);
+                    table.ForeignKey(
+                        name: "FK_AccountingOptions_Currency_AccountingBaseCurrencyId",
+                        column: x => x.AccountingBaseCurrencyId,
+                        principalTable: "Currency",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AccountingOptions_Accounting_AccountingId",
                         column: x => x.AccountingId,
                         principalTable: "Accounting",
                         principalColumn: "Id",
@@ -131,7 +181,8 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     OperationType = table.Column<int>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false),
                     AccountId = table.Column<int>(nullable: false),
-                    ContragentId = table.Column<int>(nullable: false)
+                    ContragentId = table.Column<int>(nullable: false),
+                    CurrencyId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -148,6 +199,12 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         principalTable: "Contragent",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_AccountOperation_Currency_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currency",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -160,7 +217,8 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     Date = table.Column<DateTime>(nullable: false),
                     OperationType = table.Column<int>(nullable: false),
                     InvestmentId = table.Column<int>(nullable: false),
-                    ContragentId = table.Column<int>(nullable: false)
+                    ContragentId = table.Column<int>(nullable: false),
+                    CurrencyId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -171,6 +229,12 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         principalTable: "Contragent",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_InvestmentOperation_Currency_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currency",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_InvestmentOperation_Investment_InvestmentId",
                         column: x => x.InvestmentId,
@@ -192,6 +256,11 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 filter: "[UserEmail] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AccountingOptions_AccountingBaseCurrencyId",
+                table: "AccountingOptions",
+                column: "AccountingBaseCurrencyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AccountOperation_AccountId",
                 table: "AccountOperation",
                 column: "AccountId");
@@ -202,9 +271,24 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 column: "ContragentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AccountOperation_CurrencyId",
+                table: "AccountOperation",
+                column: "CurrencyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Contragent_AccountingId",
                 table: "Contragent",
                 column: "AccountingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExchangeRate_BaseCurrencyId",
+                table: "ExchangeRate",
+                column: "BaseCurrencyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExchangeRate_ResultCurrencyId",
+                table: "ExchangeRate",
+                column: "ResultCurrencyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Investment_AccountingId",
@@ -217,6 +301,11 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 column: "ContragentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_InvestmentOperation_CurrencyId",
+                table: "InvestmentOperation",
+                column: "CurrencyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_InvestmentOperation_InvestmentId",
                 table: "InvestmentOperation",
                 column: "InvestmentId");
@@ -225,10 +314,13 @@ namespace PAccountant2.DAL.Migrations.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AccountingOptions");
+
+            migrationBuilder.DropTable(
                 name: "AccountOperation");
 
             migrationBuilder.DropTable(
-                name: "Currency");
+                name: "ExchangeRate");
 
             migrationBuilder.DropTable(
                 name: "InvestmentOperation");
@@ -238,6 +330,9 @@ namespace PAccountant2.DAL.Migrations.Migrations
 
             migrationBuilder.DropTable(
                 name: "Contragent");
+
+            migrationBuilder.DropTable(
+                name: "Currency");
 
             migrationBuilder.DropTable(
                 name: "Investment");

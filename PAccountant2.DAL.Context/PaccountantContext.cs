@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PAccountant2.BLL.Domain.Entities;
+using PAccountant2.BLL.Interfaces.DTO.DataItems.Currency;
 using PAccountant2.DAL.DBO.Constants;
 using PAccountant2.DAL.DBO.Entities;
 using PAccountant2.DAL.DBO.Entities.Accounting;
+using PAccountant2.DAL.DBO.Entities.Currency;
 using PAccountant2.DAL.DBO.Entities.Investment;
 
 namespace PAccountant2.DAL.Context
@@ -22,6 +24,8 @@ namespace PAccountant2.DAL.Context
         public DbSet<InvestmentDbo> Investments { get; set; }
 
         public DbSet<CurrencyDbo> Currencies { get; set; }
+
+        public DbSet<ExchangeRateDbo> ExchangeRates { get; set; }
 
         public PaccountantContext(DbContextOptions options): base(options)
         {
@@ -69,6 +73,12 @@ namespace PAccountant2.DAL.Context
             modelBuilder.Entity<CurrencyDbo>().Property(cur => cur.Id).UseSqlServerIdentityColumn();
             modelBuilder.Entity<CurrencyDbo>().HasMany(cur => cur.AccountOperations).WithOne(acc => acc.Currency).HasForeignKey(acc => acc.CurrencyId);
             modelBuilder.Entity<CurrencyDbo>().HasMany(cur => cur.InvestmentOperations).WithOne(acc => acc.Currency).HasForeignKey(acc => acc.CurrencyId);
+
+            modelBuilder.Entity<ExchangeRateDbo>().ToTable(TablesNames.ExchangeRate);
+            modelBuilder.Entity<ExchangeRateDbo>().Property(cur => cur.Id).UseSqlServerIdentityColumn();
+            modelBuilder.Entity<ExchangeRateDbo>().HasOne(rate => rate.BaseCurrency).WithMany(cur => cur.BaseCurrenciesRates).HasForeignKey(rate => rate.BaseCurrencyId).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<ExchangeRateDbo>().HasOne(rate => rate.ResultCurrency).WithMany(acc => acc.ResultCurrenciesRates).HasForeignKey(rate => rate.ResultCurrencyId).OnDelete(DeleteBehavior.Restrict);
+
         }
     }
 }

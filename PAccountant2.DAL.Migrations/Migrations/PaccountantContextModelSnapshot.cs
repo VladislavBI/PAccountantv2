@@ -112,23 +112,42 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     b.ToTable("Contragent");
                 });
 
-            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.CurrencyDbo", b =>
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("BaseCurrency");
+                    b.Property<string>("FullName");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Currency");
+                });
+
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Currency.ExchangeRateDbo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BaseCurrencyId");
 
                     b.Property<float>("Buy");
 
-                    b.Property<string>("Currency");
+                    b.Property<int>("ResultCurrencyId");
 
                     b.Property<float>("Sell");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Currency");
+                    b.HasIndex("BaseCurrencyId");
+
+                    b.HasIndex("ResultCurrencyId");
+
+                    b.ToTable("ExchangeRate");
                 });
 
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Investment.InvestmentDbo", b =>
@@ -221,7 +240,7 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         .HasForeignKey("ContragentId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("PAccountant2.DAL.DBO.Entities.CurrencyDbo", "Currency")
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", "Currency")
                         .WithMany("AccountOperations")
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -236,7 +255,7 @@ namespace PAccountant2.DAL.Migrations.Migrations
 
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Accounting.AccountingOptionsDbo", b =>
                 {
-                    b.HasOne("PAccountant2.DAL.DBO.Entities.CurrencyDbo", "AccountingBaseCurrency")
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", "AccountingBaseCurrency")
                         .WithMany("AccountingOptions")
                         .HasForeignKey("AccountingBaseCurrencyId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -255,6 +274,19 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Currency.ExchangeRateDbo", b =>
+                {
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", "BaseCurrency")
+                        .WithMany("BaseCurrenciesRates")
+                        .HasForeignKey("BaseCurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", "ResultCurrency")
+                        .WithMany("ResultCurrenciesRates")
+                        .HasForeignKey("ResultCurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Investment.InvestmentDbo", b =>
                 {
                     b.HasOne("PAccountant2.DAL.DBO.Entities.Accounting.AccountingDbo", "Accounting")
@@ -270,7 +302,7 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         .HasForeignKey("ContragentId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("PAccountant2.DAL.DBO.Entities.CurrencyDbo", "Currency")
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", "Currency")
                         .WithMany("InvestmentOperations")
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Cascade);

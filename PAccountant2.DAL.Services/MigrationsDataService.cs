@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using PAccountant2.BLL.Interfaces.DTO.DataItems.Migration;
+﻿using AutoMapper;
+using EFCore.BulkExtensions;
+using PAccountant2.BLL.Interfaces.DTO.DataItems.Currency;
 using PAccountant2.BLL.Interfaces.Migration;
 using PAccountant2.DAL.Context;
 using PAccountant2.DAL.DBO.Entities;
-using PAccountant2.DAL.Services.Constants;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using MoreLinq.Extensions;
+using PAccountant2.BLL.Domain.Entities.Currency;
+using PAccountant2.DAL.DBO.Entities.Currency;
 
 namespace PAccountant2.DAL.Services
 {
@@ -14,83 +19,57 @@ namespace PAccountant2.DAL.Services
     {
         private readonly PaccountantContext _context;
 
-        public MigrationsDataService(PaccountantContext context)
+        private readonly IMapper _mapper;
+
+        public MigrationsDataService(PaccountantContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
-
-        public async Task UpdateCurrenciesRatesAsync(IEnumerable<CurrencyMigrationDataItem> dbData)
+      
+        public async Task<IEnumerable<CurrencyDataItem>> UpdateCurreniesAsync(IEnumerable<CurrencyDataItem> currencies)
         {
-            var (newRates, savedCurrencies, currencyRateExists) = UpdateCurrencySetup(dbData);
+            var currenciesForAdd = _mapper.Map<IEnumerable<CurrencyDbo>>(currencies);
+            var dbCurrencies = await _context.Currencies.ToListAsync();
+            currenciesForAdd = currenciesForAdd.ExceptBy(dbCurrencies, cur => cur.Name);
 
-            UpdateCurrenciesProcess(newRates, savedCurrencies, currencyRateExists);
-
+            _context.Currencies.AddRange(currenciesForAdd);
             await _context.SaveChangesAsync();
 
+            var updatedCurrencies = _mapper.Map<IEnumerable<CurrencyDataItem>>(dbCurrencies);
+
+            return updatedCurrencies;
         }
 
-        private (IEnumerable<CurrencyDbo> newRates, List<CurrencyDbo> savedCurrency, Func<CurrencyDbo, CurrencyDbo, bool> currencyRateExists)
-            UpdateCurrencySetup(IEnumerable<CurrencyMigrationDataItem> dbData)
+        public async Task UpdateCurrenciesRatesAsync(IEnumerable<ExchangeRateDataItem> dbRates)
         {
-            bool CurrencyRateExists(CurrencyDbo cur, CurrencyDbo rate) => 
-                string.Equals(cur.BaseCurrency, rate.BaseCurrency, StringComparison.CurrentCultureIgnoreCase) 
-                && string.Equals(cur.Currency, rate.Currency, StringComparison.CurrentCultureIgnoreCase);
+            var currentRates = await _context.ExchangeRates
+                .Include(x => x.BaseCurrency)
+                .Include(x => x.ResultCurrency)
+                .ToListAsync();
 
+            var mappedParamRates = _mapper.Map<IEnumerable<ExchangeRateDbo>>(dbRates);
 
-            var newRates = dbData.Select(cur => new CurrencyDbo
+            bool ExchangeRateExists(ExchangeRateDbo rate1, ExchangeRateDbo rate2) =>
+                rate1.BaseCurrencyId == rate2.BaseCurrencyId && rate1.ResultCurrencyId == rate2.ResultCurrencyId;
+
+            foreach (var rate in mappedParamRates)
             {
-                BaseCurrency = cur.BaseCurrency,
-                Buy = cur.Buy,
-                Currency = cur.Currency,
-                Sell = cur.Sell
-            });
-
-            var savedCurrencies = _context.Currencies.ToList();
-
-            return (newRates, savedCurrencies, CurrencyRateExists);
-        }
-
-        private void UpdateCurrenciesProcess(IEnumerable<CurrencyDbo> newRates, List<CurrencyDbo> savedCurrencies, Func<CurrencyDbo, CurrencyDbo, bool> currencyRateExists)
-        {
-            foreach (var rate in newRates)
-            {
-
-                if (savedCurrencies.Any(cur => currencyRateExists(cur, rate)))
+               
+                if (currentRates.Any(r => ExchangeRateExists(rate, r)))
                 {
-                    UpdateCurrency(savedCurrencies, rate, currencyRateExists);
+                    var rateForUpdate = currentRates.FirstOrDefault(r => ExchangeRateExists(rate, r));
+
+                    rateForUpdate.Buy = rate.Buy;
+                    rateForUpdate.Sell = rate.Sell;
                 }
                 else
                 {
-                    AddCurrency(rate);
+                    _context.ExchangeRates.Add(rate);
                 }
-
-            }
-        }
-
-        private void AddCurrency(CurrencyDbo rate)
-        {
-            var newCurrency = new CurrencyDbo
-            {
-                BaseCurrency = rate.BaseCurrency,
-                Buy = rate.Buy,
-                Currency = rate.Currency,
-                Sell = rate.Sell
-            };
-
-            _context.Currencies.Add(newCurrency);
-        }
-
-        private static void UpdateCurrency(List<CurrencyDbo> savedCurrencies, CurrencyDbo rate, Func<CurrencyDbo, CurrencyDbo, bool> currencyRateExists)
-        {
-            var updatedCurrency = savedCurrencies.FirstOrDefault(cur => currencyRateExists(cur, rate));
-
-            if (updatedCurrency == null)
-            {
-                throw new NullReferenceException(ExceptionsNames.CurrecyNotFound);
             }
 
-            updatedCurrency.Buy = rate.Buy;
-            updatedCurrency.Sell = rate.Sell;
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -10,6 +10,8 @@
 
         public static string Currency = "Currency";
 
+        public static string ExchangeRate = "ExchangeRate";
+
         public static string Account = "Account";
 
         public static string AccountOperation = "AccountOperation";

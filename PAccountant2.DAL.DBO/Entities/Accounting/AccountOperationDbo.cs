@@ -1,5 +1,6 @@
 ﻿using System;
 using PAccountant2.BLL.Domain.Enum;
+using PAccountant2.DAL.DBO.Entities.Currency;
 
 namespace PAccountant2.DAL.DBO.Entities.Accounting
 {

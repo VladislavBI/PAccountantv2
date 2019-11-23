@@ -1,5 +1,6 @@
 ﻿using PAccountant2.BLL.Domain.Enum;
 using System;
+using PAccountant2.BLL.Domain.Entities.Currency;
 
 namespace PAccountant2.BLL.Domain.Entities.Accounting
 {
