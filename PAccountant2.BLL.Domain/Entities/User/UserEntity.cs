@@ -15,7 +15,7 @@ namespace PAccountant2.BLL.Domain.Entities.User
 
         public CredentialsValueObject CreateCredentials()
         {
-            if (StringPassword == null)
+            if (StringPassword == null && Password == null)
             {
                 throw new WrongCredentialsException(Email);
             }

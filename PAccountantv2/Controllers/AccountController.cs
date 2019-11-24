@@ -6,6 +6,7 @@ using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
 using PAccountant2.Host.Domain.ViewModels.Account;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using PAccountant2.Host.Domain.ViewModels.Accounting;
 
 namespace PAccountantv2.Host.Api.Controllers
 {

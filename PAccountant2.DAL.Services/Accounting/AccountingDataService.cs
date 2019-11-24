@@ -6,6 +6,7 @@ using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.DAL.Context;
 using PAccountant2.DAL.DBO.Entities;
 using System.Threading.Tasks;
+using PAccountant2.BLL.Interfaces.DTO.DataItems.Accounting;
 using PAccountant2.BLL.Interfaces.Specifications;
 using PAccountant2.DAL.DBO.Entities.Accounting;
 
@@ -24,9 +25,15 @@ namespace PAccountant2.DAL.Services.Accounting
         }
         public async Task CreateAccountingForUser(string newUserEmail)
         {
+            var newOptions = new AccountingOptionsDbo
+            {
+                AccountingBaseCurrencyId = 1
+            };
+
             var newAccounting = new AccountingDbo
             {
-                UserEmail = newUserEmail
+                UserEmail = newUserEmail,
+                Options = newOptions
             };
 
             _context.Accountings.Add(newAccounting);
@@ -66,6 +73,20 @@ namespace PAccountant2.DAL.Services.Accounting
             toAccount.Amount += dbTransfer.Amount;
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<AccountingOptionsDataItem> GetOptionsAsync(int id)
+        {
+            var dbAccounting = await _context.Accountings
+                .Include(x => x.Options)
+                .ThenInclude(x => x.AccountingBaseCurrency)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            var dbOptions = dbAccounting.Options; 
+
+            var mappedOptions =  _mapper.Map<AccountingOptionsDataItem>(dbOptions);
+
+            return mappedOptions;
         }
     }
 }
