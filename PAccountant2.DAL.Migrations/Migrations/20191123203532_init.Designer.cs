@@ -10,8 +10,8 @@ using PAccountant2.DAL.Context;
 namespace PAccountant2.DAL.Migrations.Migrations
 {
     [DbContext(typeof(PaccountantContext))]
-    [Migration("20191117111815_add_currency_operations")]
-    partial class add_currency_operations
+    [Migration("20191123203532_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,7 +21,7 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.AccountDbo", b =>
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Accounting.AccountDbo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -38,7 +38,7 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     b.ToTable("Account");
                 });
 
-            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.AccountOperationDbo", b =>
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Accounting.AccountOperationDbo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -67,7 +67,7 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     b.ToTable("AccountOperation");
                 });
 
-            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.AccountingDbo", b =>
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Accounting.AccountingDbo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,6 +82,19 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         .HasFilter("[UserEmail] IS NOT NULL");
 
                     b.ToTable("Accounting");
+                });
+
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Accounting.AccountingOptionsDbo", b =>
+                {
+                    b.Property<int>("AccountingId");
+
+                    b.Property<int>("AccountingBaseCurrencyId");
+
+                    b.HasKey("AccountingId");
+
+                    b.HasIndex("AccountingBaseCurrencyId");
+
+                    b.ToTable("AccountingOptions");
                 });
 
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.ContragentDbo", b =>
@@ -101,23 +114,42 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     b.ToTable("Contragent");
                 });
 
-            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.CurrencyDbo", b =>
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("BaseCurrency");
+                    b.Property<string>("FullName");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Currency");
+                });
+
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Currency.ExchangeRateDbo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("BaseCurrencyId");
 
                     b.Property<float>("Buy");
 
-                    b.Property<string>("Currency");
+                    b.Property<int>("ResultCurrencyId");
 
                     b.Property<float>("Sell");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Currency");
+                    b.HasIndex("BaseCurrencyId");
+
+                    b.HasIndex("ResultCurrencyId");
+
+                    b.ToTable("ExchangeRate");
                 });
 
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Investment.InvestmentDbo", b =>
@@ -190,17 +222,17 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.AccountDbo", b =>
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Accounting.AccountDbo", b =>
                 {
-                    b.HasOne("PAccountant2.DAL.DBO.Entities.AccountingDbo", "Accounting")
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Accounting.AccountingDbo", "Accounting")
                         .WithMany("Accounts")
                         .HasForeignKey("AccountingId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.AccountOperationDbo", b =>
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Accounting.AccountOperationDbo", b =>
                 {
-                    b.HasOne("PAccountant2.DAL.DBO.Entities.AccountDbo", "Account")
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Accounting.AccountDbo", "Account")
                         .WithMany("AccountHistory")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -210,30 +242,56 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         .HasForeignKey("ContragentId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("PAccountant2.DAL.DBO.Entities.CurrencyDbo", "Currency")
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", "Currency")
                         .WithMany("AccountOperations")
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.AccountingDbo", b =>
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Accounting.AccountingDbo", b =>
                 {
                     b.HasOne("PAccountant2.DAL.DBO.Entities.UserDbo", "User")
                         .WithOne("Accounting")
-                        .HasForeignKey("PAccountant2.DAL.DBO.Entities.AccountingDbo", "UserEmail");
+                        .HasForeignKey("PAccountant2.DAL.DBO.Entities.Accounting.AccountingDbo", "UserEmail");
+                });
+
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Accounting.AccountingOptionsDbo", b =>
+                {
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", "AccountingBaseCurrency")
+                        .WithMany("AccountingOptions")
+                        .HasForeignKey("AccountingBaseCurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Accounting.AccountingDbo", "Accounting")
+                        .WithOne("Options")
+                        .HasForeignKey("PAccountant2.DAL.DBO.Entities.Accounting.AccountingOptionsDbo", "AccountingId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.ContragentDbo", b =>
                 {
-                    b.HasOne("PAccountant2.DAL.DBO.Entities.AccountingDbo", "Accounting")
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Accounting.AccountingDbo", "Accounting")
                         .WithMany()
                         .HasForeignKey("AccountingId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Currency.ExchangeRateDbo", b =>
+                {
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", "BaseCurrency")
+                        .WithMany("BaseCurrenciesRates")
+                        .HasForeignKey("BaseCurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", "ResultCurrency")
+                        .WithMany("ResultCurrenciesRates")
+                        .HasForeignKey("ResultCurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Investment.InvestmentDbo", b =>
                 {
-                    b.HasOne("PAccountant2.DAL.DBO.Entities.AccountingDbo", "Accounting")
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Accounting.AccountingDbo", "Accounting")
                         .WithMany("Investments")
                         .HasForeignKey("AccountingId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -246,7 +304,7 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         .HasForeignKey("ContragentId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("PAccountant2.DAL.DBO.Entities.CurrencyDbo", "Currency")
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", "Currency")
                         .WithMany("InvestmentOperations")
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Cascade);

@@ -4,6 +4,8 @@ using PAccountant2.BLL.Interfaces.DTO.ViewItems.Migration;
 using PAccountant2.BLL.Interfaces.Migration;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using PAccountant2.BLL.Domain.Entities.Migration;
+using PAccountant2.BLL.Domain.Entities.Migration.Currency;
 
 namespace PAccountant2.BLL.Domain.Services
 {
@@ -20,10 +22,11 @@ namespace PAccountant2.BLL.Domain.Services
 
         public async Task UpdateCurrenciesRatesAsync(IEnumerable<CurrencyMigrationViewItem> mappedCurrencies)
         {
+            var migrationEntity = new MigrationEntity();
+            var mappedIncome = _mapper.Map<IEnumerable<CurrencyIncomeValueObject>>(mappedCurrencies);
 
-            var dbData = _mapper.Map<IEnumerable<CurrencyMigrationDataItem>>(mappedCurrencies);
+            await migrationEntity.MigrateCurrencies(mappedIncome, _dataService);
 
-            await _dataService.UpdateCurrenciesRatesAsync(dbData);
         }
     }
 }

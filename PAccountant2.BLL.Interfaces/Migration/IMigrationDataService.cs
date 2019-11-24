@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using PAccountant2.BLL.Interfaces.DTO.DataItems.Migration;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using PAccountant2.BLL.Interfaces.DTO.DataItems.Migration;
+using PAccountant2.BLL.Interfaces.DTO.DataItems.Currency;
 
 namespace PAccountant2.BLL.Interfaces.Migration
 {
     public interface IMigrationDataService
     {
-        Task UpdateCurrenciesRatesAsync(IEnumerable<CurrencyMigrationDataItem> dbData);
+        Task<IEnumerable<CurrencyDataItem>> UpdateCurreniesAsync(IEnumerable<CurrencyDataItem> currencies);
+        Task UpdateCurrenciesRatesAsync(IEnumerable<ExchangeRateDataItem> dbRates);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PAccountant2.DAL.DBO.Entities
+namespace PAccountant2.DAL.DBO.Entities.Accounting
 {
     public class AccountDbo
     {

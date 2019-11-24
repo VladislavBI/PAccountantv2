@@ -16,6 +16,7 @@ using PAccountant2.Host.Setup.Swagger;
 using PAccountantv2.Host.Api.Infrastructure.Helper;
 using System;
 using System.Reflection;
+using Microsoft.Extensions.Logging;
 
 namespace PAccountantv2.Host.Api
 {
@@ -51,7 +52,7 @@ namespace PAccountantv2.Host.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory log)
         {
             if (env.IsDevelopment())
             {
@@ -63,6 +64,8 @@ namespace PAccountantv2.Host.Api
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            log.AddFile($"logs/{DateTime.Now.ToShortDateString()}.txt", minimumLevel: LogLevel.Error);
 
             app.UseStaticFiles();
             app.UseCookiePolicy();
