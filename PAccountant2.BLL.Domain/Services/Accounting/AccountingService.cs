@@ -1,9 +1,10 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using PAccountant2.BLL.Domain.Entities.Accounting;
 using PAccountant2.BLL.Interfaces.Account;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
+using PAccountant2.BLL.Interfaces.DTO.DataItems.Accounting;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
+using PAccountant2.BLL.Interfaces.DTO.ViewItems.Accounting;
 using System.Threading.Tasks;
 
 namespace PAccountant2.BLL.Domain.Services.Accounting
@@ -49,6 +50,15 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
             var dbTransfer = _mapper.Map<AccountTransferDataItem>(transferValueObject);
 
             await _accountingDataService.TransferMoneyToOtherAccountAsync(dbTransfer);
+        }
+
+        public async Task<AccountingOptionsViewItem> GetOptionsAsync(int id)
+        {
+            AccountingOptionsDataItem dbAccOptions = await _accountingDataService.GetOptionsAsync(id);
+
+            var mappedOptions = _mapper.Map<AccountingOptionsViewItem>(dbAccOptions);
+
+            return mappedOptions;
         }
     }
 }

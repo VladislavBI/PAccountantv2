@@ -4,10 +4,12 @@ using PAccountant2.BLL.Interfaces.Account;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
 using PAccountant2.Host.Domain.ViewModels.Account;
 using System.Threading.Tasks;
+using PAccountant2.BLL.Interfaces.DTO.ViewItems.Accounting;
+using PAccountant2.Host.Domain.ViewModels.Accounting;
 
 namespace PAccountantv2.Host.Api.Controllers
 {
-    [Route("api/accounting")]
+    [Route("api/accounting/{id}")]
     [ApiController]
     public class AccountingController : ControllerBase
     {
@@ -21,7 +23,6 @@ namespace PAccountantv2.Host.Api.Controllers
             _mapper = mapper;
         }
 
-        [Route("{id}")]
         [HttpGet]
         public async Task<IActionResult> GetAccountingWithAccounts(int id, [FromQuery]AccountFilterViewModel filters)
         {
@@ -33,13 +34,24 @@ namespace PAccountantv2.Host.Api.Controllers
             return Ok(mappedData);
         }
 
-        [Route("{id}/account/{accId}")]
+        [Route("account/{accId}")]
         [HttpPost]
         public async Task TransferMoneyBeetwenAccountsAsync(int id, int accId, AccountTransferViewModel model)
         {
             var viewData = _mapper.Map<AccountTransferViewItem>(model);
 
             await _accountingService.TransferMoneyToOtherAccountAsync(id, accId, viewData);
+        }
+
+        [Route("options")]
+        [HttpGet]
+        public async Task<IActionResult> GetOptionsForAccounting(int id)
+        {
+            AccountingOptionsViewItem accountOptions = await _accountingService.GetOptionsAsync(id);
+
+            var mappedOptions = _mapper.Map<AccountingOptionsViewModel>(accountOptions);
+
+            return Ok(mappedOptions);
         }
     }
 }
