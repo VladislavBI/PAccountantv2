@@ -1,15 +1,17 @@
-﻿using PAccountant2.BLL.Domain.Enum;
+﻿using System;
+using PAccountant2.BLL.Domain.Entities.Account.Handlers;
+using PAccountant2.BLL.Domain.Enum;
 using PAccountant2.BLL.Domain.Exceptions.Account;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using PAccountant2.BLL.Interfaces.Account;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
 using PAccountant2.BLL.Interfaces.Specifications;
 using PAccountant2.BLL.Interfaces.Specifications.Accounting;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace PAccountant2.BLL.Domain.Entities.Accounting
+namespace PAccountant2.BLL.Domain.Entities.Account
 {
     public class AccountEntity
     {
@@ -18,6 +20,19 @@ namespace PAccountant2.BLL.Domain.Entities.Accounting
         public decimal Amount { get; set; }
 
         public IEnumerable<AccountOperationValueObject> AccountOperations { get; set; }
+
+        private readonly TransactionHandler _transactionHandler;
+
+        private readonly OperationHandler _operationHandler;
+
+        private readonly AccountFactory _accountFactory;
+
+        public AccountEntity()
+        {
+            _transactionHandler = new TransactionHandler();
+            _operationHandler = new OperationHandler();
+            _accountFactory = new AccountFactory();
+        }
 
         public AccountHistoryValueObject CreateAccountHistory()
         {
@@ -34,7 +49,6 @@ namespace PAccountant2.BLL.Domain.Entities.Accounting
                 AccountOperations = operations
             };
         }
-
         public AccountOperationValueObject CreateAccountOperation(AccountOperationDataItem operation)
         {
             var operationTypeEnum = System.Enum.Parse<AccountBalanceChangeType>(operation.OperationType.ToString());
@@ -50,20 +64,28 @@ namespace PAccountant2.BLL.Domain.Entities.Accounting
             return operationValueObject;
         }
 
-        public void AddMoney(decimal addModelAmount)
+        public AccountOperationValueObject PutMoney(decimal putAmount)
         {
-            Amount += addModelAmount;
+            var transaction = _accountFactory.CreateTransactionValueObject(putAmount, Amount);
+            Amount = _transactionHandler.PerformPutTransaction(transaction);
 
-            CreateAccountOperation(addModelAmount, AccountBalanceChangeType.Put);
+            var newOperation =
+                _accountFactory.CreateOperationValueObject(putAmount, AccountBalanceChangeType.Put, DateTime.Now);
+            AccountOperations = _operationHandler.AddNewOperation(newOperation, AccountOperations);
+
+            return newOperation;
         }
 
-        public void WithdrawMoney(decimal withdrawAmount)
+        public AccountOperationValueObject WithdrawMoney(decimal withdrawAmount)
         {
-            CheckIsOperationAvailable(withdrawAmount);
+            var transaction = _accountFactory.CreateTransactionValueObject(withdrawAmount, Amount);
+            Amount = _transactionHandler.PerformWithdrawTransaction(transaction);
 
-            Amount -= withdrawAmount;
+            var newOperation =
+                _accountFactory.CreateOperationValueObject(withdrawAmount, AccountBalanceChangeType.Withdraw, DateTime.Now);
+            AccountOperations = _operationHandler.AddNewOperation(newOperation, AccountOperations);
 
-            CreateAccountOperation(withdrawAmount, AccountBalanceChangeType.Withdraw);
+            return newOperation;
         }
 
         public void CheckIsOperationAvailable(decimal amount)

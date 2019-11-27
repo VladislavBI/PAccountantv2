@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PAccountant2.BLL.Domain.Entities.Account;
 using PAccountant2.BLL.Domain.Entities.Accounting;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;

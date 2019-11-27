@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using PAccountant2.BLL.Domain.Entities.Accounting;
 using PAccountant2.BLL.Domain.Enum;
 
-namespace PAccountant2.BLL.Domain.Entities.Accounting
+namespace PAccountant2.BLL.Domain.Entities.Account
 {
     public class AccountHistoryValueObject
     {

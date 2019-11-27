@@ -1,8 +1,8 @@
-﻿using PAccountant2.BLL.Domain.Enum;
-using System;
+﻿using System;
 using PAccountant2.BLL.Domain.Entities.Currency;
+using PAccountant2.BLL.Domain.Enum;
 
-namespace PAccountant2.BLL.Domain.Entities.Accounting
+namespace PAccountant2.BLL.Domain.Entities.Account
 {
     public class AccountOperationValueObject
     {
