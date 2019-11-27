@@ -6,6 +6,7 @@ using PAccountant2.BLL.Interfaces.Specifications.Accounting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PAccountant2.BLL.Domain.Entities.Account;
 
 namespace PAccountant2.BLL.Domain.Entities.Accounting
 {

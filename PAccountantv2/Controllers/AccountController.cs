@@ -6,7 +6,6 @@ using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
 using PAccountant2.Host.Domain.ViewModels.Account;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using PAccountant2.Host.Domain.ViewModels.Accounting;
 
 namespace PAccountantv2.Host.Api.Controllers
 {
@@ -18,7 +17,7 @@ namespace PAccountantv2.Host.Api.Controllers
 
         private readonly IMapper _mapper;
         private readonly IAccountService _service;
-        
+
         public AccountController(IMapper mapper, IAccountService service)
         {
             _mapper = mapper;
@@ -33,7 +32,7 @@ namespace PAccountantv2.Host.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> AddNewAccount(int acctingId)
         {
-           var acId = await _service.CreateNewAccountAsync(acctingId);
+            var acId = await _service.CreateNewAccountAsync(acctingId);
 
             return Ok(acId);
         }
@@ -63,7 +62,7 @@ namespace PAccountantv2.Host.Api.Controllers
         public async Task<IActionResult> AddMoneyToAccount(int id, MoneyChangeViewModel model)
         {
             var viewItem = _mapper.Map<MoneyChangeViewItem>(model);
-            await _service.AddMoneyAsync(id, viewItem);
+            await _service.PutMoneyAsync(id, viewItem);
 
             return Ok();
         }

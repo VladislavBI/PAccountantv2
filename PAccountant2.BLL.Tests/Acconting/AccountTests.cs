@@ -1,5 +1,6 @@
 using System.Linq;
 using NUnit.Framework;
+using PAccountant2.BLL.Domain.Entities.Account;
 using PAccountant2.BLL.Domain.Entities.Accounting;
 using PAccountant2.BLL.Domain.Enum;
 
@@ -20,7 +21,7 @@ namespace Tests
         {
             var moneyToAdd = 100;
 
-            accountEntity.AddMoney(moneyToAdd);
+            accountEntity.PutMoney(moneyToAdd);
             Assert.AreEqual(accountEntity.Amount, moneyToAdd);
         }
 
@@ -31,7 +32,7 @@ namespace Tests
             var moneyToWithdraw = 150;
             var newAmount = moneyToAdd - moneyToWithdraw;
 
-            accountEntity.AddMoney(moneyToAdd);
+            accountEntity.PutMoney(moneyToAdd);
             accountEntity.WithdrawMoney(moneyToWithdraw);
 
             Assert.AreEqual(accountEntity.Amount, newAmount);
@@ -42,7 +43,7 @@ namespace Tests
         {
             var moneyToAdd = 200;
 
-            accountEntity.AddMoney(moneyToAdd);
+            accountEntity.PutMoney(moneyToAdd);
             var newOperation = accountEntity.AccountOperations.FirstOrDefault();
 
             Assert.AreEqual(newOperation.Amount, moneyToAdd);
@@ -55,7 +56,7 @@ namespace Tests
             var moneyToAdd = 1000;
             var moneyToWithdraw = 520;
 
-            accountEntity.AddMoney(moneyToAdd);
+            accountEntity.PutMoney(moneyToAdd);
             accountEntity.WithdrawMoney(moneyToWithdraw);
 
             var newOperation = accountEntity.AccountOperations.LastOrDefault();

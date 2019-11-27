@@ -8,7 +8,7 @@ namespace PAccountant2.BLL.Interfaces.Account
     {
         Task<AccountBalanceViewItem> GetBalanceAsync(int accountId);
 
-        Task AddMoneyAsync(int accountId, MoneyChangeViewItem model);
+        Task PutMoneyAsync(int accountId, MoneyChangeViewItem model);
 
         Task WithdrawMoneyAsync(int accountId, MoneyChangeViewItem model);
 

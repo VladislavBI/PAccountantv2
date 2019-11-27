@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using PAccountant2.BLL.Domain.Entities.Account;
 using PAccountant2.BLL.Domain.Entities.Accounting;
 using PAccountant2.BLL.Domain.Entities.User;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
@@ -44,7 +45,6 @@ namespace PAccountant2.Host.Setup.Mapping
             CreateMap<AccountOperationValueObject, AccountOperationDataItem>();
             CreateMap<AccountOperationValueObject, AccountOperationViewItem>();
             CreateMap<AccountWithHistotyDataItem, AccountEntity>();
-            CreateMap<AccountOperationDataItem, AccountHistoryValueObject>();
             CreateMap<AccountOperationDbo, AccountOperationDataItem>();
             CreateMap<AccountOperationDataItem, AccountOperationDbo>();
             CreateMap<AccountOperationValueObject, AccountOperationDataItem>();

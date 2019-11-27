@@ -35,9 +35,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PAccountant2.BLL.Tests", "P
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{54421D8E-496A-4114-836E-4DCC9BA6E5E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrenctyRateUtil", "CurrenctyRateUtil\CurrenctyRateUtil.csproj", "{1DE060EF-E7CC-414E-B166-88B9462F9071}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrenctyRateUtil", "CurrenctyRateUtil\CurrenctyRateUtil.csproj", "{1DE060EF-E7CC-414E-B166-88B9462F9071}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CurrenctyRateUtil.Tests", "CurrenctyRateUtil.Tests\CurrenctyRateUtil.Tests.csproj", "{C0B9240B-8145-47D4-A908-7EBE5C9AA0CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CurrenctyRateUtil.Tests", "CurrenctyRateUtil.Tests\CurrenctyRateUtil.Tests.csproj", "{C0B9240B-8145-47D4-A908-7EBE5C9AA0CB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

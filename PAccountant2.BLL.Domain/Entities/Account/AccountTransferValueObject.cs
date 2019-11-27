@@ -1,9 +1,9 @@
-﻿using System;
+﻿using PAccountant2.BLL.Domain.Exceptions.Account;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using PAccountant2.BLL.Domain.Exceptions.Account;
 
-namespace PAccountant2.BLL.Domain.Entities.Accounting
+namespace PAccountant2.BLL.Domain.Entities.Account
 {
     public class AccountTransferValueObject
     {

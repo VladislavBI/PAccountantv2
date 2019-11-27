@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PAccountant2.BLL.Domain.Entities;
-using PAccountant2.BLL.Interfaces.DTO.DataItems.Currency;
 using PAccountant2.DAL.DBO.Constants;
 using PAccountant2.DAL.DBO.Entities;
 using PAccountant2.DAL.DBO.Entities.Accounting;
@@ -56,6 +54,7 @@ namespace PAccountant2.DAL.Context
 
             modelBuilder.Entity<AccountOperationDbo>().ToTable(TablesNames.AccountOperation);
             modelBuilder.Entity<AccountOperationDbo>().Property(prop => prop.Id).UseSqlServerIdentityColumn();
+            modelBuilder.Entity<AccountOperationDbo>().Property(prop => prop.CurrencyId).HasDefaultValue(1);
 
             modelBuilder.Entity<InvestmentDbo>().ToTable(TablesNames.Investment);
             modelBuilder.Entity<InvestmentDbo>().Property(inv => inv.Id).UseSqlServerIdentityColumn();
