@@ -54,13 +54,11 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
         public async Task<IEnumerable<AccountOperationViewItem>> GetHistoryAsync(int accountId, AccountHistoryFiltersViewItem filters)
         {
             var accountEntity = new AccountEntity {Id = accountId};
-            var accountHistory = await accountEntity.GetAccountHistoryFiltered(filters, _dataService);
+            accountEntity.AccountOperations = await accountEntity.GetAccountHistoryFilteredAsync(filters, _dataService);
 
-            var accountOperation = accountHistory.AccountOperations;
+            var mappedOperations = _mapper.Map<IEnumerable<AccountOperationViewItem>>(accountEntity.AccountOperations);
 
-            var mappedHistory = _mapper.Map<IEnumerable<AccountOperationViewItem>>(accountOperation);
-
-            return mappedHistory;
+            return mappedOperations;
         }
 
         public async Task<AccountBalanceViewItem> GetBalanceAsync(int accountId)
@@ -79,9 +77,7 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
             var currentMoneyAmount = await _dataService.GetBalanceAsync(id);
             var account = _mapper.Map<AccountEntity>(currentMoneyAmount);
 
-            account.CheckIsDeletePossible();
-
-            await _dataService.DeleteAccount(id);
+            await account.DeleteAsync(_dataService);
         }
     }
 }

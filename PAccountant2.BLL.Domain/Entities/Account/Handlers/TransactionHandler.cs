@@ -39,7 +39,7 @@ namespace PAccountant2.BLL.Domain.Entities.Account.Handlers
         }
 
         private bool IsWithdrawTransactionAvailable(TransactionValueObject transaction)
-            => transaction.CurrentAmount < transaction.AmountForTransfer;
+            => transaction.CurrentAmount >= transaction.AmountForTransfer;
 
     }
 }

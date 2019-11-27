@@ -45,7 +45,6 @@ namespace PAccountant2.Host.Setup.Mapping
             CreateMap<AccountOperationValueObject, AccountOperationDataItem>();
             CreateMap<AccountOperationValueObject, AccountOperationViewItem>();
             CreateMap<AccountWithHistotyDataItem, AccountEntity>();
-            CreateMap<AccountOperationDataItem, AccountHistoryValueObject>();
             CreateMap<AccountOperationDbo, AccountOperationDataItem>();
             CreateMap<AccountOperationDataItem, AccountOperationDbo>();
             CreateMap<AccountOperationValueObject, AccountOperationDataItem>();

@@ -9,7 +9,7 @@ namespace PAccountant2.BLL.Domain.Entities.Account.Handlers
         public IEnumerable<AccountOperationValueObject> AddNewOperation
             (AccountOperationValueObject newOperation, IEnumerable<AccountOperationValueObject> currentOperations)
         {
-            var clonedOperations = CloneHelper.CloneArray(currentOperations).ToList();
+            var clonedOperations = CloneHelper.CloneArray(currentOperations ?? new List<AccountOperationValueObject>()).ToList();
 
             clonedOperations.Add(newOperation);
 

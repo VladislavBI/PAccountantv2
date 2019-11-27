@@ -1,5 +1,4 @@
-﻿using System;
-using PAccountant2.BLL.Domain.Entities.Account.Handlers;
+﻿using PAccountant2.BLL.Domain.Entities.Account.Handlers;
 using PAccountant2.BLL.Domain.Enum;
 using PAccountant2.BLL.Domain.Exceptions.Account;
 using PAccountant2.BLL.Interfaces.Account;
@@ -7,6 +6,7 @@ using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
 using PAccountant2.BLL.Interfaces.Specifications;
 using PAccountant2.BLL.Interfaces.Specifications.Accounting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,6 +25,8 @@ namespace PAccountant2.BLL.Domain.Entities.Account
 
         private readonly OperationHandler _operationHandler;
 
+        private readonly AccountHistoryHandler _historyHandler;
+
         private readonly AccountFactory _accountFactory;
 
         public AccountEntity()
@@ -32,36 +34,7 @@ namespace PAccountant2.BLL.Domain.Entities.Account
             _transactionHandler = new TransactionHandler();
             _operationHandler = new OperationHandler();
             _accountFactory = new AccountFactory();
-        }
-
-        public AccountHistoryValueObject CreateAccountHistory()
-        {
-            return new AccountHistoryValueObject
-            {
-                AccountOperations = AccountOperations
-            };
-        }
-
-        public AccountHistoryValueObject CreateAccountHistory(IEnumerable<AccountOperationValueObject> operations)
-        {
-            return new AccountHistoryValueObject
-            {
-                AccountOperations = operations
-            };
-        }
-        public AccountOperationValueObject CreateAccountOperation(AccountOperationDataItem operation)
-        {
-            var operationTypeEnum = System.Enum.Parse<AccountBalanceChangeType>(operation.OperationType.ToString());
-
-            var operationValueObject = new AccountOperationValueObject
-            {
-                Id = operation.Id,
-                Amount = operation.Amount,
-                OperationType = operationTypeEnum,
-                Date = operation.Date
-            };
-
-            return operationValueObject;
+            _historyHandler = new AccountHistoryHandler();
         }
 
         public AccountOperationValueObject PutMoney(decimal putAmount)
@@ -96,46 +69,28 @@ namespace PAccountant2.BLL.Domain.Entities.Account
             }
         }
 
-        public void CheckIsDeletePossible()
-        {
-            if (Amount > 0)
-            {
-                throw new CanNotDeleteException(CanNotDeleteReasons.NotNullBalance);
-            }
-        }
-
-        public async Task<AccountHistoryValueObject> GetAccountHistoryFiltered(AccountHistoryFiltersViewItem filters,
+        public async Task<IEnumerable<AccountOperationValueObject>> GetAccountHistoryFilteredAsync(AccountHistoryFiltersViewItem filters,
             IAccountDataService dataService)
         {
-            var accountHistorySpecification = CreateAccountSpecification(filters);
+            var accountHistory = await _historyHandler.GetAccountHistoryAsync(Id, filters, dataService);
 
-            var data = await dataService.GetHistoryAsync(Id, accountHistorySpecification);
+            var historyMapped = accountHistory.Select(oper => 
+                _accountFactory.CreateOperationValueObject(oper.Amount, oper.OperationType, oper.Date, oper.Id));
 
-            var operations = data.AccountOperations.Select(CreateAccountOperation);
-            var history = CreateAccountHistory(operations);
-
-            return history;
-        }
-
-        private static AndSpecification<AccountHistoryFiltersDataItem> CreateAccountSpecification(AccountHistoryFiltersViewItem filters)
-        {
-            var isAmountMatches = new AccountHistoryMatchesAmount(filters);
-            var isDateMatches = new AccountHistoryMatchesAmount(filters);
-            var isTypeMatches = new AccountHistoryMatchesAmount(filters);
-
-            var compositeSpecification = new AndSpecification<AccountHistoryFiltersDataItem>(isAmountMatches, isDateMatches);
-            compositeSpecification = new AndSpecification<AccountHistoryFiltersDataItem>(compositeSpecification, isTypeMatches);
-            return compositeSpecification;
+            return historyMapped;
         }
 
         private bool IsOperationAvailable(decimal neededAmount)
             => Amount >= neededAmount;
 
-        private void CreateAccountOperation(decimal amount, AccountBalanceChangeType operationType)
+        public async Task DeleteAsync(IAccountDataService dataService)
         {
-            var history = CreateAccountHistory();
-            history.AddOperation(amount, operationType);
-            AccountOperations = history.AccountOperations;
+            if (Amount > 0)
+            {
+                throw new CanNotDeleteException(CanNotDeleteReasons.NotNullBalance);
+            }
+
+            await dataService.DeleteAccount(Id);
         }
     }
 }
