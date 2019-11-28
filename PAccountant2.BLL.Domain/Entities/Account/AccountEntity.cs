@@ -21,6 +21,8 @@ namespace PAccountant2.BLL.Domain.Entities.Account
 
         public string Name { get; set; }
 
+        public int CurrencyId { get; set; }
+
         public IEnumerable<AccountOperationValueObject> AccountOperations { get; set; }
 
         private readonly TransactionHandler _transactionHandler;

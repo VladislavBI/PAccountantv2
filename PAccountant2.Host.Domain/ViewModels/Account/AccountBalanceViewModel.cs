@@ -14,5 +14,8 @@ namespace PAccountant2.Host.Domain.ViewModels.Account
         
         [MaxLength(StringLengthConsts.NameLength)]
         public string Name { get; set; }
+
+        [Required]
+        public int CurrencyId { get; set; }
     }
 }
