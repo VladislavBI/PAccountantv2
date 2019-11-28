@@ -83,11 +83,13 @@ namespace PAccountant2.DAL.Services.Accounting
             await _context.SaveChangesAsync();
         }
 
-        public async Task<int> CreateAccountAsync(int accountingId)
+        public async Task<int> CreateAccountAsync(int accountingId, AccountCreateDataItem createModel)
         {
             var newAccount = new AccountDbo
             {
-                AccountingId = accountingId
+                AccountingId = accountingId,
+                Name = createModel.Name,
+                CurrencyId = createModel.CurrencyId
             };
 
             _context.Accounts.Add(newAccount);

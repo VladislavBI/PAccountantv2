@@ -69,8 +69,13 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
             return viewItem;
         }
 
-        public async Task<int> CreateNewAccountAsync(int accountingId)
-            => await _dataService.CreateAccountAsync(accountingId);
+        public async Task<int> CreateNewAccountAsync(int accountingId, AccountCreateViewItem createModel)
+        {
+            var mappedModel = _mapper.Map<AccountCreateDataItem>(createModel);
+            var newAccId = await _dataService.CreateAccountAsync(accountingId, mappedModel);
+
+            return newAccId;
+        } 
 
         public async Task DeleteAccount(int id)
         {

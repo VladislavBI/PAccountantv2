@@ -29,12 +29,16 @@ namespace PAccountant2.DAL.Migrations.Migrations
 
                     b.Property<decimal>("Amount");
 
+                    b.Property<int>("CurrencyId");
+
                     b.Property<string>("Name")
                         .HasMaxLength(500);
 
                     b.HasKey("Id");
 
                     b.HasIndex("AccountingId");
+
+                    b.HasIndex("CurrencyId");
 
                     b.ToTable("Account");
                 });
@@ -231,6 +235,11 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         .WithMany("Accounts")
                         .HasForeignKey("AccountingId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", "Currency")
+                        .WithMany("Accounts")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Account.AccountOperationDbo", b =>

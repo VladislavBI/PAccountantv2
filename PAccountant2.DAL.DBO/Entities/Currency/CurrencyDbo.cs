@@ -19,6 +19,8 @@ namespace PAccountant2.DAL.DBO.Entities.Currency
 
         public ICollection<AccountingOptionsDbo> AccountingOptions { get; set; }
 
+        public ICollection<AccountDbo> Accounts { get; set; }
+
         public ICollection<ExchangeRateDbo> BaseCurrenciesRates { get; set; }
 
         public ICollection<ExchangeRateDbo> ResultCurrenciesRates { get; set; }

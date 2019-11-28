@@ -28,11 +28,13 @@ namespace PAccountantv2.Host.Api.Controllers
         /// Create new account in the accounting
         /// </summary>
         /// <param name="acctingId">id of accounting to create in</param>
+        /// <param name="model">new account data</param>
         /// <response code="200">new account id</response>
         [HttpPost]
-        public async Task<IActionResult> AddNewAccount(int acctingId)
+        public async Task<IActionResult> AddNewAccount(int acctingId, AccountCreateViewModel model)
         {
-            var acId = await _service.CreateNewAccountAsync(acctingId);
+            var mappedModel = _mapper.Map<AccountCreateViewItem>(model);
+            var acId = await _service.CreateNewAccountAsync(acctingId, mappedModel);
 
             return Ok(acId);
         }

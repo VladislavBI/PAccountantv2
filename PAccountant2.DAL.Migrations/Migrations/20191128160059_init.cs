@@ -88,7 +88,9 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Amount = table.Column<decimal>(nullable: false),
-                    AccountingId = table.Column<int>(nullable: false)
+                    AccountingId = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(maxLength: 500, nullable: true),
+                    CurrencyId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -99,6 +101,12 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         principalTable: "Accounting",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Account_Currency_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currency",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -181,8 +189,8 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     OperationType = table.Column<int>(nullable: false),
                     Amount = table.Column<decimal>(nullable: false),
                     AccountId = table.Column<int>(nullable: false),
-                    ContragentId = table.Column<int>(nullable: false),
-                    CurrencyId = table.Column<int>(nullable: false)
+                    ContragentId = table.Column<int>(nullable: true),
+                    CurrencyId = table.Column<int>(nullable: false, defaultValue: 1)
                 },
                 constraints: table =>
                 {
@@ -247,6 +255,11 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 name: "IX_Account_AccountingId",
                 table: "Account",
                 column: "AccountingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Account_CurrencyId",
+                table: "Account",
+                column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accounting_UserEmail",
@@ -332,10 +345,10 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 name: "Contragent");
 
             migrationBuilder.DropTable(
-                name: "Currency");
+                name: "Investment");
 
             migrationBuilder.DropTable(
-                name: "Investment");
+                name: "Currency");
 
             migrationBuilder.DropTable(
                 name: "Accounting");
