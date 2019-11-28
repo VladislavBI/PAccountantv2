@@ -11,5 +11,7 @@ namespace PAccountant2.BLL.Interfaces.Account
         Task TransferMoneyToOtherAccountAsync(int acctingId, int fromId, AccountTransferViewItem viewData);
 
         Task<AccountingOptionsViewItem> GetOptionsAsync(int id);
+
+        Task UpdateOptionsAsync(int id, AccountingOptionsViewItem options);
     }
 }

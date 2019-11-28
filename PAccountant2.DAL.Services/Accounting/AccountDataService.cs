@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PAccountant2.BLL.Interfaces.Account;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.BLL.Interfaces.Specifications;
 using PAccountant2.DAL.Context;
-using PAccountant2.DAL.DBO.Entities;
+using PAccountant2.DAL.DBO.Entities.Account;
 using PAccountant2.DAL.DBO.Entities.Accounting;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Z.EntityFramework.Plus;
 
 namespace PAccountant2.DAL.Services.Accounting

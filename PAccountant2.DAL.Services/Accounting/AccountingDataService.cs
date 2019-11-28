@@ -7,6 +7,7 @@ using PAccountant2.DAL.Context;
 using PAccountant2.DAL.DBO.Entities;
 using System.Threading.Tasks;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Accounting;
+using PAccountant2.BLL.Interfaces.DTO.ViewItems.Accounting;
 using PAccountant2.BLL.Interfaces.Specifications;
 using PAccountant2.DAL.DBO.Entities.Accounting;
 
@@ -87,6 +88,14 @@ namespace PAccountant2.DAL.Services.Accounting
             var mappedOptions =  _mapper.Map<AccountingOptionsDataItem>(dbOptions);
 
             return mappedOptions;
+        }
+
+        public async Task UpdateOptionsAsync(int id, AccountingOptionsViewItem options)
+        {
+            var dbOptions = _mapper.Map<AccountingOptionsDbo>(options);
+            _context.Entry(options).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
         }
     }
 }

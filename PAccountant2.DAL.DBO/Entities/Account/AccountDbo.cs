@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using PAccountant2.DAL.DBO.Entities.Accounting;
+using System.Collections.Generic;
 
-namespace PAccountant2.DAL.DBO.Entities.Accounting
+namespace PAccountant2.DAL.DBO.Entities.Account
 {
     public class AccountDbo
     {
@@ -11,6 +12,8 @@ namespace PAccountant2.DAL.DBO.Entities.Accounting
         public AccountingDbo Accounting { get; set; }
 
         public int AccountingId { get; set; }
+
+        public string Name { get; set; }
 
         public ICollection<AccountOperationDbo> AccountHistory { get; set; }
 

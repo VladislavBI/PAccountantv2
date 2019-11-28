@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using PAccountant2.DAL.DBO.Entities.Account;
 using PAccountant2.DAL.DBO.Entities.Accounting;
 using PAccountant2.DAL.DBO.Entities.Investment;
+using System.Collections.Generic;
 
 namespace PAccountant2.DAL.DBO.Entities.Currency
 {

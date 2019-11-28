@@ -53,5 +53,16 @@ namespace PAccountantv2.Host.Api.Controllers
 
             return Ok(mappedOptions);
         }
+
+        [Route("options")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateOptions(int id, AccountingOptionsViewItem options)
+        {
+            var mappedOptions = _mapper.Map<AccountingOptionsViewItem>(options);
+
+            await _accountingService.UpdateOptionsAsync(id, options);
+
+            return Ok();
+        }
     }
 }

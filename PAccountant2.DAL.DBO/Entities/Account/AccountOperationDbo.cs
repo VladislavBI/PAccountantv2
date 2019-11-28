@@ -1,8 +1,8 @@
-﻿using System;
-using PAccountant2.BLL.Domain.Enum;
+﻿using PAccountant2.BLL.Domain.Enum;
 using PAccountant2.DAL.DBO.Entities.Currency;
+using System;
 
-namespace PAccountant2.DAL.DBO.Entities.Accounting
+namespace PAccountant2.DAL.DBO.Entities.Account
 {
     public class AccountOperationDbo
     {
