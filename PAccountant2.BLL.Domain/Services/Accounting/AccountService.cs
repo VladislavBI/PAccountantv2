@@ -79,5 +79,12 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
 
             await account.DeleteAsync(_dataService);
         }
+
+        public async Task UpdateAccountAsync(int id, AccountUpdateViewItem updateModel)
+        {
+            var mappedModel = _mapper.Map<AccountUpdateDataItem>(updateModel);
+
+            await _dataService.UpdateAccountAsync(id, mappedModel);
+        }
     }
 }

@@ -103,5 +103,14 @@ namespace PAccountant2.DAL.Services.Accounting
 
             await _context.SaveChangesAsync();
         }
+
+        public async Task UpdateAccountAsync(int id, AccountUpdateDataItem mappedModel)
+        {
+            var dbAccount = await _context.Accounts.FirstOrDefaultAsync(acc => acc.Id == id);
+
+            dbAccount.Name = mappedModel.Name;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

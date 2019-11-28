@@ -37,6 +37,10 @@ namespace PAccountant2.Host.Setup.Mapping
 
             CreateMap<AccountFilterViewModel, AccountFilterViewItem>();
             CreateMap<AccountHistoryFiltersViewModel, AccountHistoryFiltersViewItem>();
+
+            CreateMap<AccountUpdateViewModel, AccountUpdateViewItem>();
+            CreateMap<AccountUpdateViewItem, AccountUpdateDataItem>();
+
         }
     }
 }

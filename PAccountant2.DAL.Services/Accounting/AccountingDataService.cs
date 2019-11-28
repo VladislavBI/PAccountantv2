@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PAccountant2.BLL.Interfaces.Account;
@@ -46,14 +47,16 @@ namespace PAccountant2.DAL.Services.Accounting
             AndSpecification<AccountBalanceDataItem> accountingSpecification)
         {
             var dbAccounting = await _context.Accountings
-                .FirstOrDefaultAsync(accting => accting.Id == id);
+                    .Include(x => x.Accounts)
+                    .FirstOrDefaultAsync(accting => accting.Id == id);
 
             var accounts = await _context.Accounts
                 .Where(acc => acc.AccountingId == id)
                 .Select(acc => new AccountBalanceDataItem
                 {
                     Id = acc.Id,
-                    Amount = acc.Amount
+                    Amount = acc.Amount,
+                    Name =  acc.Name
                 })
                 .Where(acc => accountingSpecification == null || accountingSpecification.IsSatisfied(acc))
                 .ToListAsync();

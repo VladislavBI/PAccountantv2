@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PAccountant2.Common.Constants;
 using PAccountant2.DAL.DBO.Constants;
 using PAccountant2.DAL.DBO.Entities;
 using PAccountant2.DAL.DBO.Entities.Account;
@@ -50,7 +51,7 @@ namespace PAccountant2.DAL.Context
 
             modelBuilder.Entity<AccountDbo>().ToTable(TablesNames.Account);
             modelBuilder.Entity<AccountDbo>().Property(x => x.Id).UseSqlServerIdentityColumn();
-            modelBuilder.Entity<AccountDbo>().Property(x => x.Name).HasMaxLength(500);
+            modelBuilder.Entity<AccountDbo>().Property(x => x.Name).HasMaxLength(StringLengthConsts.NameLength);
             modelBuilder.Entity<AccountDbo>().HasMany(entity => entity.AccountHistory).WithOne(entity => entity.Account)
                 .HasForeignKey(prop => prop.AccountId);
 

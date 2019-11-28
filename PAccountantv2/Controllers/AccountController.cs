@@ -112,5 +112,20 @@ namespace PAccountantv2.Host.Api.Controllers
 
             return Ok();
         }
+
+        /// <summary>
+        /// Update account
+        /// </summary>
+        /// <param name="id">id of account to update</param>
+        /// <param name="model">account update info</param>
+        [Route("{id}")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateAccount(int id, AccountUpdateViewModel model)
+        {
+            var mappedModel = _mapper.Map<AccountUpdateViewItem>(model);
+            await _service.UpdateAccountAsync(id, mappedModel);
+
+            return Ok();
+        }
     }
 }

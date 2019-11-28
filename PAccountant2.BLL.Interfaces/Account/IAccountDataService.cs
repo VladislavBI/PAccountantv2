@@ -20,5 +20,7 @@ namespace PAccountant2.BLL.Interfaces.Account
         Task<int> CreateAccountAsync(int accountingId);
         
          Task DeleteAccount(int id);
+
+        Task UpdateAccountAsync(int id, AccountUpdateDataItem mappedModel);
     }
 }
