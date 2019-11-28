@@ -31,9 +31,12 @@ namespace PAccountant2.Host.Setup.Mapping
             CreateMap<AccountingOptionsDbo, AccountingOptionsEntity>()
                 .ReverseMap();
 
-            CreateMap<AccountingOptionsDbo, AccountingOptionsDataItem>();
-            CreateMap<AccountingOptionsDataItem, AccountingOptionsViewItem>();
-            CreateMap<AccountingOptionsViewItem, AccountingOptionsViewModel>();
+            CreateMap<AccountingOptionsDbo, AccountingOptionsDataItem>()
+                .ReverseMap();
+            CreateMap<AccountingOptionsDataItem, AccountingOptionsViewItem>()
+                .ReverseMap();
+            CreateMap<AccountingOptionsViewItem, AccountingOptionsViewModel>()
+                .ReverseMap();
 
             CreateMap<CurrencyDbo, CurrencyDataItem>();
             CreateMap<CurrencyDataItem, CurrencyViewItem>();

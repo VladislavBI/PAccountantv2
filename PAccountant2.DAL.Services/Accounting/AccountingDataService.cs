@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PAccountant2.BLL.Interfaces.Account;
@@ -7,6 +8,7 @@ using PAccountant2.DAL.Context;
 using PAccountant2.DAL.DBO.Entities;
 using System.Threading.Tasks;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Accounting;
+using PAccountant2.BLL.Interfaces.DTO.ViewItems.Accounting;
 using PAccountant2.BLL.Interfaces.Specifications;
 using PAccountant2.DAL.DBO.Entities.Accounting;
 
@@ -45,14 +47,16 @@ namespace PAccountant2.DAL.Services.Accounting
             AndSpecification<AccountBalanceDataItem> accountingSpecification)
         {
             var dbAccounting = await _context.Accountings
-                .FirstOrDefaultAsync(accting => accting.Id == id);
+                    .Include(x => x.Accounts)
+                    .FirstOrDefaultAsync(accting => accting.Id == id);
 
             var accounts = await _context.Accounts
                 .Where(acc => acc.AccountingId == id)
                 .Select(acc => new AccountBalanceDataItem
                 {
                     Id = acc.Id,
-                    Amount = acc.Amount
+                    Amount = acc.Amount,
+                    Name =  acc.Name
                 })
                 .Where(acc => accountingSpecification == null || accountingSpecification.IsSatisfied(acc))
                 .ToListAsync();
@@ -87,6 +91,14 @@ namespace PAccountant2.DAL.Services.Accounting
             var mappedOptions =  _mapper.Map<AccountingOptionsDataItem>(dbOptions);
 
             return mappedOptions;
+        }
+
+        public async Task UpdateOptionsAsync(int id, AccountingOptionsViewItem options)
+        {
+            var dbOptions = _mapper.Map<AccountingOptionsDbo>(options);
+            _context.Entry(options).State = EntityState.Modified;
+
+            await _context.SaveChangesAsync();
         }
     }
 }

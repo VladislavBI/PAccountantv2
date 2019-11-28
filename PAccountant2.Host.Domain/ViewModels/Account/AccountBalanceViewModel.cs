@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using PAccountant2.Common.Constants;
 
 namespace PAccountant2.Host.Domain.ViewModels.Account
 {
@@ -10,5 +11,8 @@ namespace PAccountant2.Host.Domain.ViewModels.Account
         [Required]
         [Range(0, double.MaxValue, ErrorMessage = "Money amount cann't be negative")]
         public decimal Amount { get; set; }
+        
+        [MaxLength(StringLengthConsts.NameLength)]
+        public string Name { get; set; }
     }
 }

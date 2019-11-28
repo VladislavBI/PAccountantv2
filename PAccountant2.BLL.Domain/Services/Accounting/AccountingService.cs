@@ -52,6 +52,13 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
             await _accountingDataService.TransferMoneyToOtherAccountAsync(dbTransfer);
         }
 
+        public async Task UpdateOptionsAsync(int id, AccountingOptionsViewItem options)
+        {
+            var mappedOptions = _mapper.Map<AccountingOptionsDataItem>(options);
+
+            await _accountingDataService.UpdateOptionsAsync(id, options);
+        }
+
         public async Task<AccountingOptionsViewItem> GetOptionsAsync(int id)
         {
             AccountingOptionsDataItem dbAccOptions = await _accountingDataService.GetOptionsAsync(id);

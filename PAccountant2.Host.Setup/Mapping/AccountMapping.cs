@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using PAccountant2.BLL.Domain.Entities.Account;
-using PAccountant2.BLL.Domain.Entities.Accounting;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
-using PAccountant2.DAL.DBO.Entities;
+using PAccountant2.DAL.DBO.Entities.Account;
 using PAccountant2.DAL.DBO.Entities.Accounting;
 using PAccountant2.Host.Domain.ViewModels.Account;
-using PAccountant2.Host.Domain.ViewModels.Accounting;
 
 namespace PAccountant2.Host.Setup.Mapping
 {
@@ -39,6 +37,10 @@ namespace PAccountant2.Host.Setup.Mapping
 
             CreateMap<AccountFilterViewModel, AccountFilterViewItem>();
             CreateMap<AccountHistoryFiltersViewModel, AccountHistoryFiltersViewItem>();
+
+            CreateMap<AccountUpdateViewModel, AccountUpdateViewItem>();
+            CreateMap<AccountUpdateViewItem, AccountUpdateDataItem>();
+
         }
     }
 }
