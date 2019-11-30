@@ -28,11 +28,13 @@ namespace PAccountantv2.Host.Api.Controllers
         /// Create new account in the accounting
         /// </summary>
         /// <param name="acctingId">id of accounting to create in</param>
+        /// <param name="model">new account data</param>
         /// <response code="200">new account id</response>
         [HttpPost]
-        public async Task<IActionResult> AddNewAccount(int acctingId)
+        public async Task<IActionResult> AddNewAccount(int acctingId, AccountCreateViewModel model)
         {
-            var acId = await _service.CreateNewAccountAsync(acctingId);
+            var mappedModel = _mapper.Map<AccountCreateViewItem>(model);
+            var acId = await _service.CreateNewAccountAsync(acctingId, mappedModel);
 
             return Ok(acId);
         }
@@ -53,13 +55,13 @@ namespace PAccountantv2.Host.Api.Controllers
         }
 
         /// <summary>
-        /// Add money to account
+        /// Put money to account
         /// </summary>
         /// <param name="id">id of account to get</param>
-        /// <param name="model">model of money amount to add</param>
+        /// <param name="model">model of money amount to put</param>
         [Route("{id}/add")]
         [HttpPut]
-        public async Task<IActionResult> AddMoneyToAccount(int id, MoneyChangeViewModel model)
+        public async Task<IActionResult> PutMoneyToAccount(int id, MoneyChangeViewModel model)
         {
             var viewItem = _mapper.Map<MoneyChangeViewItem>(model);
             await _service.PutMoneyAsync(id, viewItem);

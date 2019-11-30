@@ -7,5 +7,8 @@ namespace PAccountant2.Host.Domain.ViewModels.Account
         [Required]
         [Range(0, float.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
         public float Amount { get; set; }
+
+        [Required]
+        public int CurrencyId { get; set; }
     }
 }

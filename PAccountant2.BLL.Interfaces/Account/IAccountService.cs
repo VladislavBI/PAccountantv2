@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
 
 namespace PAccountant2.BLL.Interfaces.Account
 {
@@ -14,7 +14,7 @@ namespace PAccountant2.BLL.Interfaces.Account
 
         Task<IEnumerable<AccountOperationViewItem>> GetHistoryAsync(int accountId, AccountHistoryFiltersViewItem filters);
 
-        Task<int> CreateNewAccountAsync(int accountingId);
+        Task<int> CreateNewAccountAsync(int accountingId, AccountCreateViewItem createModel);
         
         Task DeleteAccount(int id);
 

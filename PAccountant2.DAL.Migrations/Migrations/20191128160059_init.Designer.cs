@@ -10,7 +10,7 @@ using PAccountant2.DAL.Context;
 namespace PAccountant2.DAL.Migrations.Migrations
 {
     [DbContext(typeof(PaccountantContext))]
-    [Migration("20191123203532_init")]
+    [Migration("20191128160059_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Accounting.AccountDbo", b =>
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Account.AccountDbo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,14 +31,21 @@ namespace PAccountant2.DAL.Migrations.Migrations
 
                     b.Property<decimal>("Amount");
 
+                    b.Property<int>("CurrencyId");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(500);
+
                     b.HasKey("Id");
 
                     b.HasIndex("AccountingId");
 
+                    b.HasIndex("CurrencyId");
+
                     b.ToTable("Account");
                 });
 
-            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Accounting.AccountOperationDbo", b =>
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Account.AccountOperationDbo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -48,9 +55,11 @@ namespace PAccountant2.DAL.Migrations.Migrations
 
                     b.Property<decimal>("Amount");
 
-                    b.Property<int>("ContragentId");
+                    b.Property<int?>("ContragentId");
 
-                    b.Property<int>("CurrencyId");
+                    b.Property<int>("CurrencyId")
+                        .ValueGeneratedOnAdd()
+                        .HasDefaultValue(1);
 
                     b.Property<DateTime>("Date");
 
@@ -222,17 +231,22 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Accounting.AccountDbo", b =>
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Account.AccountDbo", b =>
                 {
                     b.HasOne("PAccountant2.DAL.DBO.Entities.Accounting.AccountingDbo", "Accounting")
                         .WithMany("Accounts")
                         .HasForeignKey("AccountingId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", "Currency")
+                        .WithMany("Accounts")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
-            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Accounting.AccountOperationDbo", b =>
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Account.AccountOperationDbo", b =>
                 {
-                    b.HasOne("PAccountant2.DAL.DBO.Entities.Accounting.AccountDbo", "Account")
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Account.AccountDbo", "Account")
                         .WithMany("AccountHistory")
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade);

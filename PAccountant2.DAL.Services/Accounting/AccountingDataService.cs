@@ -56,7 +56,8 @@ namespace PAccountant2.DAL.Services.Accounting
                 {
                     Id = acc.Id,
                     Amount = acc.Amount,
-                    Name =  acc.Name
+                    Name =  acc.Name,
+                    CurrencyId = acc.CurrencyId
                 })
                 .Where(acc => accountingSpecification == null || accountingSpecification.IsSatisfied(acc))
                 .ToListAsync();

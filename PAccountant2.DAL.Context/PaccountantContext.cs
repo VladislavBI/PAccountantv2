@@ -74,6 +74,7 @@ namespace PAccountant2.DAL.Context
             modelBuilder.Entity<CurrencyDbo>().ToTable(TablesNames.Currency);
             modelBuilder.Entity<CurrencyDbo>().Property(cur => cur.Id).UseSqlServerIdentityColumn();
             modelBuilder.Entity<CurrencyDbo>().HasMany(cur => cur.AccountOperations).WithOne(acc => acc.Currency).HasForeignKey(acc => acc.CurrencyId);
+            modelBuilder.Entity<CurrencyDbo>().HasMany(cur => cur.Accounts).WithOne(acc => acc.Currency).HasForeignKey(acc => acc.CurrencyId).OnDelete(DeleteBehavior.Restrict); ;
             modelBuilder.Entity<CurrencyDbo>().HasMany(cur => cur.InvestmentOperations).WithOne(acc => acc.Currency).HasForeignKey(acc => acc.CurrencyId);
 
             modelBuilder.Entity<ExchangeRateDbo>().ToTable(TablesNames.ExchangeRate);

@@ -22,6 +22,7 @@ namespace PAccountant2.BLL.Domain.Entities.Accounting
 
         public IEnumerable<AccountEntity> Accounts { get; set; }
 
+
         public AccountTransferValueObject TransferMoneyBeetwenAccount(int fromId, int toId, decimal amount)
         {
             CheckMissingAccounting();

@@ -1,5 +1,6 @@
 ﻿using PAccountant2.DAL.DBO.Entities.Accounting;
 using System.Collections.Generic;
+using PAccountant2.DAL.DBO.Entities.Currency;
 
 namespace PAccountant2.DAL.DBO.Entities.Account
 {
@@ -14,6 +15,10 @@ namespace PAccountant2.DAL.DBO.Entities.Account
         public int AccountingId { get; set; }
 
         public string Name { get; set; }
+
+        public CurrencyDbo Currency { get; set; }
+
+        public int CurrencyId { get; set; }
 
         public ICollection<AccountOperationDbo> AccountHistory { get; set; }
 

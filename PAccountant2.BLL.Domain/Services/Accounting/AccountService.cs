@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PAccountant2.BLL.Domain.Entities.Account;
 using PAccountant2.BLL.Interfaces.Account;
+using PAccountant2.BLL.Interfaces.Currency;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
 using System.Collections.Generic;
@@ -12,13 +13,16 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
     {
         private readonly IAccountDataService _dataService;
 
+        private readonly ICurrencyDataService _currencyDataService;
+
         private readonly IMapper _mapper;
 
 
-        public AccountService(IAccountDataService dataService, IMapper mapper)
+        public AccountService(IAccountDataService dataService, IMapper mapper, ICurrencyDataService currencyDataService)
         {
             _dataService = dataService;
             _mapper = mapper;
+            _currencyDataService = currencyDataService;
         }
 
 
@@ -27,8 +31,9 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
 
             var currentMoneyAmount = await _dataService.GetBalanceAsync(accountId);
             var account = _mapper.Map<AccountEntity>(currentMoneyAmount);
-
-            var newOperation = account.PutMoney(model.Amount);
+            var exchangeRates = await _currencyDataService.GetExchangeRates();
+            
+            var newOperation = account.PutMoney(model.Amount, model.CurrencyId, exchangeRates);
 
             var newAmountDataItem = _mapper.Map<MoneyChangeDataItem>(account);
             await _dataService.SaveNewMoneyAmountAsync(newAmountDataItem);
@@ -41,8 +46,9 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
         {
             var currentMoneyAmount = await _dataService.GetBalanceAsync(accountId);
             var account = _mapper.Map<AccountEntity>(currentMoneyAmount);
+            var exchangeRates = await _currencyDataService.GetExchangeRates();
 
-            var newOperation = account.WithdrawMoney(model.Amount);
+            var newOperation = account.WithdrawMoney(model.Amount, model.CurrencyId, exchangeRates);
 
             var newAmountDataItem = _mapper.Map<MoneyChangeDataItem>(account);
             await _dataService.SaveNewMoneyAmountAsync(newAmountDataItem);
@@ -69,8 +75,13 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
             return viewItem;
         }
 
-        public async Task<int> CreateNewAccountAsync(int accountingId)
-            => await _dataService.CreateAccountAsync(accountingId);
+        public async Task<int> CreateNewAccountAsync(int accountingId, AccountCreateViewItem createModel)
+        {
+            var mappedModel = _mapper.Map<AccountCreateDataItem>(createModel);
+            var newAccId = await _dataService.CreateAccountAsync(accountingId, mappedModel);
+
+            return newAccId;
+        } 
 
         public async Task DeleteAccount(int id)
         {
