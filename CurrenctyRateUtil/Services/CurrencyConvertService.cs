@@ -25,7 +25,9 @@ namespace CurrenctyRateUtil.Services
             Func<ExchangeRateModel, bool> revertRate
                 = r => r.BaseCurrencyId == model.ResultCurrencyId && r.ResultCurrencyId == model.BaseCurrencyId;
 
-            resultAmount = SameRateConvert(model, resultAmount, sameRate);
+            resultAmount = BaseResultIdEqualConvert(model, resultAmount);
+
+            resultAmount = resultAmount ?? SameRateConvert(model, resultAmount, sameRate);
             resultAmount = resultAmount ?? RevertRateConvert(model, resultAmount, revertRate);
 
             resultAmount = resultAmount ?? CrossRateResultsConvert(model, resultAmount);
@@ -34,6 +36,16 @@ namespace CurrenctyRateUtil.Services
             resultAmount = resultAmount ?? CrossRateBaseResultConvert(model, resultAmount);
 
             return resultAmount ?? model.Amount;
+        }
+
+        private static decimal? BaseResultIdEqualConvert(CurrencyConvertModel model, decimal? resultAmount)
+        {
+            if (model.BaseCurrencyId == model.ResultCurrencyId)
+            {
+                resultAmount = model.Amount;
+            }
+
+            return resultAmount;
         }
 
         private static decimal? CrossRateBaseResultConvert(CurrencyConvertModel model, decimal? resultAmount)

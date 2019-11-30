@@ -12,9 +12,9 @@ namespace PAccountant2.DAL.Services.Currency
     {
         private readonly PaccountantContext _context;
 
-        private readonly Mapper _mapper;
+        private readonly IMapper _mapper;
         
-        public CurrencyDataService(PaccountantContext context, Mapper mapper)
+        public CurrencyDataService(PaccountantContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
