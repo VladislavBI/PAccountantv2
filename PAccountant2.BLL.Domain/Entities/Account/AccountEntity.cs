@@ -64,9 +64,13 @@ namespace PAccountant2.BLL.Domain.Entities.Account
             return newOperation;
         }
 
-        public AccountOperationValueObject WithdrawMoney(decimal withdrawAmount)
+        public AccountOperationValueObject WithdrawMoney(decimal withdrawAmount, int withdrawCurrencyId, IEnumerable<ExchangeRateDataItem> exchangeRates)
         {
-            var transaction = _accountFactory.CreateTransactionValueObject(withdrawAmount, Amount);
+            var ratesValueObjects = exchangeRates
+                .Select(rate => _currencyFactory.CreateExchangeRateValueObject(rate.Buy, rate.Sell, rate.BaseCurrencyId, rate.ResultCurrencyId));
+            var convertedWithdrawAmount = _currencyHandler.ConvertToRate(withdrawAmount, CurrencyId, withdrawCurrencyId, ratesValueObjects);
+
+            var transaction = _accountFactory.CreateTransactionValueObject(convertedWithdrawAmount, Amount);
             Amount = _transactionHandler.PerformWithdrawTransaction(transaction);
 
             var newOperation =

@@ -46,8 +46,9 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
         {
             var currentMoneyAmount = await _dataService.GetBalanceAsync(accountId);
             var account = _mapper.Map<AccountEntity>(currentMoneyAmount);
+            var exchangeRates = await _currencyDataService.GetExchangeRates();
 
-            var newOperation = account.WithdrawMoney(model.Amount);
+            var newOperation = account.WithdrawMoney(model.Amount, model.CurrencyId, exchangeRates);
 
             var newAmountDataItem = _mapper.Map<MoneyChangeDataItem>(account);
             await _dataService.SaveNewMoneyAmountAsync(newAmountDataItem);
