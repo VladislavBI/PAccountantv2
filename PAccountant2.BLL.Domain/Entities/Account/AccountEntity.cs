@@ -48,14 +48,13 @@ namespace PAccountant2.BLL.Domain.Entities.Account
             _historyHandler = new AccountHistoryHandler();
         }
 
-        public AccountOperationValueObject PutMoney(decimal putAmount, int currencyId, IEnumerable<ExchangeRateDataItem> exchangeRates)
+        public AccountOperationValueObject PutMoney(decimal putAmount, int putCurrencyId, IEnumerable<ExchangeRateDataItem> exchangeRates)
         {
             var ratesValueObjects = exchangeRates
                 .Select(rate => _currencyFactory.CreateExchangeRateValueObject(rate.Buy, rate.Sell, rate.BaseCurrencyId, rate.ResultCurrencyId));
+            var convertedPutAmount = _currencyHandler.ConvertToRate(putAmount, CurrencyId, putCurrencyId, ratesValueObjects);
 
-            var convertedPutAmount = _currencyHandler.ConvertToRate(putAmount, CurrencyId, ratesValueObjects);
-
-            var transaction = _accountFactory.CreateTransactionValueObject(putAmount, Amount);
+            var transaction = _accountFactory.CreateTransactionValueObject(convertedPutAmount, Amount);
             Amount = _transactionHandler.PerformPutTransaction(transaction);
 
             var newOperation =

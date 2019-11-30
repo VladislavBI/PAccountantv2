@@ -5,6 +5,7 @@ using PAccountant2.BLL.Domain.Services.Accounting;
 using PAccountant2.BLL.Domain.Services.Investment;
 using PAccountant2.BLL.Interfaces.Account;
 using PAccountant2.BLL.Interfaces.Authentification;
+using PAccountant2.BLL.Interfaces.Currency;
 using PAccountant2.BLL.Interfaces.Investment;
 using PAccountant2.BLL.Interfaces.Migration;
 using PAccountant2.DAL.Services;

@@ -48,8 +48,8 @@ namespace CurrenctyRateUtil.Parsers
         {
             return pbRates.ExchangeRate.Select(r => new SimpleRateModel
             {
-                Currency = r.Currency,
-                BaseCurrency = r.BaseCurrency,
+                Currency = r.BaseCurrency,
+                BaseCurrency = r.Currency,
                 Buy = r.PurchaseRate,
                 Sell = r.SaleRate
             });
@@ -58,6 +58,15 @@ namespace CurrenctyRateUtil.Parsers
         Uri CreateRequestUri()
         {
             var date = DateTime.Now;
+            if (date.DayOfWeek == DayOfWeek.Saturday)
+            {
+                date = date.AddDays(-1);
+            }
+            if (date.DayOfWeek == DayOfWeek.Sunday)
+            {
+                date = date.AddDays(-2);
+            }
+
             var stringDate = date.ToString(DateFormat);
 
             var sourceApi = RequestUris.PrivatBank;
