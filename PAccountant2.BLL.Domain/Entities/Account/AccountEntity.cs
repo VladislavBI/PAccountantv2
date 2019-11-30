@@ -1,11 +1,11 @@
 ﻿using PAccountant2.BLL.Domain.Entities.Account.Handlers;
+using PAccountant2.BLL.Domain.Entities.Accounting.Handlers;
+using PAccountant2.BLL.Domain.Entities.Currency.Handlers;
 using PAccountant2.BLL.Domain.Enum;
 using PAccountant2.BLL.Domain.Exceptions.Account;
 using PAccountant2.BLL.Interfaces.Account;
-using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
+using PAccountant2.BLL.Interfaces.DTO.DataItems.Currency;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
-using PAccountant2.BLL.Interfaces.Specifications;
-using PAccountant2.BLL.Interfaces.Specifications.Accounting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,16 +33,28 @@ namespace PAccountant2.BLL.Domain.Entities.Account
 
         private readonly AccountFactory _accountFactory;
 
+        private readonly CurrencyFactory _currencyFactory;
+
+        private readonly CurrencyHandler _currencyHandler;
+
+
         public AccountEntity()
         {
+            _currencyFactory = new CurrencyFactory();
+            _currencyHandler = new CurrencyHandler();
             _transactionHandler = new TransactionHandler();
             _operationHandler = new OperationHandler();
             _accountFactory = new AccountFactory();
             _historyHandler = new AccountHistoryHandler();
         }
 
-        public AccountOperationValueObject PutMoney(decimal putAmount)
+        public AccountOperationValueObject PutMoney(decimal putAmount, int currencyId, IEnumerable<ExchangeRateDataItem> exchangeRates)
         {
+            var ratesValueObjects = exchangeRates
+                .Select(rate => _currencyFactory.CreateExchangeRateValueObject(rate.Buy, rate.Sell, rate.BaseCurrencyId, rate.ResultCurrencyId));
+
+            var convertedPutAmount = _currencyHandler.ConvertToRate(putAmount, CurrencyId, ratesValueObjects);
+
             var transaction = _accountFactory.CreateTransactionValueObject(putAmount, Amount);
             Amount = _transactionHandler.PerformPutTransaction(transaction);
 
@@ -78,7 +90,7 @@ namespace PAccountant2.BLL.Domain.Entities.Account
         {
             var accountHistory = await _historyHandler.GetAccountHistoryAsync(Id, filters, dataService);
 
-            var historyMapped = accountHistory.Select(oper => 
+            var historyMapped = accountHistory.Select(oper =>
                 _accountFactory.CreateOperationValueObject(oper.Amount, oper.OperationType, oper.Date, oper.Id));
 
             return historyMapped;

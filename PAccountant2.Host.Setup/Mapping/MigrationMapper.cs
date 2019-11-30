@@ -17,7 +17,8 @@ namespace PAccountant2.Host.Setup.Mapping
 
             CreateMap<ExchangeRateDataItem, ExchangeRateDbo>()
                 .ForMember(dbo => dbo.BaseCurrencyId, opt => opt.MapFrom(di => di.BaseCurrency.Id))
-                .ForMember(dbo => dbo.ResultCurrencyId, opt => opt.MapFrom(di => di.ResultCurrency.Id));
+                .ForMember(dbo => dbo.ResultCurrencyId, opt => opt.MapFrom(di => di.ResultCurrency.Id))
+            .ReverseMap();
         }
     }
 }

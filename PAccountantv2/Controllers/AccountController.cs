@@ -55,13 +55,13 @@ namespace PAccountantv2.Host.Api.Controllers
         }
 
         /// <summary>
-        /// Add money to account
+        /// Put money to account
         /// </summary>
         /// <param name="id">id of account to get</param>
-        /// <param name="model">model of money amount to add</param>
+        /// <param name="model">model of money amount to put</param>
         [Route("{id}/add")]
         [HttpPut]
-        public async Task<IActionResult> AddMoneyToAccount(int id, MoneyChangeViewModel model)
+        public async Task<IActionResult> PutMoneyToAccount(int id, MoneyChangeViewModel model)
         {
             var viewItem = _mapper.Map<MoneyChangeViewItem>(model);
             await _service.PutMoneyAsync(id, viewItem);

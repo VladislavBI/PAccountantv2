@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PAccountant2.BLL.Domain.Entities.Account;
 using PAccountant2.BLL.Interfaces.Account;
+using PAccountant2.BLL.Interfaces.Currency;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
 using System.Collections.Generic;
@@ -12,13 +13,16 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
     {
         private readonly IAccountDataService _dataService;
 
+        private readonly ICurrencyDataService _currencyDataService;
+
         private readonly IMapper _mapper;
 
 
-        public AccountService(IAccountDataService dataService, IMapper mapper)
+        public AccountService(IAccountDataService dataService, IMapper mapper, ICurrencyDataService currencyDataService)
         {
             _dataService = dataService;
             _mapper = mapper;
+            _currencyDataService = currencyDataService;
         }
 
 
@@ -27,8 +31,9 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
 
             var currentMoneyAmount = await _dataService.GetBalanceAsync(accountId);
             var account = _mapper.Map<AccountEntity>(currentMoneyAmount);
-
-            var newOperation = account.PutMoney(model.Amount);
+            var exchangeRates = await _currencyDataService.GetExchangeRates();
+            
+            var newOperation = account.PutMoney(model.Amount, model.CurrencyId, exchangeRates);
 
             var newAmountDataItem = _mapper.Map<MoneyChangeDataItem>(account);
             await _dataService.SaveNewMoneyAmountAsync(newAmountDataItem);

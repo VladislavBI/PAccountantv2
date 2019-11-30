@@ -3,5 +3,7 @@
     public class MoneyChangeViewItem
     {
         public decimal Amount { get; set; }
+
+        public int CurrencyId { get; set; }
     }
 }

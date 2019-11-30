@@ -9,6 +9,7 @@ using PAccountant2.BLL.Interfaces.Investment;
 using PAccountant2.BLL.Interfaces.Migration;
 using PAccountant2.DAL.Services;
 using PAccountant2.DAL.Services.Accounting;
+using PAccountant2.DAL.Services.Currency;
 using PAccountant2.DAL.Services.Investment;
 using PAccountant2.Host.Domain.Services;
 
@@ -28,6 +29,7 @@ namespace PAccountant2.Host.Setup.DI
             services.AddScoped<IInvestmentService, InvestmentService>();
             services.AddScoped<IInvestmentDataService, InvestmentDataService>();
             services.AddScoped<IContragentDataService, ContragentDataService>();
+            services.AddScoped<ICurrencyDataService, CurrencyDataService>();
 
             services.AddScoped<IMigrationService, MigrationService>();
             services.AddScoped<IMigrationDataService, MigrationsDataService>();

@@ -1,8 +1,5 @@
 ﻿using PAccountant2.BLL.Domain.Enum;
-using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
-using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
 using System;
-using System.Collections.Generic;
 
 namespace PAccountant2.BLL.Domain.Entities.Account.Handlers
 {
