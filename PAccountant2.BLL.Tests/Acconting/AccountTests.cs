@@ -39,7 +39,7 @@ namespace PAccountant2.BLL.Tests.Acconting
             };
             var currencyId = BaseCurrencyId;
 
-            _accountEntity.PutMoney(moneyToAdd, currencyId, exchangeRates);
+            _accountEntity.PutMoneyToThisAccount(moneyToAdd, currencyId, exchangeRates);
             Assert.AreEqual(_accountEntity.Amount, moneyToAdd);
         }
 
@@ -57,8 +57,8 @@ namespace PAccountant2.BLL.Tests.Acconting
 
             var currencyId = BaseCurrencyId;
 
-            _accountEntity.PutMoney(moneyToAdd, currencyId, exchangeRates);
-            _accountEntity.WithdrawMoney(moneyToWithdraw, currencyId, exchangeRates);
+            _accountEntity.PutMoneyToThisAccount(moneyToAdd, currencyId, exchangeRates);
+            _accountEntity.WithdrawMoneyFromThisAccount(moneyToWithdraw, currencyId, exchangeRates);
 
             Assert.AreEqual(_accountEntity.Amount, newAmount);
         }
@@ -74,7 +74,7 @@ namespace PAccountant2.BLL.Tests.Acconting
             };
             var currencyId = BaseCurrencyId;
 
-            var newOperation = _accountEntity.PutMoney(moneyToAdd, currencyId, exchangeRates);
+            var newOperation = _accountEntity.PutMoneyToThisAccount(moneyToAdd, currencyId, exchangeRates);
 
             Assert.AreEqual(newOperation.Amount, moneyToAdd);
             Assert.AreEqual(newOperation.OperationType, AccountBalanceChangeType.Put);
@@ -93,8 +93,8 @@ namespace PAccountant2.BLL.Tests.Acconting
             };
             var currencyId = BaseCurrencyId;
 
-            _accountEntity.PutMoney(moneyToAdd, currencyId, exchangeRates);
-            var newOperation = _accountEntity.WithdrawMoney(moneyToWithdraw, currencyId, exchangeRates);
+            _accountEntity.PutMoneyToThisAccount(moneyToAdd, currencyId, exchangeRates);
+            var newOperation = _accountEntity.WithdrawMoneyFromThisAccount(moneyToWithdraw, currencyId, exchangeRates);
 
             Assert.AreEqual(newOperation.Amount, moneyToWithdraw);
             Assert.AreEqual(newOperation.OperationType, AccountBalanceChangeType.Withdraw);

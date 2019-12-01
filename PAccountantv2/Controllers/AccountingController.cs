@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using PAccountant2.BLL.Interfaces.Account;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
-using PAccountant2.Host.Domain.ViewModels.Account;
-using System.Threading.Tasks;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Accounting;
+using PAccountant2.Host.Domain.ViewModels.Account;
 using PAccountant2.Host.Domain.ViewModels.Accounting;
+using System.Threading.Tasks;
 
 namespace PAccountantv2.Host.Api.Controllers
 {
@@ -23,6 +23,12 @@ namespace PAccountantv2.Host.Api.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get accounting with accounts
+        /// </summary>
+        /// <param name="id">id of accounting to get</param>
+        /// <param name="filters">filtered data</param>
+        /// <response code="200">accounting with accounts filtered</response>
         [HttpGet]
         public async Task<IActionResult> GetAccountingWithAccounts(int id, [FromQuery]AccountFilterViewModel filters)
         {
@@ -32,15 +38,6 @@ namespace PAccountantv2.Host.Api.Controllers
             var mappedData = _mapper.Map<AccountingWithAccountsViewModel>(accountingModel);
 
             return Ok(mappedData);
-        }
-
-        [Route("account/{accId}")]
-        [HttpPost]
-        public async Task TransferMoneyBeetwenAccountsAsync(int id, int accId, AccountTransferViewModel model)
-        {
-            var viewData = _mapper.Map<AccountTransferViewItem>(model);
-
-            await _accountingService.TransferMoneyToOtherAccountAsync(id, accId, viewData);
         }
 
         [Route("options")]

@@ -45,7 +45,7 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
             var accounting = new AccountingEntity();
             _mapper.Map(accountingWithAccounts, accounting);
 
-            var transferValueObject = accounting.TransferMoneyBeetwenAccount(fromId, viewData.IdAccountForTranser, viewData.Amount);
+            var transferValueObject = accounting.TransferMoneyBeetwenAccount(fromId, 0, viewData.Amount);
 
             var dbTransfer = _mapper.Map<AccountTransferDataItem>(transferValueObject);
 
