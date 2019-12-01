@@ -139,11 +139,13 @@ namespace PAccountantv2.Host.Api.Controllers
         /// <response code="200">accounting with accounts filtered</response>
         [Route("{id}/transfer/{idTo}")]
         [HttpPost]
-        public async Task TransferMoneyBeetwenAccountsAsync(int id, int idTo, AccountTransferViewModel model)
+        public async Task<IActionResult> TransferMoneyBeetwenAccountsAsync(int id, int idTo, AccountTransferViewModel model)
         {
             var viewData = _mapper.Map<AccountTransferViewItem>(model);
 
             await _service.TransferMoneyToOtherAccountAsync(id, idTo, viewData);
+
+            return Ok();
         }
     }
 }

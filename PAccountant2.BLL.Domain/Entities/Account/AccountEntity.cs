@@ -48,36 +48,61 @@ namespace PAccountant2.BLL.Domain.Entities.Account
             _historyHandler = new AccountHistoryHandler();
         }
 
-        public AccountOperationValueObject PutMoney(decimal putAmount, int putCurrencyId, IEnumerable<ExchangeRateDataItem> exchangeRates)
+        public AccountOperationValueObject PutMoneyToThisAccount(decimal putAmount, int putCurrencyId, IEnumerable<ExchangeRateDataItem> exchangeRates)
         {
-            var ratesValueObjects = exchangeRates
-                .Select(rate => _currencyFactory.CreateExchangeRateValueObject(rate.Buy, rate.Sell, rate.BaseCurrencyId, rate.ResultCurrencyId));
-            var convertedPutAmount = _currencyHandler.ConvertToRate(putAmount, CurrencyId, putCurrencyId, ratesValueObjects);
-
-            var transaction = _accountFactory.CreateTransactionValueObject(convertedPutAmount, Amount);
-            Amount = _transactionHandler.PerformPutTransaction(transaction);
-
-            var newOperation =
-                _accountFactory.CreateOperationValueObject(putAmount, AccountBalanceChangeType.Put, DateTime.Now, putCurrencyId);
-            AccountOperations = _operationHandler.AddNewOperation(newOperation, AccountOperations);
+            var (newAmount, newOperation) = PutMoney(putAmount, Amount, putCurrencyId, CurrencyId, AccountOperations,
+                exchangeRates);
+            Amount = newAmount;
 
             return newOperation;
         }
 
-        public AccountOperationValueObject WithdrawMoney(decimal withdrawAmount, int withdrawCurrencyId, IEnumerable<ExchangeRateDataItem> exchangeRates)
+        public AccountOperationValueObject WithdrawMoneyFromThisAccount(decimal withdrawAmount, int withdrawCurrencyId, IEnumerable<ExchangeRateDataItem> exchangeRates)
         {
+            var (newAmount, newOperation) = WithdrawMoney(withdrawAmount, Amount, withdrawCurrencyId, CurrencyId, AccountOperations,
+                exchangeRates);
+            Amount = newAmount;
+
+            return newOperation;
+        }
+
+        //TODO: refactor this
+        public (decimal newAmount, AccountOperationValueObject newOperation) PutMoney(decimal putAmount, decimal accAmount,
+            int putCurrencyId, int accCurrencyId, IEnumerable<AccountOperationValueObject> accountOperations, 
+            IEnumerable<ExchangeRateDataItem> exchangeRates)
+        {
+
             var ratesValueObjects = exchangeRates
                 .Select(rate => _currencyFactory.CreateExchangeRateValueObject(rate.Buy, rate.Sell, rate.BaseCurrencyId, rate.ResultCurrencyId));
-            var convertedWithdrawAmount = _currencyHandler.ConvertToRate(withdrawAmount, CurrencyId, withdrawCurrencyId, ratesValueObjects);
+            var convertedPutAmount = _currencyHandler.ConvertToRate(putAmount, accCurrencyId, putCurrencyId, ratesValueObjects);
 
-            var transaction = _accountFactory.CreateTransactionValueObject(convertedWithdrawAmount, Amount);
-            Amount = _transactionHandler.PerformWithdrawTransaction(transaction);
+            var transaction = _accountFactory.CreateTransactionValueObject(convertedPutAmount, accAmount);
+            var newAmount = _transactionHandler.PerformPutTransaction(transaction);
+
+            var newOperation =
+                _accountFactory.CreateOperationValueObject(putAmount, AccountBalanceChangeType.Put, DateTime.Now, putCurrencyId);
+            AccountOperations = _operationHandler.AddNewOperation(newOperation, accountOperations);
+
+            return (newAmount, newOperation);
+        }
+
+        public (decimal newAmount, AccountOperationValueObject newOperation) WithdrawMoney(decimal withdrawAmount, decimal accAmount,
+            int withdrawCurrencyId, int accCurrencyId, IEnumerable<AccountOperationValueObject> accountOperations,
+            IEnumerable<ExchangeRateDataItem> exchangeRates)
+        {
+
+            var ratesValueObjects = exchangeRates
+                .Select(rate => _currencyFactory.CreateExchangeRateValueObject(rate.Buy, rate.Sell, rate.BaseCurrencyId, rate.ResultCurrencyId));
+            var convertedWithdrawAmount = _currencyHandler.ConvertToRate(withdrawAmount, accCurrencyId, withdrawCurrencyId, ratesValueObjects);
+
+            var transaction = _accountFactory.CreateTransactionValueObject(convertedWithdrawAmount, accAmount);
+            var newAmount = _transactionHandler.PerformWithdrawTransaction(transaction);
 
             var newOperation =
                 _accountFactory.CreateOperationValueObject(withdrawAmount, AccountBalanceChangeType.Withdraw, DateTime.Now, withdrawCurrencyId);
-            AccountOperations = _operationHandler.AddNewOperation(newOperation, AccountOperations);
+            AccountOperations = _operationHandler.AddNewOperation(newOperation, accountOperations);
 
-            return newOperation;
+            return (newAmount, newOperation);
         }
 
         public void CheckIsOperationAvailable(decimal amount)
@@ -111,21 +136,17 @@ namespace PAccountant2.BLL.Domain.Entities.Account
 
             await dataService.DeleteAccount(Id);
         }
-
-        public decimal TransferToAccount
+        //TODO: refactor this
+        public (decimal newForAmount, decimal newToAmount, 
+            AccountOperationValueObject newFromOperation, AccountOperationValueObject newToOperation) TransferToAccount
             (decimal amountToTransfer, decimal accountToAmount, int accountToCurrencyId, IEnumerable<ExchangeRateDataItem> exchangeRates)
         {
-            var accountToNewAmount = accountToAmount;
-            var transferAmountConverted = amountToTransfer;
+            var exchangeRateDataItems = exchangeRates as ExchangeRateDataItem[] ?? exchangeRates.ToArray();
 
-            if (CurrencyId != accountToCurrencyId)
-            {
-                var ratesMapped = exchangeRates
-                    .Select(rate => _currencyFactory.CreateExchangeRateValueObject(rate.Buy, rate.Sell, rate.BaseCurrencyId, rate.ResultCurrencyId));
-                transferAmountConverted =
-                    _currencyHandler.ConvertToRate(amountToTransfer, accountToCurrencyId, CurrencyId, ratesMapped);
-            }
-        
+            var newWithdrawOperation = WithdrawMoneyFromThisAccount(amountToTransfer, CurrencyId, exchangeRateDataItems);
+            var (newAmount, newPutOperation) = PutMoney(amountToTransfer, accountToAmount, CurrencyId, accountToCurrencyId, null, exchangeRateDataItems);
+
+            return (Amount, newAmount, newWithdrawOperation, newPutOperation);
         }
     }
 }
