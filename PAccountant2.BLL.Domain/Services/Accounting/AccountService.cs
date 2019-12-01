@@ -97,5 +97,24 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
 
             await _dataService.UpdateAccountAsync(id, mappedModel);
         }
+
+        public async Task TransferMoneyToOtherAccountAsync(int idFrom, int idTo, AccountTransferViewItem viewData)
+        {
+            
+            var accountFromTask = _dataService.GetBalanceAsync(idFrom);
+            var accountToTask = _dataService.GetBalanceAsync(idFrom);
+            var exchangeRatesTask = _currencyDataService.GetExchangeRates();
+
+            Task.WaitAll(accountToTask, accountFromTask, exchangeRatesTask);
+
+            var accountFrom = accountFromTask.Result;
+            var accountTo = accountToTask.Result;
+            var exchangeRates = exchangeRatesTask.Result;
+
+            var accountEntityFrom = _mapper.Map<AccountEntity>(accountFrom);
+
+            var newAccountToAmount =
+                accountEntityFrom.TransferToAccount(viewData.Amount, accountTo.Amount, accountTo.CurrencyId, exchangeRates);
+        }
     }
 }

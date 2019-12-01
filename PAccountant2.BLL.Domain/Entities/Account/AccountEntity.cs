@@ -111,5 +111,21 @@ namespace PAccountant2.BLL.Domain.Entities.Account
 
             await dataService.DeleteAccount(Id);
         }
+
+        public decimal TransferToAccount
+            (decimal amountToTransfer, decimal accountToAmount, int accountToCurrencyId, IEnumerable<ExchangeRateDataItem> exchangeRates)
+        {
+            var accountToNewAmount = accountToAmount;
+            var transferAmountConverted = amountToTransfer;
+
+            if (CurrencyId != accountToCurrencyId)
+            {
+                var ratesMapped = exchangeRates
+                    .Select(rate => _currencyFactory.CreateExchangeRateValueObject(rate.Buy, rate.Sell, rate.BaseCurrencyId, rate.ResultCurrencyId));
+                transferAmountConverted =
+                    _currencyHandler.ConvertToRate(amountToTransfer, accountToCurrencyId, CurrencyId, ratesMapped);
+            }
+        
+        }
     }
 }

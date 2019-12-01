@@ -19,5 +19,7 @@ namespace PAccountant2.BLL.Interfaces.Account
         Task DeleteAccount(int id);
 
         Task UpdateAccountAsync(int id, AccountUpdateViewItem updateModel);
+
+        Task TransferMoneyToOtherAccountAsync(int id, int idTo, AccountTransferViewItem viewData);
     }
 }

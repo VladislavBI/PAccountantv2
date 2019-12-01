@@ -129,5 +129,21 @@ namespace PAccountantv2.Host.Api.Controllers
 
             return Ok();
         }
+
+        /// <summary>
+        /// Transfer money between accounts
+        /// </summary>
+        /// <param name="id">transfer from account Id</param>
+        /// <param name="idTo">transfer to account Id</param>
+        /// <param name="model">transfer model</param>
+        /// <response code="200">accounting with accounts filtered</response>
+        [Route("{id}/transfer/{idTo}")]
+        [HttpPost]
+        public async Task TransferMoneyBeetwenAccountsAsync(int id, int idTo, AccountTransferViewModel model)
+        {
+            var viewData = _mapper.Map<AccountTransferViewItem>(model);
+
+            await _service.TransferMoneyToOtherAccountAsync(id, idTo, viewData);
+        }
     }
 }
