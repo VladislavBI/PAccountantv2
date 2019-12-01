@@ -58,7 +58,7 @@ namespace PAccountant2.BLL.Domain.Entities.Account
             Amount = _transactionHandler.PerformPutTransaction(transaction);
 
             var newOperation =
-                _accountFactory.CreateOperationValueObject(putAmount, AccountBalanceChangeType.Put, DateTime.Now);
+                _accountFactory.CreateOperationValueObject(putAmount, AccountBalanceChangeType.Put, DateTime.Now, putCurrencyId);
             AccountOperations = _operationHandler.AddNewOperation(newOperation, AccountOperations);
 
             return newOperation;
@@ -74,7 +74,7 @@ namespace PAccountant2.BLL.Domain.Entities.Account
             Amount = _transactionHandler.PerformWithdrawTransaction(transaction);
 
             var newOperation =
-                _accountFactory.CreateOperationValueObject(withdrawAmount, AccountBalanceChangeType.Withdraw, DateTime.Now);
+                _accountFactory.CreateOperationValueObject(withdrawAmount, AccountBalanceChangeType.Withdraw, DateTime.Now, withdrawCurrencyId);
             AccountOperations = _operationHandler.AddNewOperation(newOperation, AccountOperations);
 
             return newOperation;
@@ -94,7 +94,7 @@ namespace PAccountant2.BLL.Domain.Entities.Account
             var accountHistory = await _historyHandler.GetAccountHistoryAsync(Id, filters, dataService);
 
             var historyMapped = accountHistory.Select(oper =>
-                _accountFactory.CreateOperationValueObject(oper.Amount, oper.OperationType, oper.Date, oper.Id));
+                _accountFactory.CreateOperationValueObject(oper.Amount, oper.OperationType, oper.Date, oper.CurrencyId, oper.Id));
 
             return historyMapped;
         }
