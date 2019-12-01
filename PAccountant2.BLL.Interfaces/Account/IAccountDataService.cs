@@ -22,5 +22,8 @@ namespace PAccountant2.BLL.Interfaces.Account
          Task DeleteAccount(int id);
 
         Task UpdateAccountAsync(int id, AccountUpdateDataItem mappedModel);
+
+        bool Test(int id);
+
     }
 }

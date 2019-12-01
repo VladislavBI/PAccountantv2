@@ -11,5 +11,7 @@ namespace PAccountant2.BLL.Interfaces.DTO.ViewItems.Account
         public int OperationType { get; set; }
 
         public decimal Amount { get; set; }
+
+        public int CurrencyId { get; set; }
     }
 }

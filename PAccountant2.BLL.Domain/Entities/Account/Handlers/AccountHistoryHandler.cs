@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using PAccountant2.BLL.Interfaces.Account;
+﻿using PAccountant2.BLL.Interfaces.Account;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
 using PAccountant2.BLL.Interfaces.Specifications;
 using PAccountant2.BLL.Interfaces.Specifications.Accounting;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace PAccountant2.BLL.Domain.Entities.Account.Handlers
 {
@@ -15,9 +15,9 @@ namespace PAccountant2.BLL.Domain.Entities.Account.Handlers
             var specification = CreateAccountSpecification(filters);
             var accountWithHistory = await dataService.GetHistoryAsync(accId, specification);
 
-            var accontHistory = accountWithHistory.AccountOperations;
+            var accountHistory = accountWithHistory.AccountOperations;
 
-            return accontHistory;
+            return accountHistory;
         }
 
         private static ISpecification<AccountHistoryFiltersDataItem> CreateAccountSpecification(AccountHistoryFiltersViewItem filters)

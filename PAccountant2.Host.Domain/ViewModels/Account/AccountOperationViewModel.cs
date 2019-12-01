@@ -16,5 +16,7 @@ namespace PAccountant2.Host.Domain.ViewModels.Account
         [Required]
         [Range(0, double.MaxValue, ErrorMessage = "Amount cann't be negative")]
         public decimal Amount { get; set; }
+
+        public int CurrencyId { get; set; }
     }
 }

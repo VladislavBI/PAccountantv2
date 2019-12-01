@@ -53,7 +53,8 @@ namespace PAccountant2.DAL.Services.Accounting
                     Amount = hist.Amount,
                     Date = hist.Date,
                     OperationType = (int)hist.OperationType,
-                    Id = hist.Id
+                    Id = hist.Id,
+                    CurrencyId = hist.CurrencyId
                 })
 
                 .Where(hist => specification.IsSatisfied(hist))
@@ -113,6 +114,11 @@ namespace PAccountant2.DAL.Services.Accounting
             dbAccount.Name = mappedModel.Name;
 
             await _context.SaveChangesAsync();
+        }
+
+        public bool Test(int id)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
