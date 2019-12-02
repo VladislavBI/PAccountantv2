@@ -1,4 +1,5 @@
-﻿using PAccountant2.BLL.Domain.Entities.User;
+﻿using PAccountant2.BLL.Domain.Entities.Account;
+using PAccountant2.BLL.Domain.Entities.User;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
 using PAccountant2.BLL.Interfaces.Specifications;
@@ -6,7 +7,8 @@ using PAccountant2.BLL.Interfaces.Specifications.Accounting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PAccountant2.BLL.Domain.Entities.Account;
+using PAccountant2.BLL.Domain.Entities.Accounting.Handlers;
+using PAccountant2.BLL.Domain.Entities.Currency.Handlers;
 
 namespace PAccountant2.BLL.Domain.Entities.Accounting
 {
@@ -22,6 +24,15 @@ namespace PAccountant2.BLL.Domain.Entities.Accounting
 
         public IEnumerable<AccountEntity> Accounts { get; set; }
 
+        private readonly CurrencyHandler _currencyHandler;
+
+        private readonly CurrencyFactory _currencyFactory;
+
+        public AccountingEntity()
+        {
+            _currencyFactory = new CurrencyFactory();
+            _currencyHandler = new CurrencyHandler();
+        }
 
         public AccountTransferValueObject TransferMoneyBeetwenAccount(int fromId, int toId, decimal amount)
         {
@@ -47,9 +58,26 @@ namespace PAccountant2.BLL.Domain.Entities.Accounting
             }
         }
 
-        public decimal CalculateSumm()
+        public decimal CalculateSumm(IEnumerable<Interfaces.DTO.DataItems.Currency.ExchangeRateDataItem> exchangeRates)
         {
-            return Accounts.Sum(acc => acc.Amount);
+            var mappedRates = exchangeRates.Select(r =>
+                _currencyFactory.CreateExchangeRateValueObject(r.Buy, r.Sell, r.BaseCurrencyId, r.ResultCurrencyId)).ToList();
+            var sum = default(decimal);
+
+            foreach (var account in Accounts)
+            {
+                var convertedAmount = account.Amount;
+
+                if (account.CurrencyId != Options.AccountingBaseCurrencyId)
+                {
+                    convertedAmount = _currencyHandler.ConvertToRate(convertedAmount, account.CurrencyId, Options.AccountingBaseCurrencyId,
+                        mappedRates);
+                }
+
+                sum += convertedAmount;
+            }
+
+            return sum;
         }
 
         public AndSpecification<AccountBalanceDataItem> CreateSpecification(AccountFilterViewItem filters)

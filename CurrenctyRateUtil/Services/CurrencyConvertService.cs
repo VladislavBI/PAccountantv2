@@ -115,7 +115,7 @@ namespace CurrenctyRateUtil.Services
                 var exchangeRate = model.Rates.FirstOrDefault(r => revertRate(r));
                 var decimalSell = Convert.ToDecimal(exchangeRate.Sell);
 
-                resultAmount = model.Amount * decimalSell;
+                resultAmount = model.Amount / decimalSell;
             }
 
             return resultAmount;
@@ -128,7 +128,7 @@ namespace CurrenctyRateUtil.Services
                 var exchangeRate = model.Rates.FirstOrDefault(sameRate);
                 var decimalBuy = Convert.ToDecimal(exchangeRate.Buy);
 
-                resultAmount = model.Amount / decimalBuy;
+                resultAmount = model.Amount * decimalBuy;
             }
 
             return resultAmount;
