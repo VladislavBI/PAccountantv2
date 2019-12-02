@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using PAccountant2.BLL.Domain.Entities.Accounting;
 using PAccountant2.BLL.Interfaces.Account;
+using PAccountant2.BLL.Interfaces.Currency;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Accounting;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
@@ -13,12 +14,16 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
     {
         private readonly IAccountingDataService _accountingDataService;
 
+        private readonly ICurrencyDataService _currencyDataService;
+
         private readonly IMapper _mapper;
 
-        public AccountingService(IAccountingDataService accountingDataService, IMapper mapper)
+        public AccountingService
+            (IAccountingDataService accountingDataService, IMapper mapper, ICurrencyDataService currencyDataService)
         {
             _accountingDataService = accountingDataService;
             _mapper = mapper;
+            _currencyDataService = currencyDataService;
         }
 
         public async Task<AccountingWithAccountsViewItem> GetAccountingWithAccountsAsync(int id, AccountFilterViewItem mappedFilters)
@@ -27,11 +32,16 @@ namespace PAccountant2.BLL.Domain.Services.Accounting
             var accountingSpecification = accounting.CreateSpecification(mappedFilters);
 
             var accountingDbData = await _accountingDataService.GetAccountingWithAccounts(id, accountingSpecification);
+            var accountingOptions = await _accountingDataService.GetOptionsAsync(id);
+            var exchangeRates = await _currencyDataService.GetExchangeRates();
 
             _mapper.Map(accountingDbData, accounting);
+            var optionsEntity = _mapper.Map<AccountingOptionsEntity>(accountingOptions);
+
+            accounting.Options = optionsEntity;
 
             accounting.CheckMissingAccounting();
-            accounting.Summ = accounting.CalculateSumm();
+            accounting.Summ = accounting.CalculateSumm(exchangeRates);
 
             var viewAccounting = _mapper.Map<AccountingWithAccountsViewItem>(accounting);
 

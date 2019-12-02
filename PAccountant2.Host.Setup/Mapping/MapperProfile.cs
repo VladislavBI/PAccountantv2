@@ -3,6 +3,7 @@ using PAccountant2.BLL.Domain.Entities.Account;
 using PAccountant2.BLL.Domain.Entities.Accounting;
 using PAccountant2.BLL.Domain.Entities.User;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Account;
+using PAccountant2.BLL.Interfaces.DTO.DataItems.Accounting;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Authentification;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Migration;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Account;
@@ -58,7 +59,8 @@ namespace PAccountant2.Host.Setup.Mapping
             CreateMap<CurrencyMigrationViewItem, CurrencyMigrationDataItem>();
             CreateMap<CurrencyMigrationDataItem, CurrencyDbo>();
 
-
+            CreateMap<AccountingOptionsDataItem, AccountingOptionsEntity>()
+                .ReverseMap();
         }
     }
 }

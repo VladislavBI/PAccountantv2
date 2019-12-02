@@ -74,7 +74,7 @@ namespace PAccountant2.BLL.Domain.Entities.Account
 
             var ratesValueObjects = exchangeRates
                 .Select(rate => _currencyFactory.CreateExchangeRateValueObject(rate.Buy, rate.Sell, rate.BaseCurrencyId, rate.ResultCurrencyId));
-            var convertedPutAmount = _currencyHandler.ConvertToRate(putAmount, accCurrencyId, putCurrencyId, ratesValueObjects);
+            var convertedPutAmount = _currencyHandler.ConvertToRate(putAmount, putCurrencyId, accCurrencyId, ratesValueObjects);
 
             var transaction = _accountFactory.CreateTransactionValueObject(convertedPutAmount, accAmount);
             var newAmount = _transactionHandler.PerformPutTransaction(transaction);
@@ -93,7 +93,7 @@ namespace PAccountant2.BLL.Domain.Entities.Account
 
             var ratesValueObjects = exchangeRates
                 .Select(rate => _currencyFactory.CreateExchangeRateValueObject(rate.Buy, rate.Sell, rate.BaseCurrencyId, rate.ResultCurrencyId));
-            var convertedWithdrawAmount = _currencyHandler.ConvertToRate(withdrawAmount, accCurrencyId, withdrawCurrencyId, ratesValueObjects);
+            var convertedWithdrawAmount = _currencyHandler.ConvertToRate(withdrawAmount, withdrawCurrencyId, accCurrencyId, ratesValueObjects);
 
             var transaction = _accountFactory.CreateTransactionValueObject(convertedWithdrawAmount, accAmount);
             var newAmount = _transactionHandler.PerformWithdrawTransaction(transaction);
