@@ -1,10 +1,13 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using PAccountant2.BLL.Domain.Entities.Accounting;
+using PAccountant2.BLL.Domain.Entities.Investment;
 using PAccountant2.BLL.Interfaces.Authentification;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Investment;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Investment;
 using PAccountant2.BLL.Interfaces.Investment;
 using PAccountant2.Common;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PAccountant2.BLL.Domain.Services.Investment
@@ -22,7 +25,28 @@ namespace PAccountant2.BLL.Domain.Services.Investment
             _contragentService = contragentService;
         }
 
-        public async Task<int> AddNewInvestment(int acctingId, int invType, AddLoanViewItem mappedModel)
+        public async Task AddMoneyAutoAsync()
+        {
+            var investmentsDb = await _investmentService.GetAutoUpdateInvestments();
+
+            var investments = _mapper.Map<IEnumerable<InvestmentEntity>>(investmentsDb);
+
+            foreach (var investment in investments)
+            {
+                if (investment.IsPaymentPeriod())
+                {
+                    var newOperation = investment.AddNewPaymentAuto(DateTime.Now, "Auto payment");
+
+                    var dbInvestment = _mapper.Map<InvestmentDataItem>(investment);
+                    var mappedOperation = _mapper.Map<InvestmentOperationDataItem>(newOperation);
+
+                    await _investmentService.UpdateInvestmentAsync(dbInvestment);
+                    await _investmentService.AddInvestmentOperationAsync(dbInvestment.Id, mappedOperation);
+                }
+            }
+        }
+
+        public async Task<int> AddNewInvestment(int acctingId, int invType, AddInvestmentViewItem mappedModel)
         {
             var contragent = new ContragentEntity();
             var contragentId = await contragent.GetOrCreateContragentIdByName

@@ -5,6 +5,8 @@ namespace PAccountant2.BLL.Interfaces.Investment
 {
     public interface IInvestmentService
     {
-       Task<int> AddNewInvestment(int acctingId, int invType, AddLoanViewItem mappedModel);
+       Task<int> AddNewInvestment(int acctingId, int invType, AddInvestmentViewItem mappedModel);
+
+        Task AddMoneyAutoAsync();
     }
 }

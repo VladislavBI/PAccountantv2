@@ -15,5 +15,9 @@ namespace PAccountant2.Host.Domain.ViewModels.Investment
         public string ContragentName { get; set; }
 
         public int PaymentType { get; set; }
+
+        public int CurrencyId { get; set; }
+
+        public int MoneyIncomeOption { get; set; }
     }
 }

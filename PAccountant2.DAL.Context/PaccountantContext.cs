@@ -4,6 +4,7 @@ using PAccountant2.DAL.DBO.Constants;
 using PAccountant2.DAL.DBO.Entities;
 using PAccountant2.DAL.DBO.Entities.Account;
 using PAccountant2.DAL.DBO.Entities.Accounting;
+using PAccountant2.DAL.DBO.Entities.Credit;
 using PAccountant2.DAL.DBO.Entities.Currency;
 using PAccountant2.DAL.DBO.Entities.Investment;
 
@@ -66,16 +67,24 @@ namespace PAccountant2.DAL.Context
             modelBuilder.Entity<InvestmentOperationDbo>().ToTable(TablesNames.InvestmentOperation);
             modelBuilder.Entity<InvestmentOperationDbo>().Property(prop => prop.Id).UseSqlServerIdentityColumn();
 
+            modelBuilder.Entity<CreditDbo>().ToTable(TablesNames.Credit);
+            modelBuilder.Entity<CreditDbo>().Property(inv => inv.Id).UseSqlServerIdentityColumn();
+            modelBuilder.Entity<CreditDbo>().HasMany(x => x.Operations).WithOne(x => x.Credit).HasForeignKey(x => x.CreditId).OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CreditOperationDbo>().ToTable(TablesNames.CreditOperation);
+            modelBuilder.Entity<CreditOperationDbo>().Property(prop => prop.Id).UseSqlServerIdentityColumn();
+
             modelBuilder.Entity<ContragentDbo>().ToTable(TablesNames.Contragent);
             modelBuilder.Entity<ContragentDbo>().Property(prop => prop.Id).UseSqlServerIdentityColumn();
             modelBuilder.Entity<ContragentDbo>().HasMany(prop => prop.AccountOperations).WithOne(prop => prop.Contragent).HasForeignKey(prop => prop.ContragentId).OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<ContragentDbo>().HasMany(prop => prop.InvestmentOperations).WithOne(prop => prop.Contragent).HasForeignKey(prop => prop.ContragentId).OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<CurrencyDbo>().ToTable(TablesNames.Currency);
             modelBuilder.Entity<CurrencyDbo>().Property(cur => cur.Id).UseSqlServerIdentityColumn();
             modelBuilder.Entity<CurrencyDbo>().HasMany(cur => cur.AccountOperations).WithOne(acc => acc.Currency).HasForeignKey(acc => acc.CurrencyId);
             modelBuilder.Entity<CurrencyDbo>().HasMany(cur => cur.Accounts).WithOne(acc => acc.Currency).HasForeignKey(acc => acc.CurrencyId).OnDelete(DeleteBehavior.Restrict); ;
             modelBuilder.Entity<CurrencyDbo>().HasMany(cur => cur.InvestmentOperations).WithOne(acc => acc.Currency).HasForeignKey(acc => acc.CurrencyId);
+            modelBuilder.Entity<CurrencyDbo>().HasMany(cur => cur.CreditOperations).WithOne(acc => acc.Currency).HasForeignKey(acc => acc.CurrencyId);
+            modelBuilder.Entity<CurrencyDbo>().HasMany(cur => cur.Investments).WithOne(acc => acc.Currency).HasForeignKey(acc => acc.CurrencyId).OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ExchangeRateDbo>().ToTable(TablesNames.ExchangeRate);
             modelBuilder.Entity<ExchangeRateDbo>().Property(cur => cur.Id).UseSqlServerIdentityColumn();

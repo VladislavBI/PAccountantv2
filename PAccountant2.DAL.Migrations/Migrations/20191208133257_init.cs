@@ -154,6 +154,34 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Credit",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CreditType = table.Column<int>(nullable: false),
+                    PercentPeriod = table.Column<int>(nullable: false),
+                    BodyAmount = table.Column<decimal>(nullable: false),
+                    LeftAmount = table.Column<decimal>(nullable: false),
+                    PercentAmount = table.Column<decimal>(nullable: false),
+                    Percent = table.Column<float>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    Term = table.Column<long>(nullable: false),
+                    Comment = table.Column<string>(nullable: true),
+                    AccountingId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Credit", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Credit_Accounting_AccountingId",
+                        column: x => x.AccountingId,
+                        principalTable: "Accounting",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Investment",
                 columns: table => new
                 {
@@ -161,12 +189,16 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     InvestmentType = table.Column<int>(nullable: false),
                     PaymentPeriod = table.Column<int>(nullable: false),
-                    BodyAmount = table.Column<decimal>(nullable: false),
+                    StartBodyAmount = table.Column<decimal>(nullable: false),
+                    CurrentBodyAmount = table.Column<decimal>(nullable: false),
                     Percent = table.Column<float>(nullable: false),
                     StartDate = table.Column<DateTime>(nullable: false),
                     Term = table.Column<long>(nullable: false),
+                    MoneyIncomeOption = table.Column<int>(nullable: false),
                     Comment = table.Column<string>(nullable: true),
-                    AccountingId = table.Column<int>(nullable: false)
+                    Completed = table.Column<bool>(nullable: false),
+                    AccountingId = table.Column<int>(nullable: false),
+                    CurrencyId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -177,6 +209,12 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         principalTable: "Accounting",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Investment_Currency_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currency",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -216,7 +254,7 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "InvestmentOperation",
+                name: "CreditOperation",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -224,16 +262,53 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     Amount = table.Column<decimal>(nullable: false),
                     Date = table.Column<DateTime>(nullable: false),
                     OperationType = table.Column<int>(nullable: false),
-                    InvestmentId = table.Column<int>(nullable: false),
+                    CreditId = table.Column<int>(nullable: false),
                     ContragentId = table.Column<int>(nullable: false),
                     CurrencyId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_CreditOperation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CreditOperation_Contragent_ContragentId",
+                        column: x => x.ContragentId,
+                        principalTable: "Contragent",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CreditOperation_Credit_CreditId",
+                        column: x => x.CreditId,
+                        principalTable: "Credit",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_CreditOperation_Currency_CurrencyId",
+                        column: x => x.CurrencyId,
+                        principalTable: "Currency",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InvestmentOperation",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Amount = table.Column<decimal>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
+                    NewTotalAmount = table.Column<decimal>(nullable: false),
+                    Comment = table.Column<string>(nullable: true),
+                    InvestmentId = table.Column<int>(nullable: false),
+                    CurrencyId = table.Column<int>(nullable: false),
+                    ContragentDboId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_InvestmentOperation", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_InvestmentOperation_Contragent_ContragentId",
-                        column: x => x.ContragentId,
+                        name: "FK_InvestmentOperation_Contragent_ContragentDboId",
+                        column: x => x.ContragentDboId,
                         principalTable: "Contragent",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -294,6 +369,26 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 column: "AccountingId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Credit_AccountingId",
+                table: "Credit",
+                column: "AccountingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CreditOperation_ContragentId",
+                table: "CreditOperation",
+                column: "ContragentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CreditOperation_CreditId",
+                table: "CreditOperation",
+                column: "CreditId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CreditOperation_CurrencyId",
+                table: "CreditOperation",
+                column: "CurrencyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ExchangeRate_BaseCurrencyId",
                 table: "ExchangeRate",
                 column: "BaseCurrencyId");
@@ -309,9 +404,14 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 column: "AccountingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InvestmentOperation_ContragentId",
+                name: "IX_Investment_CurrencyId",
+                table: "Investment",
+                column: "CurrencyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InvestmentOperation_ContragentDboId",
                 table: "InvestmentOperation",
-                column: "ContragentId");
+                column: "ContragentDboId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_InvestmentOperation_CurrencyId",
@@ -333,6 +433,9 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 name: "AccountOperation");
 
             migrationBuilder.DropTable(
+                name: "CreditOperation");
+
+            migrationBuilder.DropTable(
                 name: "ExchangeRate");
 
             migrationBuilder.DropTable(
@@ -342,16 +445,19 @@ namespace PAccountant2.DAL.Migrations.Migrations
                 name: "Account");
 
             migrationBuilder.DropTable(
+                name: "Credit");
+
+            migrationBuilder.DropTable(
                 name: "Contragent");
 
             migrationBuilder.DropTable(
                 name: "Investment");
 
             migrationBuilder.DropTable(
-                name: "Currency");
+                name: "Accounting");
 
             migrationBuilder.DropTable(
-                name: "Accounting");
+                name: "Currency");
 
             migrationBuilder.DropTable(
                 name: "User");

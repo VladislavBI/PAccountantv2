@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20191205152257_credit.cs" />
+    <Compile Remove="Migrations\20191207161756_inv-update.cs" />
+    <Compile Remove="Migrations\20191207162041_inv-update.cs" />
+    <Compile Remove="Migrations\20191208132713_currency_inv.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PAccountant2.DAL.Context\PAccountant2.DAL.Context.csproj" />
   </ItemGroup>
 

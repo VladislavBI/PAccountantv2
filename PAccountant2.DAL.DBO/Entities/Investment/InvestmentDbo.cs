@@ -1,6 +1,7 @@
-﻿using System;
+﻿using PAccountant2.DAL.DBO.Entities.Accounting;
+using System;
 using System.Collections.Generic;
-using PAccountant2.DAL.DBO.Entities.Accounting;
+using PAccountant2.DAL.DBO.Entities.Currency;
 
 namespace PAccountant2.DAL.DBO.Entities.Investment
 {
@@ -12,7 +13,9 @@ namespace PAccountant2.DAL.DBO.Entities.Investment
 
         public int PaymentPeriod { get; set; }
 
-        public decimal BodyAmount { get; set; }
+        public decimal StartBodyAmount { get; set; }
+
+        public decimal CurrentBodyAmount { get; set; }
 
         public float Percent { get; set; }
 
@@ -20,12 +23,20 @@ namespace PAccountant2.DAL.DBO.Entities.Investment
 
         public long Term { get; set; }
 
+        public int MoneyIncomeOption { get; set; }
+
         public string Comment { get; set; }
+
+        public bool Completed { get; set; }
 
         public ICollection<InvestmentOperationDbo> Operations { get; set; }
 
         public int AccountingId { get; set; }
 
         public AccountingDbo Accounting { get; set; }
+
+        public int CurrencyId { get; set; }
+
+        public CurrencyDbo Currency { get; set; }
     }
 }

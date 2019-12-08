@@ -26,7 +26,7 @@ namespace PAccountantv2.Host.Api.Controllers
         [Route("{invType}")]
         public async Task<IActionResult> AddNewInvestment(int acctingId, int invType, AddInvestmentViewModel model)
         {
-            var mappedModel = _mapper.Map<AddLoanViewItem>(model);
+            var mappedModel = _mapper.Map<AddInvestmentViewItem>(model);
             int newInvestmentId = await _service.AddNewInvestment(acctingId, invType, mappedModel);
 
             return Ok(newInvestmentId);

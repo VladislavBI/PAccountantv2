@@ -1,5 +1,5 @@
-﻿using System;
-using PAccountant2.DAL.DBO.Entities.Currency;
+﻿using PAccountant2.DAL.DBO.Entities.Currency;
+using System;
 
 namespace PAccountant2.DAL.DBO.Entities.Investment
 {
@@ -11,15 +11,13 @@ namespace PAccountant2.DAL.DBO.Entities.Investment
 
         public DateTime Date { get; set; }
 
-        public int OperationType { get; set; }
-        
+        public decimal NewTotalAmount { get; set; }
+
+        public string Comment { get; set; }
+
         public int InvestmentId { get; set; }
 
         public InvestmentDbo Investment { get; set; }
-
-        public int ContragentId { get; set; }
-
-        public ContragentDbo Contragent { get; set; }
 
         public int CurrencyId { get; set; }
 
