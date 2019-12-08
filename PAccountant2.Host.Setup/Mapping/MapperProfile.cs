@@ -56,8 +56,8 @@ namespace PAccountant2.Host.Setup.Mapping
             CreateMap<AccountingWithAccountsDataItem, AccountingEntity>();
             CreateMap<AccountTransferValueObject, AccountTransferDataItem>();
 
-            CreateMap<CurrencyMigrationViewItem, CurrencyMigrationDataItem>();
-            CreateMap<CurrencyMigrationDataItem, CurrencyDbo>();
+            CreateMap<ExchangeRatesMigrationViewItem, ExchangeRateMigrationDataItem>();
+            CreateMap<ExchangeRateMigrationDataItem, CurrencyDbo>();
 
             CreateMap<AccountingOptionsDataItem, AccountingOptionsEntity>()
                 .ReverseMap();

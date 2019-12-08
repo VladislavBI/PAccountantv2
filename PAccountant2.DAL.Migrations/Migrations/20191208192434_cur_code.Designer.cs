@@ -10,8 +10,8 @@ using PAccountant2.DAL.Context;
 namespace PAccountant2.DAL.Migrations.Migrations
 {
     [DbContext(typeof(PaccountantContext))]
-    [Migration("20191208133257_init")]
-    partial class init
+    [Migration("20191208192434_cur_code")]
+    partial class cur_code
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -190,6 +190,8 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Code");
 
                     b.Property<string>("FullName");
 

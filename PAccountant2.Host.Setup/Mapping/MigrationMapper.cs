@@ -11,7 +11,7 @@ namespace PAccountant2.Host.Setup.Mapping
     {
         public MigrationMapper()
         {
-            CreateMap<CurrencyMigrationViewItem, CurrencyIncomeValueObject>();
+            CreateMap<ExchangeRatesMigrationViewItem, CurrencyIncomeValueObject>();
             CreateMap<CurrencyDataItem, CurrencyDbo>()
                 .ReverseMap();
 

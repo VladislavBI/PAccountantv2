@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MoreLinq.Extensions;
 using PAccountant2.BLL.Domain.Entities.Currency;
+using PAccountant2.BLL.Interfaces.DTO.DataItems.Migration;
 using PAccountant2.DAL.DBO.Entities.Currency;
 
 namespace PAccountant2.DAL.Services
@@ -68,6 +69,23 @@ namespace PAccountant2.DAL.Services
                     _context.ExchangeRates.Add(rate);
                 }
             }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsCurrenciesCreatedAsync()
+            => await _context.Currencies.AnyAsync();
+
+        public async Task AddCurrenciesAsync(IEnumerable<CurrencyMigrationDataItem> mappedCurrencies)
+        {
+            var dbCurrencies = mappedCurrencies.Select(x => new CurrencyDbo
+            {
+                Code = x.Number,
+                Name = x.Code,
+                FullName = x.FullName
+            });
+            
+            _context.Currencies.AddRange(dbCurrencies);
 
             await _context.SaveChangesAsync();
         }

@@ -14,6 +14,8 @@ namespace PAccountant2.DAL.DBO.Entities.Currency
 
         public string FullName { get; set; }
 
+        public int Code { get; set; }
+
         public ICollection<AccountOperationDbo> AccountOperations { get; set; }
 
         public ICollection<InvestmentOperationDbo> InvestmentOperations { get; set; }

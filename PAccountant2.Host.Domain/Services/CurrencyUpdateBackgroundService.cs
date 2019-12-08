@@ -17,6 +17,8 @@ namespace PAccountant2.Host.Domain.Services
 
         private IRateService _rateService;
 
+        private ICurrencyService _currencyService;
+
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
 
@@ -30,32 +32,45 @@ namespace PAccountant2.Host.Domain.Services
             {
                 using (var scope = _serviceScopeFactory.CreateScope())
                 {
-                    (_migrationService, _rateService) = InitializeServices(scope);
+                    InitializeServices(scope);
 
-                    var mappedCurrencies = await GetActualRatesAsync();
+                    if (!await _migrationService.IsCurrenciesCreatedAsync())
+                    {
+                        var currencies = await _currencyService.GetAllCurrencies();
+                        var mappedCurrencies = currencies.Currencies.Select(x => new CurrencyMigrationViewItem
+                        {
+                            Code = x.Code,
+                            Number = x.Number,
+                            FullName = x.FullName
+                        });
 
-                    await _migrationService.UpdateCurrenciesRatesAsync(mappedCurrencies);
+                        await _migrationService.AddCurrenciesAsync(mappedCurrencies);
+                    }
+
+                    var mappedRates = await GetActualRatesAsync();
+
+                    await _migrationService.UpdateCurrenciesRatesAsync(mappedRates);
                 }
 
                 await Task.Delay(DelayTime, stoppingToken);
             }
         }
 
-        private (IMigrationService, IRateService) InitializeServices(IServiceScope scope)
+        private void InitializeServices(IServiceScope scope)
         {
             var service = scope.ServiceProvider.GetRequiredService(typeof(IMigrationService));
             var service2 = scope.ServiceProvider.GetRequiredService(typeof(IRateService));
+            var service3 = scope.ServiceProvider.GetRequiredService(typeof(ICurrencyService));
 
             _migrationService = service as IMigrationService;
             _rateService = service2 as IRateService;
-
-            return (_migrationService, _rateService);
+            _currencyService = service3 as ICurrencyService;
         }
 
-        private async Task<System.Collections.Generic.IEnumerable<CurrencyMigrationViewItem>> GetActualRatesAsync()
+        private async Task<System.Collections.Generic.IEnumerable<ExchangeRatesMigrationViewItem>> GetActualRatesAsync()
         {
             var currencyData = await _rateService.GetCurrentSimpleRates();
-            var mappedCurrencies = currencyData.Select(cur => new CurrencyMigrationViewItem
+            var mappedCurrencies = currencyData.Select(cur => new ExchangeRatesMigrationViewItem
             {
                 BaseCurrency = cur.BaseCurrency,
                 Currency = cur.Currency,

@@ -2,12 +2,10 @@
 {
     public class CurrencyMigrationDataItem
     {
-        public string BaseCurrency { get; set; }
+        public int Number { get; set; }
 
-        public string Currency { get; set; }
+        public string FullName { get; set; }
 
-        public float Buy { get; set; }
-
-        public float Sell { get; set; }
+        public string Code { get; set; }
     }
 }
