@@ -1,4 +1,5 @@
 ﻿using PAccountant2.DAL.DBO.Entities.Account;
+using PAccountant2.DAL.DBO.Entities.Credit;
 using PAccountant2.DAL.DBO.Entities.Investment;
 using System.Collections.Generic;
 
@@ -15,6 +16,9 @@ namespace PAccountant2.DAL.DBO.Entities.Accounting
         public ICollection<AccountDbo> Accounts { get; set; }
 
         public ICollection<InvestmentDbo> Investments { get; set; }
+
+        public ICollection<CreditDbo> Credits { get; set; }
+
 
         public AccountingOptionsDbo Options { get; set; }
     }

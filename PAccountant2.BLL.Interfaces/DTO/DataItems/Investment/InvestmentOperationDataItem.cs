@@ -1,9 +1,8 @@
-﻿using PAccountant2.BLL.Domain.Enum;
-using System;
+﻿using System;
 
-namespace PAccountant2.BLL.Domain.Entities.Investment
+namespace PAccountant2.BLL.Interfaces.DTO.DataItems.Investment
 {
-    public class InvestmentOperationValueObject
+    public class InvestmentOperationDataItem
     {
         public int Id { get; set; }
 
@@ -15,5 +14,6 @@ namespace PAccountant2.BLL.Domain.Entities.Investment
 
         public DateTime Date { get; set; }
 
+        public int ContragentId { get; set; }
     }
 }

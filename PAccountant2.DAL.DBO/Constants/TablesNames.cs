@@ -20,6 +20,10 @@
 
         public static string InvestmentOperation = "InvestmentOperation";
 
+        public static string Credit = "Credit";
+
+        public static string CreditOperation = "CreditOperation";
+
         public static string Contragent = "Contragent";
     }
 }

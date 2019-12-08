@@ -10,7 +10,7 @@ using PAccountant2.DAL.Context;
 namespace PAccountant2.DAL.Migrations.Migrations
 {
     [DbContext(typeof(PaccountantContext))]
-    [Migration("20191128160059_init")]
+    [Migration("20191208133257_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -123,6 +123,68 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     b.ToTable("Contragent");
                 });
 
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Credit.CreditDbo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccountingId");
+
+                    b.Property<decimal>("BodyAmount");
+
+                    b.Property<string>("Comment");
+
+                    b.Property<int>("CreditType");
+
+                    b.Property<decimal>("LeftAmount");
+
+                    b.Property<float>("Percent");
+
+                    b.Property<decimal>("PercentAmount");
+
+                    b.Property<int>("PercentPeriod");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.Property<long>("Term");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountingId");
+
+                    b.ToTable("Credit");
+                });
+
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Credit.CreditOperationDbo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("Amount");
+
+                    b.Property<int>("ContragentId");
+
+                    b.Property<int>("CreditId");
+
+                    b.Property<int>("CurrencyId");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("OperationType");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContragentId");
+
+                    b.HasIndex("CreditId");
+
+                    b.HasIndex("CurrencyId");
+
+                    b.ToTable("CreditOperation");
+                });
+
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", b =>
                 {
                     b.Property<int>("Id")
@@ -169,15 +231,23 @@ namespace PAccountant2.DAL.Migrations.Migrations
 
                     b.Property<int>("AccountingId");
 
-                    b.Property<decimal>("BodyAmount");
-
                     b.Property<string>("Comment");
 
+                    b.Property<bool>("Completed");
+
+                    b.Property<int>("CurrencyId");
+
+                    b.Property<decimal>("CurrentBodyAmount");
+
                     b.Property<int>("InvestmentType");
+
+                    b.Property<int>("MoneyIncomeOption");
 
                     b.Property<int>("PaymentPeriod");
 
                     b.Property<float>("Percent");
+
+                    b.Property<decimal>("StartBodyAmount");
 
                     b.Property<DateTime>("StartDate");
 
@@ -186,6 +256,8 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AccountingId");
+
+                    b.HasIndex("CurrencyId");
 
                     b.ToTable("Investment");
                 });
@@ -198,7 +270,9 @@ namespace PAccountant2.DAL.Migrations.Migrations
 
                     b.Property<decimal>("Amount");
 
-                    b.Property<int>("ContragentId");
+                    b.Property<string>("Comment");
+
+                    b.Property<int?>("ContragentDboId");
 
                     b.Property<int>("CurrencyId");
 
@@ -206,11 +280,11 @@ namespace PAccountant2.DAL.Migrations.Migrations
 
                     b.Property<int>("InvestmentId");
 
-                    b.Property<int>("OperationType");
+                    b.Property<decimal>("NewTotalAmount");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ContragentId");
+                    b.HasIndex("ContragentDboId");
 
                     b.HasIndex("CurrencyId");
 
@@ -290,6 +364,32 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Credit.CreditDbo", b =>
+                {
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Accounting.AccountingDbo", "Accounting")
+                        .WithMany("Credits")
+                        .HasForeignKey("AccountingId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Credit.CreditOperationDbo", b =>
+                {
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.ContragentDbo", "Contragent")
+                        .WithMany("CreditOperations")
+                        .HasForeignKey("ContragentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Credit.CreditDbo", "Credit")
+                        .WithMany("Operations")
+                        .HasForeignKey("CreditId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", "Currency")
+                        .WithMany("CreditOperations")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Currency.ExchangeRateDbo", b =>
                 {
                     b.HasOne("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", "BaseCurrency")
@@ -309,14 +409,18 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         .WithMany("Investments")
                         .HasForeignKey("AccountingId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", "Currency")
+                        .WithMany("Investments")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Investment.InvestmentOperationDbo", b =>
                 {
-                    b.HasOne("PAccountant2.DAL.DBO.Entities.ContragentDbo", "Contragent")
+                    b.HasOne("PAccountant2.DAL.DBO.Entities.ContragentDbo")
                         .WithMany("InvestmentOperations")
-                        .HasForeignKey("ContragentId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .HasForeignKey("ContragentDboId");
 
                     b.HasOne("PAccountant2.DAL.DBO.Entities.Currency.CurrencyDbo", "Currency")
                         .WithMany("InvestmentOperations")

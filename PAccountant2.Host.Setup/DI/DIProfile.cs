@@ -36,6 +36,7 @@ namespace PAccountant2.Host.Setup.DI
             services.AddScoped<IMigrationDataService, MigrationsDataService>();
 
             services.AddHostedService<CurrencyUpdateBackgroundService>();
+            services.AddHostedService<InvestMoneyIncomeBackgroundService>();
 
             services.AddScoped<IRateService, RateService>();
 

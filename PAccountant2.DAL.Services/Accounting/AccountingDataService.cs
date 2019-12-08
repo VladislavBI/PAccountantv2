@@ -27,9 +27,11 @@ namespace PAccountant2.DAL.Services.Accounting
         }
         public async Task CreateAccountingForUser(string newUserEmail)
         {
+            var currencyId = _context.Currencies.FirstOrDefault().Id;
+
             var newOptions = new AccountingOptionsDbo
             {
-                AccountingBaseCurrencyId = 1
+                AccountingBaseCurrencyId = currencyId
             };
 
             var newAccounting = new AccountingDbo

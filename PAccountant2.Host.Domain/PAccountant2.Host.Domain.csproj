@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CurrenctyRateUtil\CurrenctyRateUtil.csproj" />
+    <ProjectReference Include="..\PAccountant2.BLL.Domain\PAccountant2.BLL.Domain.csproj" />
     <ProjectReference Include="..\PAccountant2.BLL.Interfaces\PAccountant2.BLL.Interfaces.csproj" />
     <ProjectReference Include="..\PAccountant2.Common\PAccountant2.Common.csproj" />
   </ItemGroup>
