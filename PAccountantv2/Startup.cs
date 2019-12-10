@@ -16,6 +16,7 @@ using PAccountant2.Host.Setup.Swagger;
 using PAccountantv2.Host.Api.Infrastructure.Helper;
 using System;
 using System.Reflection;
+using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace PAccountantv2.Host.Api
@@ -43,6 +44,7 @@ namespace PAccountantv2.Host.Api
             services.AddScoped<ITokenService, JwtTokenService>();
             DiProfile.InitilizeDI(services);
             services.AddAutoMapper(typeof(MapperProfile));
+            services.AddMediatR(Assembly.GetExecutingAssembly());
             InitilizeJwt(services);
             InitializeDb(services);
             InitializeSwagger(services);
