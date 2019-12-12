@@ -25,7 +25,7 @@ namespace PAccountant2.DAL.Services.Accounting
             _context = context;
             _mapper = mapper;
         }
-        public async Task CreateAccountingForUser(string newUserEmail)
+        public async Task<int> CreateAccountingForUser(string newUserEmail)
         {
             var currencyId = _context.Currencies.FirstOrDefault().Id;
 
@@ -43,6 +43,8 @@ namespace PAccountant2.DAL.Services.Accounting
             _context.Accountings.Add(newAccounting);
 
             await _context.SaveChangesAsync();
+
+            return newAccounting.Id;
         }
 
         public async Task<AccountingWithAccountsDataItem> GetAccountingWithAccounts(int id,

@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using PAccountant2.Host.Domain.Constants;
 using PAccountant2.Host.Domain.Middleware;
 using PAccountant2.Host.Domain.Models;
@@ -16,8 +18,7 @@ using PAccountant2.Host.Setup.Swagger;
 using PAccountantv2.Host.Api.Infrastructure.Helper;
 using System;
 using System.Reflection;
-using MediatR;
-using Microsoft.Extensions.Logging;
+using PAccountant2.BLL.Application;
 
 namespace PAccountantv2.Host.Api
 {
@@ -40,11 +41,14 @@ namespace PAccountantv2.Host.Api
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddApplication();
+
             // TODO: remove after find solution for jwt create bug
             services.AddScoped<ITokenService, JwtTokenService>();
             DiProfile.InitilizeDI(services);
             services.AddAutoMapper(typeof(MapperProfile));
             services.AddMediatR(Assembly.GetExecutingAssembly());
+
             InitilizeJwt(services);
             InitializeDb(services);
             InitializeSwagger(services);

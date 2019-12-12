@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PAccountant2.BLL.Application\PAccountant2.BLL.Application.csproj" />
     <ProjectReference Include="..\PAccountant2.BLL.Domain\PAccountant2.BLL.Domain.csproj" />
     <ProjectReference Include="..\PAccountant2.BLL.Interfaces\PAccountant2.BLL.Interfaces.csproj" />
     <ProjectReference Include="..\PAccountant2.DAL.Services\PAccountant2.DAL.Services.csproj" />

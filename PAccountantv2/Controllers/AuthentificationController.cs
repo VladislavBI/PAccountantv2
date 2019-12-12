@@ -8,6 +8,9 @@ using PAccountant2.Host.Domain.Models;
 using PAccountant2.Host.Domain.ViewModels.Authentification;
 using PAccountantv2.Host.Api.Infrastructure.Helper;
 using System.Threading.Tasks;
+using MediatR;
+using PAccountant2.BLL.Application.Accounting.Commands;
+using PAccountant2.BLL.Application.Authentification.Commands;
 
 namespace PAccountantv2.Host.Api.Controllers
 {
@@ -20,16 +23,18 @@ namespace PAccountantv2.Host.Api.Controllers
         private readonly IAuthentificationService _authService;
         private readonly ITokenService _tokenService;
         private readonly JwtSettings _jwtSettings;
+        private readonly IMediator _mediator;
 
         public AuthentificationController(IMapper mapper,
             IAuthentificationService authService,
             ITokenService tokenService,
-            IOptions<JwtSettings> jwtSettings)
+            IOptions<JwtSettings> jwtSettings, IMediator mediator)
         {
             _mapper = mapper;
             _authService = authService;
             _jwtSettings = jwtSettings.Value;
             _tokenService = tokenService;
+            _mediator = mediator;
         }
 
         /// <summary>
@@ -42,9 +47,10 @@ namespace PAccountantv2.Host.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> RegisterUser(RegistrationViewModel model)
         {
-            var registerItem = _mapper.Map<RegisterViewItem>(model);
-            var newUserEmail = await _authService.RegisterUserAsync(registerItem);
+            var registerCommand = _mapper.Map<RegisterUserCommand>(model);
+            var newUserEmail = await _mediator.Send(registerCommand);
 
+            var newAccingId = await _mediator.Send(new CreateAccountingCommand {UserEmail = newUserEmail});
             return Ok(newUserEmail);
         }
 

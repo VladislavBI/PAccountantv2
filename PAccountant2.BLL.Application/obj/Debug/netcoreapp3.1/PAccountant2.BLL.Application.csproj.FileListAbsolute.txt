@@ -1,0 +1,10 @@
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp3.1\PAccountant2.BLL.Application.exe
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\obj\Debug\netcoreapp3.1\PAccountant2.BLL.Application.csprojAssemblyReference.cache
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\obj\Debug\netcoreapp3.1\PAccountant2.BLL.Application.AssemblyInfoInputs.cache
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\obj\Debug\netcoreapp3.1\PAccountant2.BLL.Application.AssemblyInfo.cs
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp3.1\MediatR.dll
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\obj\Debug\netcoreapp3.1\PAccountant2.BLL.Application.csproj.CopyComplete
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp3.1\MediatR.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp3.1\PAccountant2.BLL.Interfaces.dll
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp3.1\PAccountant2.BLL.Interfaces.pdb

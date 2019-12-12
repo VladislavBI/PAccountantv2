@@ -1,0 +1,17 @@
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp2.2\PAccountant2.BLL.Application.deps.json
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp2.2\PAccountant2.BLL.Application.dll
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp2.2\PAccountant2.BLL.Application.pdb
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp2.2\CurrenctyRateUtil.dll
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp2.2\PAccountant2.BLL.Domain.dll
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp2.2\PAccountant2.BLL.Interfaces.dll
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp2.2\PAccountant2.Common.dll
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp2.2\PAccountant2.BLL.Domain.pdb
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp2.2\PAccountant2.BLL.Interfaces.pdb
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp2.2\CurrenctyRateUtil.pdb
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\bin\Debug\netcoreapp2.2\PAccountant2.Common.pdb
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Application.csprojAssemblyReference.cache
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Application.AssemblyInfoInputs.cache
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Application.AssemblyInfo.cs
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Application.csproj.CopyComplete
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Application.dll
+C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Application.pdb
