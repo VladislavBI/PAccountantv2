@@ -20,7 +20,10 @@ namespace PAccountant2.BLL.Domain.Entities.User
                 throw new WrongCredentialsException(Email);
             }
 
-            Password = GetEncryptedPassword();
+            if (Password == null)
+            {
+                Password = GetEncryptedPassword();
+            }
 
             var credentialsModel = new CredentialsValueObject
             {

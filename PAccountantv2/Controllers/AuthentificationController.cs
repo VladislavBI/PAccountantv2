@@ -1,16 +1,17 @@
 ﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using PAccountant2.BLL.Application.Accounting.Commands;
+using PAccountant2.BLL.Application.Authentification.Commands;
 using PAccountant2.BLL.Interfaces.Authentification;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.Authentification;
 using PAccountant2.Host.Domain.Models;
 using PAccountant2.Host.Domain.ViewModels.Authentification;
 using PAccountantv2.Host.Api.Infrastructure.Helper;
 using System.Threading.Tasks;
-using MediatR;
-using PAccountant2.BLL.Application.Accounting.Commands;
-using PAccountant2.BLL.Application.Authentification.Commands;
+using PAccountant2.BLL.Application.Authentification.Queries;
 
 namespace PAccountantv2.Host.Api.Controllers
 {
@@ -51,7 +52,10 @@ namespace PAccountantv2.Host.Api.Controllers
             var newUserEmail = await _mediator.Send(registerCommand);
 
             var newAccingId = await _mediator.Send(new CreateAccountingCommand {UserEmail = newUserEmail});
-            return Ok(newUserEmail);
+            return Ok(new
+            {
+                newUserEmail, newAccingId
+            });
         }
 
         /// <summary>
@@ -64,10 +68,10 @@ namespace PAccountantv2.Host.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> LoginUser(LoginViewModel model)
         {
-            var userItem = _mapper.Map<LoginViewItem>(model);
-            await _authService.CheckRightCredentialsAsync(userItem);
+            var userCommand = _mapper.Map<UserAuthentificationCommand>(model);
+            var result = await _mediator.Send(userCommand);
 
-            var token = _tokenService.CreateToken(userItem.Email, _jwtSettings.Key);
+            var token = _tokenService.CreateToken(userCommand.Email, _jwtSettings.Key);
             var tokenModel = new TokenViewModel
             {
                 Token = token

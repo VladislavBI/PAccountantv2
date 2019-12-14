@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PAccountant2.BLL.Application.Authentification.Commands
 {
-    public class RegisterUserCommand :IRequest<string>
+    public class RegisterUserCommand : IRequest<string>
     {
         public string Email { get; set; }
 
@@ -18,7 +18,7 @@ namespace PAccountant2.BLL.Application.Authentification.Commands
         public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, string>
         {
             private readonly IAuthentificationDataService _dataService;
-            
+
             private readonly IMapper _mapper;
 
             public RegisterUserCommandHandler(IAuthentificationDataService dataService, IMapper mapper)
