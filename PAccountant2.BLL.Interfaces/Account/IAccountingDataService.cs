@@ -7,7 +7,7 @@ namespace PAccountant2.BLL.Interfaces.Account
 {
     public interface IAccountingDataService
     {
-        Task CreateAccountingForUser(string newUserEmail);
+        Task<int> CreateAccountingForUser(string newUserEmail);
 
         Task<AccountingWithAccountsDataItem> GetAccountingWithAccounts(int id, Specifications.AndSpecification<AccountBalanceDataItem> accountingSpecification);
 

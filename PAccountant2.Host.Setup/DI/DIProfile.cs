@@ -39,7 +39,7 @@ namespace PAccountant2.Host.Setup.DI
             services.AddHostedService<InvestMoneyIncomeBackgroundService>();
 
             services.AddScoped<IRateService, RateService>();
-
+            services.AddScoped<ICurrencyService, CurrencyService>();
 
         }
     }

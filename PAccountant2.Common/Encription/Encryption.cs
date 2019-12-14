@@ -15,6 +15,6 @@ namespace PAccountant2.Common.Encription
         }
 
         public static bool IsEqual(byte[] firstValue, byte[] secondValue)
-            => firstValue != null && secondValue != null && !firstValue.SequenceEqual(secondValue);
+            => firstValue != null && secondValue != null && firstValue.SequenceEqual(secondValue);
     }
 }

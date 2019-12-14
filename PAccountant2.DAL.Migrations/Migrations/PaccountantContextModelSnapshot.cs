@@ -189,6 +189,8 @@ namespace PAccountant2.DAL.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Code");
+
                     b.Property<string>("FullName");
 
                     b.Property<string>("Name");
