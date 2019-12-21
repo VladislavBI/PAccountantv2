@@ -6,6 +6,7 @@ using PAccountant2.BLL.Interfaces.Migration;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MoreLinq;
 
 namespace PAccountant2.Host.Domain.Services
 {
@@ -42,7 +43,7 @@ namespace PAccountant2.Host.Domain.Services
                             Code = x.Code,
                             Number = x.Number,
                             FullName = x.FullName
-                        });
+                        }).DistinctBy(cur => cur.Code);
 
                         await _migrationService.AddCurrenciesAsync(mappedCurrencies);
                     }
@@ -73,11 +74,13 @@ namespace PAccountant2.Host.Domain.Services
             var mappedCurrencies = currencyData.Select(cur => new ExchangeRatesMigrationViewItem
             {
                 BaseCurrency = cur.BaseCurrency,
-                Currency = cur.Currency,
+                Currency = cur.ResultCurrency,
+                BaseNumber = cur.BaseCode ?? 0,
+                ResultNumber = cur.ResultCode ?? 0,
                 Buy = cur.Buy,
                 Sell = cur.Sell
             });
-            return mappedCurrencies;
+            return mappedCurrencies.ToList();
         }
 
     }

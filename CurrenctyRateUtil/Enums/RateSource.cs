@@ -2,6 +2,8 @@
 {
     public enum RateSource
     {
-        PrivatBankUa = 1
+        PrivatBankUa = 1,
+
+        MonobankUa = 2
     }
 }

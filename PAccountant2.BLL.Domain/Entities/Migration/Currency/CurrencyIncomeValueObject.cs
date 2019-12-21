@@ -4,6 +4,9 @@
     {
         public string BaseCurrency { get; set; }
 
+        public int BaseCode { get; set; }
+        public int ResultCode { get; set; }
+
         public string Currency { get; set; }
 
         public float Buy { get; set; }

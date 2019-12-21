@@ -14,19 +14,12 @@ namespace CurrenctyRateUtil.Services
             WebClient client = new WebClient();
             var xmlResponse =
                 await client.DownloadDataTaskAsync("https://www.currency-iso.org/dam/downloads/lists/list_one.xml");
-            try
+
+            XmlSerializer serializer = new XmlSerializer(typeof(CurrenciesArrayModel));
+            using (MemoryStream str = new MemoryStream(xmlResponse))
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(CurrenciesArrayModel));
-                using (MemoryStream str = new MemoryStream(xmlResponse))
-                {
-                    var data = (CurrenciesArrayModel)serializer.Deserialize(str);
-                    return data;
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
+                var data = (CurrenciesArrayModel)serializer.Deserialize(str);
+                return data;
             }
 
         }

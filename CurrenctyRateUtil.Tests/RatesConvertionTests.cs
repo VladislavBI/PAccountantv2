@@ -26,7 +26,7 @@ namespace CurrenctyRateUtil.Tests
             var baseRate = new SimpleRateModel
             {
                 BaseCurrency = FromCurrency,
-                Currency = ToCurrency,
+                ResultCurrency = ToCurrency,
                 Sell = 24.5f,
                 Buy = 24.3f
             };
@@ -39,7 +39,7 @@ namespace CurrenctyRateUtil.Tests
             var newRate = RateService.ConvertRate(rates, FromCurrency, ToCurrency);
 
             Assert.AreSame(baseRate.BaseCurrency, newRate.BaseCurrency);
-            Assert.AreSame(baseRate.Currency, newRate.Currency);
+            Assert.AreSame(baseRate.ResultCurrency, newRate.ResultCurrency);
             Assert.That(baseRate.Sell, Is.EqualTo(newRate.Sell));
             Assert.That(baseRate.Buy, Is.EqualTo(newRate.Buy));
         }
@@ -50,7 +50,7 @@ namespace CurrenctyRateUtil.Tests
             var baseRate = new SimpleRateModel
             {
                 BaseCurrency = ToCurrency,
-                Currency = FromCurrency,
+                ResultCurrency = FromCurrency,
                 Sell = 1.5f,
                 Buy = 1.3f
             };
@@ -62,8 +62,8 @@ namespace CurrenctyRateUtil.Tests
 
             var newRate = RateService.ConvertRate(rates, FromCurrency, ToCurrency);
 
-            Assert.AreSame(baseRate.BaseCurrency, newRate.Currency);
-            Assert.AreSame(baseRate.Currency, newRate.BaseCurrency);
+            Assert.AreSame(baseRate.BaseCurrency, newRate.ResultCurrency);
+            Assert.AreSame(baseRate.ResultCurrency, newRate.BaseCurrency);
             Assert.That(newRate.Sell, Is.EqualTo(1 / baseRate.Sell));
             Assert.That(newRate.Buy, Is.EqualTo(1 / baseRate.Buy));
         }
@@ -74,7 +74,7 @@ namespace CurrenctyRateUtil.Tests
             var fromRate = new SimpleRateModel
             {
                 BaseCurrency = BaseCurrency,
-                Currency = FromCurrency,
+                ResultCurrency = FromCurrency,
                 Sell = 24.5f,
                 Buy = 24.3f
             };
@@ -82,7 +82,7 @@ namespace CurrenctyRateUtil.Tests
             var toRate = new SimpleRateModel
             {
                 BaseCurrency = BaseCurrency,
-                Currency = ToCurrency,
+                ResultCurrency = ToCurrency,
                 Sell = 27.3f,
                 Buy = 27f
             };
@@ -96,7 +96,7 @@ namespace CurrenctyRateUtil.Tests
             var newRate = RateService.ConvertRate(rates, FromCurrency, ToCurrency);
 
             Assert.AreSame(newRate.BaseCurrency, FromCurrency);
-            Assert.AreSame(newRate.Currency, ToCurrency);
+            Assert.AreSame(newRate.ResultCurrency, ToCurrency);
             Assert.That(newRate.Sell, Is.EqualTo(fromRate.Sell / toRate.Sell));
             Assert.That(newRate.Buy, Is.EqualTo(fromRate.Buy / toRate.Buy));
         }
