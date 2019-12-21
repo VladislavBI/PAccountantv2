@@ -17,14 +17,24 @@ namespace CurrenctyRateUtil.Services
 
         public RateConverter RateConverter { get; set; }
 
-        public RateService():this(RateSource.PrivatBankUa)
+        public RateService():this(RateSource.MonobankUa)
         {
         }
 
         public RateService(RateSource source)
         {
             RateSource = source;
-            Parser = new PrivatBankParser();
+            switch (source)
+            {
+                case RateSource.PrivatBankUa:
+                    Parser = new PrivatBankParser();
+                    break;
+                case RateSource.MonobankUa:
+                    Parser = new MonobankParser();
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(source), source, null);
+            }
             RateConverter = new RateConverter();
         }
 
@@ -32,12 +42,7 @@ namespace CurrenctyRateUtil.Services
         {
             List<SimpleRateModel> rateModel = new List<SimpleRateModel>();
 
-            switch (RateSource)
-            {
-                case RateSource.PrivatBankUa:
-                    rateModel = (await Parser.GetSimpleRateData()).ToList();
-                    break;
-            }
+            rateModel = (await Parser.GetSimpleRateData()).ToList();
 
             rateModel = RemoveNullRates(rateModel).ToList();
 
@@ -61,7 +66,7 @@ namespace CurrenctyRateUtil.Services
         {
             var notNulRates = rateModel.Where(r => Math.Abs(r.Buy) > 0 && Math.Abs(r.Sell) > 0);
 
-            return notNulRates;
+            return notNulRates.ToList();
         }
 
         

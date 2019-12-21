@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using MoreLinq;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Currency;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.Migration;
 using PAccountant2.BLL.Interfaces.Migration;
@@ -17,23 +18,25 @@ namespace PAccountant2.BLL.Domain.Entities.Migration.Currency
         {
             var currencyIncomeValueObjects = incomeData as CurrencyIncomeValueObject[] ?? incomeData.ToArray();
 
-            var baseCurNames = currencyIncomeValueObjects.Select(data => data.BaseCurrency).Distinct();
-            var resultCurNames = currencyIncomeValueObjects.Select(data => data.Currency).Distinct();
-            var currenciesNames = baseCurNames.Union(resultCurNames);
+            var baseCurNames = currencyIncomeValueObjects.Select(cur => new {code = cur.BaseCode, currency = cur.BaseCurrency}).DistinctBy(cur => new { cur.code, cur.currency });
+            var resultCurNames = currencyIncomeValueObjects.Select(cur => new { code = cur.ResultCode, currency = cur.Currency}).DistinctBy(cur => new { cur.code, cur.currency });
+            var currencies = baseCurNames.Union(resultCurNames);
 
-            var currencies = currenciesNames.Select(name => new CurrencyEntity
+            var currenciesMapped = currencies.Select(cur => new CurrencyEntity
             {
-                Name = name
+                Name = cur.currency,
+                Code = cur.code
             });
 
-            return currencies;
+            return currenciesMapped;
         }
 
         public async Task<IEnumerable<CurrencyEntity>> MigrateCurrenciesAsync(IEnumerable<CurrencyEntity> currencies, IMigrationDataService migrationDataService)
         {
             var currecinciesDataItem = currencies.Select(cur => new CurrencyDataItem
             {
-                Name = cur.Name
+                Name = cur.Name,
+                Code = cur.Code
             });
 
             var dbCurencies = await migrationDataService.UpdateCurreniesAsync(currecinciesDataItem);
@@ -41,7 +44,8 @@ namespace PAccountant2.BLL.Domain.Entities.Migration.Currency
             var updatedCurrencies = dbCurencies.Select(cur => new CurrencyEntity
             {
                 Id = cur.Id,
-                Name = cur.Name
+                Name = cur.Name,
+                Code = cur.Code
             });
 
             return updatedCurrencies;
@@ -49,15 +53,22 @@ namespace PAccountant2.BLL.Domain.Entities.Migration.Currency
 
         public IEnumerable<ExchangeRateEntity> GetExchangeRates(IEnumerable<CurrencyIncomeValueObject> incomeData, IEnumerable<CurrencyEntity> dbCurrencies)
         {
-            var exchangeRates = incomeData.Select(data => new ExchangeRateEntity
+            var exchangeRates = incomeData.Select(data =>
             {
-                BaseCurrency = 
-                    dbCurrencies.FirstOrDefault
-                    (cur => string.Equals(cur.Name, data.BaseCurrency, StringComparison.CurrentCultureIgnoreCase)),
-                 ResultCurrency = 
-                     dbCurrencies.FirstOrDefault(cur => string.Equals(cur.Name, data.Currency, StringComparison.CurrentCultureIgnoreCase)),
-                Buy = data.Buy,
-                Sell = data.Sell
+                var currencyEntities = dbCurrencies.ToList();
+                return new ExchangeRateEntity
+                {
+                    BaseCurrency =
+                        currencyEntities.FirstOrDefault
+                        (cur => string.Equals(cur.Name, data.BaseCurrency, StringComparison.CurrentCultureIgnoreCase)
+                                || cur.Code == data.BaseCode),
+                    ResultCurrency =
+                        currencyEntities.FirstOrDefault(cur =>
+                            string.Equals(cur.Name, data.Currency, StringComparison.CurrentCultureIgnoreCase) 
+                            || cur.Code == data.ResultCode),
+                    Buy = data.Buy,
+                    Sell = data.Sell
+                };
             });
 
             return exchangeRates;

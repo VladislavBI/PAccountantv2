@@ -48,7 +48,7 @@ namespace CurrenctyRateUtil.Parsers
         {
             return pbRates.ExchangeRate.Select(r => new SimpleRateModel
             {
-                Currency = r.BaseCurrency,
+                ResultCurrency = r.BaseCurrency,
                 BaseCurrency = r.Currency,
                 Buy = r.PurchaseRate,
                 Sell = r.SaleRate

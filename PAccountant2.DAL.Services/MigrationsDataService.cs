@@ -37,6 +37,7 @@ namespace PAccountant2.DAL.Services
             _context.Currencies.AddRange(currenciesForAdd);
             await _context.SaveChangesAsync();
 
+            currenciesForAdd = currenciesForAdd.Union(dbCurrencies);
             var updatedCurrencies = _mapper.Map<IEnumerable<CurrencyDataItem>>(currenciesForAdd);
 
             return updatedCurrencies;

@@ -41,8 +41,8 @@ namespace CurrenctyRateUtil.Infrastructure
         {
             SimpleRateModel resultRate = null;
 
-            var fromRate = rates.FirstOrDefault(r => string.Equals(r.Currency, from, StringComparison.CurrentCultureIgnoreCase));
-            var toRate = rates.FirstOrDefault(r => string.Equals(r.Currency, to, StringComparison.CurrentCultureIgnoreCase));
+            var fromRate = rates.FirstOrDefault(r => string.Equals(r.ResultCurrency, from, StringComparison.CurrentCultureIgnoreCase));
+            var toRate = rates.FirstOrDefault(r => string.Equals(r.ResultCurrency, to, StringComparison.CurrentCultureIgnoreCase));
 
             if (fromRate != null && toRate != null
                                  && string.Equals(fromRate.BaseCurrency, toRate.BaseCurrency, StringComparison.CurrentCultureIgnoreCase))
@@ -50,7 +50,7 @@ namespace CurrenctyRateUtil.Infrastructure
                 resultRate = new SimpleRateModel
                 {
                     BaseCurrency = from,
-                    Currency = to,
+                    ResultCurrency = to,
                     Sell = fromRate.Sell / toRate.Sell,
                     Buy = fromRate.Buy / toRate.Buy
                 };
@@ -65,7 +65,7 @@ namespace CurrenctyRateUtil.Infrastructure
 
             bool StraightRateExpr(SimpleRateModel r) =>
                 string.Equals(r.BaseCurrency, from, StringComparison.CurrentCultureIgnoreCase)
-                && string.Equals(r.Currency, to, StringComparison.CurrentCultureIgnoreCase);
+                && string.Equals(r.ResultCurrency, to, StringComparison.CurrentCultureIgnoreCase);
 
             if (rates.Any(StraightRateExpr))
             {
@@ -81,7 +81,7 @@ namespace CurrenctyRateUtil.Infrastructure
 
             bool RevertRateExpr(SimpleRateModel r) =>
                    string.Equals(r.BaseCurrency, to, StringComparison.CurrentCultureIgnoreCase)
-                   && string.Equals(r.Currency, from, StringComparison.CurrentCultureIgnoreCase);
+                   && string.Equals(r.ResultCurrency, from, StringComparison.CurrentCultureIgnoreCase);
             ;
 
             if (rates.Any(RevertRateExpr))
@@ -89,7 +89,7 @@ namespace CurrenctyRateUtil.Infrastructure
                 resultRate = rates.FirstOrDefault(RevertRateExpr);
 
                 resultRate.BaseCurrency = from;
-                resultRate.Currency = to;
+                resultRate.ResultCurrency = to;
                 resultRate.Buy = 1 / resultRate.Buy;
                 resultRate.Sell = 1 / resultRate.Sell;
             }
