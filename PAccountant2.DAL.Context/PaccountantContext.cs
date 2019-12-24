@@ -7,6 +7,8 @@ using PAccountant2.DAL.DBO.Entities.Accounting;
 using PAccountant2.DAL.DBO.Entities.Credit;
 using PAccountant2.DAL.DBO.Entities.Currency;
 using PAccountant2.DAL.DBO.Entities.Investment;
+using PAccountant2.DAL.DBO.Entities.WheelOfLife;
+using PAccountant2.DAL.DBO.ManyToMany;
 
 namespace PAccountant2.DAL.Context
 {
@@ -27,6 +29,11 @@ namespace PAccountant2.DAL.Context
         public DbSet<CurrencyDbo> Currencies { get; set; }
 
         public DbSet<ExchangeRateDbo> ExchangeRates { get; set; }
+
+        public DbSet<WheelOfLifeElementDbo> WheelOfLifeElements { get; set; }
+        public DbSet<WheelOfLifeMementoDbo> WheelOfLifeMementos { get; set; }
+        public DbSet<WheelOfLifeProblemDbo> WheelOfLifeProblems { get; set; }
+        public DbSet<WheelOfLifePlanDbo> WheelOfLifePlans { get; set; }
 
         public PaccountantContext(DbContextOptions options): base(options)
         {
@@ -91,6 +98,33 @@ namespace PAccountant2.DAL.Context
             modelBuilder.Entity<ExchangeRateDbo>().HasOne(rate => rate.BaseCurrency).WithMany(cur => cur.BaseCurrenciesRates).HasForeignKey(rate => rate.BaseCurrencyId).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<ExchangeRateDbo>().HasOne(rate => rate.ResultCurrency).WithMany(acc => acc.ResultCurrenciesRates).HasForeignKey(rate => rate.ResultCurrencyId).OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<WheelOfLifeElementDbo>().ToTable(TablesNames.WheelOfLifeElement);
+            modelBuilder.Entity<WheelOfLifeElementDbo>().Property(el => el.Id).UseSqlServerIdentityColumn();
+            modelBuilder.Entity<WheelOfLifeElementDbo>().HasMany(el => el.Problems).WithOne(pr => pr.Element).HasForeignKey(pr => pr.ElementId);
+
+            modelBuilder.Entity<WheelOfLifeMementoDbo>().ToTable(TablesNames.WheelOfLifeMemento);
+            modelBuilder.Entity<WheelOfLifeMementoDbo>().Property(m => m.Id).UseSqlServerIdentityColumn();
+
+
+            modelBuilder.Entity<WheelOfLifeProblemDbo>().ToTable(TablesNames.WheelOfLifeProblem);
+            modelBuilder.Entity<WheelOfLifeProblemDbo>().Property(pr => pr.Id).UseSqlServerIdentityColumn();
+            modelBuilder.Entity<WheelOfLifeProblemDbo>().HasMany(pr => pr.Plans).WithOne(pl => pl.Problem).HasForeignKey(pl => pl.ProblemId);
+
+            modelBuilder.Entity<WheelOfLifePlanDbo>().ToTable(TablesNames.WheelOfLifePlan);
+            modelBuilder.Entity<WheelOfLifePlanDbo>().Property(pl => pl.Id).UseSqlServerIdentityColumn();
+
+            modelBuilder.Entity<WheelOfLifeElementMementoDbo>().ToTable(TablesNames.WheelOfLifeElementMemento);
+            modelBuilder.Entity<WheelOfLifeElementMementoDbo>().Property(em => em.Id).UseSqlServerIdentityColumn();
+            modelBuilder.Entity<WheelOfLifeElementMementoDbo>()
+                .HasOne(em => em.WheelElement)
+                .WithMany(el => el.ElementMementos)
+                .HasForeignKey(em => em.WheelElementId)
+                .HasConstraintName("ElementManyToManyFK");
+            modelBuilder.Entity<WheelOfLifeElementMementoDbo>()
+                .HasOne(em => em.WheelMemento)
+                .WithMany(m => m.ElementMementos)
+                .HasForeignKey(em => em.WheelMementoId)
+                .HasConstraintName("MementoManyToManyFK");
         }
     }
 }

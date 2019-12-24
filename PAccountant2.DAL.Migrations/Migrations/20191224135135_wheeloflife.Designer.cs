@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PAccountant2.DAL.Context;
 
 namespace PAccountant2.DAL.Migrations.Migrations
 {
     [DbContext(typeof(PaccountantContext))]
-    partial class PaccountantContextModelSnapshot : ModelSnapshot
+    [Migration("20191224135135_wheeloflife")]
+    partial class wheeloflife
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -373,25 +375,6 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     b.ToTable("WheelOfLifeProblem");
                 });
 
-            modelBuilder.Entity("PAccountant2.DAL.DBO.ManyToMany.WheelOfLifeElementMementoDbo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("WheelElementId");
-
-                    b.Property<int>("WheelMementoId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WheelElementId");
-
-                    b.HasIndex("WheelMementoId");
-
-                    b.ToTable("WheelOfLifeElementMemento");
-                });
-
             modelBuilder.Entity("PAccountant2.DAL.DBO.Entities.Account.AccountDbo", b =>
                 {
                     b.HasOne("PAccountant2.DAL.DBO.Entities.Accounting.AccountingDbo", "Accounting")
@@ -533,21 +516,6 @@ namespace PAccountant2.DAL.Migrations.Migrations
                     b.HasOne("PAccountant2.DAL.DBO.Entities.WheelOfLife.WheelOfLifeElementDbo", "Element")
                         .WithMany("Problems")
                         .HasForeignKey("ElementId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("PAccountant2.DAL.DBO.ManyToMany.WheelOfLifeElementMementoDbo", b =>
-                {
-                    b.HasOne("PAccountant2.DAL.DBO.Entities.WheelOfLife.WheelOfLifeElementDbo", "WheelElement")
-                        .WithMany("ElementMementos")
-                        .HasForeignKey("WheelElementId")
-                        .HasConstraintName("ElementManyToManyFK")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("PAccountant2.DAL.DBO.Entities.WheelOfLife.WheelOfLifeMementoDbo", "WheelMemento")
-                        .WithMany("ElementMementos")
-                        .HasForeignKey("WheelMementoId")
-                        .HasConstraintName("MementoManyToManyFK")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
