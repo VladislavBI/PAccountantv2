@@ -3,15 +3,18 @@ using Microsoft.Extensions.DependencyInjection;
 using PAccountant2.BLL.Domain.Services;
 using PAccountant2.BLL.Domain.Services.Accounting;
 using PAccountant2.BLL.Domain.Services.Investment;
+using PAccountant2.BLL.Domain.Services.WheelOfLife;
 using PAccountant2.BLL.Interfaces.Account;
 using PAccountant2.BLL.Interfaces.Authentification;
 using PAccountant2.BLL.Interfaces.Currency;
 using PAccountant2.BLL.Interfaces.Investment;
 using PAccountant2.BLL.Interfaces.Migration;
+using PAccountant2.BLL.Interfaces.WheelOfLife;
 using PAccountant2.DAL.Services;
 using PAccountant2.DAL.Services.Accounting;
 using PAccountant2.DAL.Services.Currency;
 using PAccountant2.DAL.Services.Investment;
+using PAccountant2.DAL.Services.WheelOfLife;
 using PAccountant2.Host.Domain.Services;
 
 
@@ -40,6 +43,10 @@ namespace PAccountant2.Host.Setup.DI
 
             services.AddScoped<IRateService, RateService>();
             services.AddScoped<ICurrencyService, CurrencyService>();
+
+            services.AddScoped<IWheelOfLifeDataService, WheelOfLifeDataService>();
+            services.AddScoped<IWheelOfLifeService, WheelOfLifeService>();
+
 
         }
     }
