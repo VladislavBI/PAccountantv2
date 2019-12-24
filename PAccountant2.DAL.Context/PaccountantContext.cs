@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using PAccountant2.Common.Constants;
 using PAccountant2.DAL.DBO.Constants;
 using PAccountant2.DAL.DBO.Entities;
@@ -125,6 +126,60 @@ namespace PAccountant2.DAL.Context
                 .WithMany(m => m.ElementMementos)
                 .HasForeignKey(em => em.WheelMementoId)
                 .HasConstraintName("MementoManyToManyFK");
+
+            modelBuilder.Entity<WheelOfLifeElementDbo>().HasData(new List<WheelOfLifeElementDbo>
+            {
+                new WheelOfLifeElementDbo
+                {
+                    Id = 1,
+                    Name = "Health",
+                    Score = 10
+                },
+                new WheelOfLifeElementDbo
+                {
+                    Id = 2,
+                    Name = "Spiritual",
+                    Score = 10
+                },
+                new WheelOfLifeElementDbo
+                {
+                    Id = 3,
+                    Name = "Financial",
+                    Score = 10
+                },
+                new WheelOfLifeElementDbo
+                {
+                    Id = 4,
+                    Name = "Social",
+                    Score = 10
+                },
+                new WheelOfLifeElementDbo
+                {
+                    Id = 5,
+                    Name = "Life quality",
+                    Score = 10
+                },
+                new WheelOfLifeElementDbo
+                {
+                    Id = 6,
+                    Name = "Education",
+                    Score = 10
+                },
+                new WheelOfLifeElementDbo
+                {
+                    Id = 7,
+                    Name = "Work",
+                    Score = 10
+                },
+                new WheelOfLifeElementDbo
+                {
+                    Id = 8,
+                    Name = "Relations",
+                    Score = 10
+                },
+            }
+                
+                );
         }
     }
 }

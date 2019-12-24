@@ -10,9 +10,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="DTO\DataItems\WheelOfLife\" />
-    <Folder Include="DTO\ViewItems\WheelOfLife\" />
-  </ItemGroup>
-
 </Project>
