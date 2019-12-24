@@ -15,5 +15,7 @@ namespace PAccountant2.BLL.Interfaces.WheelOfLife
         Task<int> AddNewPlanAsync(WheelOfLifePlanViewItem model);
 
         Task FinishPlanAsync(int id, int planId);
+        
+        Task<IEnumerable<WheelOfLifeElementViewItem>> GetWheelAsync();
     }
 }

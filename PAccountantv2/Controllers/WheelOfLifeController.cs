@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PAccountant2.BLL.Interfaces.DTO.ViewItems.Investment;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.WheelOfLife;
 using PAccountant2.BLL.Interfaces.WheelOfLife;
-using PAccountant2.Host.Domain.ViewModels.Investment;
 using PAccountant2.Host.Domain.ViewModels.WheelOfLife;
+using System.Threading.Tasks;
 
 namespace PAccountantv2.Host.Api.Controllers
 {
@@ -25,6 +20,16 @@ namespace PAccountantv2.Host.Api.Controllers
             _service = service;
             _mapper = mapper;
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var model = await _service.GetWheelAsync();
+            var mappedModel = _mapper.Map<IEnumerable<WheelOfLifeElementViewModel>>(model);
+
+            return Ok(mappedModel);
+        }
+
         [HttpPost]
         [Route("element/{id}/problem")]
         public async Task<IActionResult> AddNewProblem(int id, WheelOfLifeProblemAddViewModel model)

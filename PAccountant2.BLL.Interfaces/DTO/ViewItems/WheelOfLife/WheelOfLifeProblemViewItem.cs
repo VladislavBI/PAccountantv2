@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace PAccountant2.BLL.Interfaces.DTO.ViewItems.WheelOfLife
 {
@@ -13,5 +11,7 @@ namespace PAccountant2.BLL.Interfaces.DTO.ViewItems.WheelOfLife
         public int ElementId { get; set; }
 
         public bool IsFinished { get; set; }
+
+        public IEnumerable<WheelOfLifePlanViewItem> Plans { get; set; }
     }
 }

@@ -1,10 +1,13 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.WheelOfLife;
 using PAccountant2.BLL.Interfaces.WheelOfLife;
 using PAccountant2.DAL.Context;
 using System.Threading.Tasks;
 using PAccountant2.DAL.DBO.Entities.WheelOfLife;
+using Remotion.Linq.Clauses;
 
 namespace PAccountant2.DAL.Services.WheelOfLife
 {
@@ -80,6 +83,18 @@ namespace PAccountant2.DAL.Services.WheelOfLife
             dbPlan.isFinished = true;
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<WheelOfLifeElementDataItem>> GetWheelAsync()
+        {
+            var elements = await _context.WheelOfLifeElements
+                .Include(el => el.Problems)
+                .ThenInclude(pr => pr.Plans)
+                .ToListAsync();
+
+            var mappedElements = _mapper.Map<IEnumerable<WheelOfLifeElementDataItem>>(elements);
+
+            return mappedElements;
         }
     }
 }
