@@ -11,7 +11,8 @@ namespace PAccountant2.Host.Setup.Mapping
         public WheelOfLifeMapping()
         {
             CreateMap<WheelOfLifeProblemAddViewModel, WheelOfLifeProblemViewItem>();
-            CreateMap<WheelOfLifeProblemViewItem, WheelOfLifeProblemDataItem>();
+            CreateMap<WheelOfLifeProblemViewItem, WheelOfLifeProblemDataItem>()
+                .ReverseMap();
             CreateMap<WheelOfLifeProblemDataItem, WheelOfLifeProblemDbo>()
                 .ReverseMap();
             CreateMap<WheelOfLifeElementEntity, WheelOfLifeElementDataItem>()
@@ -19,8 +20,16 @@ namespace PAccountant2.Host.Setup.Mapping
             CreateMap<WheelOfLifeElementDbo, WheelOfLifeElementDataItem>()
                 .ReverseMap();
             CreateMap<WheelOfLifePlanAddViewModel, WheelOfLifePlanViewItem>();
-            CreateMap<WheelOfLifePlanViewItem, WheelOfLifePlanDataItem>();
-            CreateMap<WheelOfLifePlanDataItem, WheelOfLifePlanDbo>();
+            CreateMap<WheelOfLifePlanViewItem, WheelOfLifePlanDataItem>()
+                .ReverseMap();
+            CreateMap<WheelOfLifePlanDataItem, WheelOfLifePlanDbo>()
+                .ReverseMap();
+            CreateMap<WheelOfLifeElementDbo, WheelOfLifeElementDataItem>();
+            CreateMap<WheelOfLifeElementDataItem, WheelOfLifeElementViewItem>();
+            CreateMap<WheelOfLifeElementViewItem, WheelOfLifeElementViewModel>();
+            CreateMap<WheelOfLifeProblemViewItem, WheelOfLifeProblemViewModel>();
+            CreateMap<WheelOfLifePlanViewItem, WheelOfLifePlanViewModel>();
+
         }
     }
 }

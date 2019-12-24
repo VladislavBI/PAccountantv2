@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using PAccountant2.BLL.Domain.Entities.WheelOfLife;
@@ -87,6 +88,15 @@ namespace PAccountant2.BLL.Domain.Services.WheelOfLife
             }
 
             await _dataService.FinishPlanAsync(planId);
+        }
+
+        public async Task<IEnumerable<WheelOfLifeElementViewItem>> GetWheelAsync()
+        {
+            IEnumerable<WheelOfLifeElementDataItem> modelsList = await _dataService.GetWheelAsync();
+            
+            var mappedModel = _mapper.Map<IEnumerable<WheelOfLifeElementViewItem>>(modelsList);
+
+            return mappedModel;
         }
     }
 }
