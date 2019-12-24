@@ -25,5 +25,16 @@
         public static string CreditOperation = "CreditOperation";
 
         public static string Contragent = "Contragent";
+
+        public static string WheelOfLifeElement = "WheelOfLifeElement";
+
+        public static string WheelOfLifeMemento = "WheelOfLifeMemento";
+
+        public static string WheelOfLifeProblem = "WheelOfLifeProblem";
+
+        public static string WheelOfLifePlan = "WheelOfLifePlan";
+
+        public static string WheelOfLifeElementMemento = "WheelOfLifeElementMemento";
+
     }
 }
