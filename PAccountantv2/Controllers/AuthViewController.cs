@@ -20,5 +20,16 @@ namespace PAccountantv2.Host.Api.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// Need to remove this later
+        /// </summary>
+        /// <returns></returns>
+        [Route("wheel")]
+        [HttpGet]
+        public IActionResult Wheel()
+        {
+            return View();
+        }
     }
 }
