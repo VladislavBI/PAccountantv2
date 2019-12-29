@@ -1,21 +1,42 @@
-const url ='http://localhost:51289/api';
+const url = 'http://localhost:51289/api';
+let mementos = [];
 let chat = {};
 let chartData = {};
+let chartDataProvider = [];
 let elementIndex = -1;
 let problemIndex = -1;
 
 $.get(`${url}/wheel`, function (data) {
     chartData = data;
     createWheel(chartData);
+    wheelSetData(data);
     prerenderWheel(chartData);
 });
 
+$.get(`${url}/wheel/memento`, function (data) {
+    mementos = data;
+    for (var index in data) {
+        var date = new Date(data[index].date);
+        $('.memento-list').append(`<div class="date" onClick='getWheel(${index})'>${date.toDateString()}: ${data[index].totalScore}</div>`);
+    }
+});
+
+getWheel = function (index) {
+    var date = new Date(mementos[index].date);
+    var formattedDate = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+
+    $.get(`${url}/wheel?wheelDate=${formattedDate}`, function (data) {
+        wheelSetData(data);
+        chartData = data;
+        prerenderWheel(chartData);
+    });
+}
+
 createWheel = function (data) {
-    var mappedData = data.map(d => ({ country: d.name }));
     chart = AmCharts.makeChart("chartdiv", {
         "type": "radar",
         "theme": "light",
-        "dataProvider": mappedData,
+        "dataProvider": chartDataProvider,
         "valueAxes": [{
             "gridType": "circles",
             "axisTitleOffset": 20,
@@ -38,10 +59,17 @@ createWheel = function (data) {
     });
 
 
-
 }
 
-prerenderWheel = function(data) {
+wheelSetData = function (data) {
+    chartDataProvider = data.map(d => ({ country: d.name }));
+    chart.dataProvider = chartDataProvider;
+}
+prerenderWheel = function (data) {
+    $('.row1').empty();
+    $('.row2').empty();
+    $('.row3').empty();
+
     for (var i = 0; i < 8; i++) {
         let element = data[i];
         let problems = element.problems.filter(x => !x.isFinished);
@@ -120,8 +148,12 @@ setValue = function(index, value) {
 
 addProblem = function (problem) {
     let plans = problem.plans.filter(x => !x.isFinished);
+    let inProgress = "";
 
-    $(`.prList${elementIndex}`).append(`<div style="margin-left:6px" class="col pr${problem.id}">${problem.id}) ${problem.description}<div class="row plList${problem.id}" style="display: block;"></div></div>`);
+    if (plans.length > 0) {
+        inProgress = "in-progress";
+    }
+    $(`.prList${elementIndex}`).append(`<div style="margin-left:6px" class="col pr${problem.id} ${inProgress}">${problem.id}) ${problem.description}<div class="row plList${problem.id}" style="display: block;"></div></div>`);
 
     for (var i = 0; i < plans.length; i++) {
         problemIndex = problem.id;
@@ -134,3 +166,4 @@ addPlan = function (plan) {
     $(`.plList${problemIndex}`).append(`<div style="margin-left:12px" class="col pl${plan.id}">${plan.id}) ${plan.description}</div>`);
 }
 
+;

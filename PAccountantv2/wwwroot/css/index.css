@@ -19,3 +19,7 @@
 .areas .value:hover {
     background: #ecc;
 }
+
+.in-progress {
+    color: red;
+}

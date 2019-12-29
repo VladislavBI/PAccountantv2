@@ -34,7 +34,5 @@
 
         public static string WheelOfLifePlan = "WheelOfLifePlan";
 
-        public static string WheelOfLifeElementMemento = "WheelOfLifeElementMemento";
-
     }
 }

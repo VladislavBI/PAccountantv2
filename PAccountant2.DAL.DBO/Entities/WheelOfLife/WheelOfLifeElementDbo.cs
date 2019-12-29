@@ -1,5 +1,4 @@
-﻿using PAccountant2.DAL.DBO.ManyToMany;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace PAccountant2.DAL.DBO.Entities.WheelOfLife
 {
@@ -13,7 +12,7 @@ namespace PAccountant2.DAL.DBO.Entities.WheelOfLife
 
         public ICollection<WheelOfLifeProblemDbo> Problems { get; set; }
 
-        public ICollection<WheelOfLifeElementMementoDbo> ElementMementos { get; set; }
+        public ICollection<WheelOfLifeMementoDbo> Mementos { get; set; }
 
 
     }
