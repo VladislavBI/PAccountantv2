@@ -40,4 +40,10 @@
     <Folder Include="Pages\" />
   </ItemGroup>
 
+
+  <ItemGroup>
+    <None Include="wwwroot\css\index.css" />
+    <None Include="wwwroot\js\index.js" />
+  </ItemGroup>
+
 </Project>

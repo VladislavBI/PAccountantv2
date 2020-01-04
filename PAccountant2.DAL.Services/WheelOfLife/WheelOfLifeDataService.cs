@@ -1,13 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.WheelOfLife;
 using PAccountant2.BLL.Interfaces.WheelOfLife;
 using PAccountant2.DAL.Context;
-using System.Threading.Tasks;
 using PAccountant2.DAL.DBO.Entities.WheelOfLife;
-using Remotion.Linq.Clauses;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PAccountant2.DAL.Services.WheelOfLife
 {
@@ -95,6 +95,68 @@ namespace PAccountant2.DAL.Services.WheelOfLife
             var mappedElements = _mapper.Map<IEnumerable<WheelOfLifeElementDataItem>>(elements);
 
             return mappedElements;
+        }
+
+        public async Task<IEnumerable<WheelOfLifeElementDataItem>> GetWheelMementoAsync(DateTime wheelDate)
+        {
+            var mementos = await _context.WheelOfLifeMementos
+                .Include(m => m.Element)
+                .Where(m => m.Date == wheelDate)
+                .ToListAsync();
+
+            var mappedElements = mementos.Select(m => new WheelOfLifeElementDataItem
+            {
+                Id = m.ElementId,
+                Score = m.Score,
+                Name = m.Element.Name
+            });
+
+            return mappedElements;
+        }
+
+        public async Task<DateTime> GetActualWheelDateAsync(DateTime wheelDate)
+        {
+            var resultDate = DateTime.Now;
+
+            if (await _context.WheelOfLifeMementos.AnyAsync(m => m.Date.Date >= wheelDate.Date))
+            {
+                resultDate = await _context.WheelOfLifeMementos
+                    .Where(m => m.Date.Date >= wheelDate.Date)
+                    .Select(x => x.Date)
+                    .Distinct().OrderBy(d => d)
+                    .FirstOrDefaultAsync();
+            }
+
+            return resultDate;
+
+        }
+
+        public async Task<DateTime> CreateWheelMementoAsync(DateTime now)
+        {
+            var elements = await _context.WheelOfLifeElements.ToListAsync();
+
+            var newMementos = elements
+                .Select(e => new WheelOfLifeMementoDbo
+                {
+                    Date = now.Date,
+                    ElementId = e.Id,
+                    Score = e.Score
+                });
+
+            _context.WheelOfLifeMementos.AddRange(newMementos);
+
+            await _context.SaveChangesAsync();
+
+            return now;
+        }
+
+        public async Task<IEnumerable<WheelOfLifeMementoDataItem>> GetMementosAsync()
+        {
+            var dbMementos = await _context.WheelOfLifeMementos.ToListAsync();
+
+            var mappedMementos = _mapper.Map<IEnumerable<WheelOfLifeMementoDataItem>>(dbMementos);
+
+            return mappedMementos;
         }
     }
 }

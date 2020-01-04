@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace PAccountant2.DAL.DBO.Entities.WheelOfLife
+namespace PAccountant2.BLL.Interfaces.DTO.DataItems.WheelOfLife
 {
-    public class WheelOfLifeMementoDbo
+    public class WheelOfLifeMementoDataItem
     {
         public int Id { get; set; }
 
@@ -11,7 +11,5 @@ namespace PAccountant2.DAL.DBO.Entities.WheelOfLife
         public int Score { get; set; }
 
         public int ElementId { get; set; }
-
-        public WheelOfLifeElementDbo Element{ get; set; }
     }
 }

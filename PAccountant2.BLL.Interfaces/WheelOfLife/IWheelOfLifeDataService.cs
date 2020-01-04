@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.WheelOfLife;
 
@@ -25,5 +26,13 @@ namespace PAccountant2.BLL.Interfaces.WheelOfLife
         Task FinishPlanAsync(int planId);
 
         Task<IEnumerable<WheelOfLifeElementDataItem>> GetWheelAsync();
+
+        Task<IEnumerable<WheelOfLifeElementDataItem>> GetWheelMementoAsync(DateTime wheelDate);
+
+        Task<DateTime> GetActualWheelDateAsync(DateTime wheelDate);
+
+        Task<DateTime> CreateWheelMementoAsync(DateTime now);
+
+        Task<IEnumerable<WheelOfLifeMementoDataItem>> GetMementosAsync();
     }
 }

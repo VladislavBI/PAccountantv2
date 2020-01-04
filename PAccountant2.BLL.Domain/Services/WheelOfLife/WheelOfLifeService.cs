@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PAccountant2.BLL.Domain.Entities.WheelOfLife;
@@ -7,6 +8,7 @@ using PAccountant2.BLL.Domain.Enum;
 using PAccountant2.BLL.Interfaces.DTO.DataItems.WheelOfLife;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.WheelOfLife;
 using PAccountant2.BLL.Interfaces.WheelOfLife;
+using Remotion.Linq.Clauses;
 
 namespace PAccountant2.BLL.Domain.Services.WheelOfLife
 {
@@ -90,13 +92,57 @@ namespace PAccountant2.BLL.Domain.Services.WheelOfLife
             await _dataService.FinishPlanAsync(planId);
         }
 
-        public async Task<IEnumerable<WheelOfLifeElementViewItem>> GetWheelAsync()
+        public async Task<IEnumerable<WheelOfLifeElementViewItem>> GetWheelAsync(DateTime? wheelDate)
         {
-            IEnumerable<WheelOfLifeElementDataItem> modelsList = await _dataService.GetWheelAsync();
-            
+            IEnumerable<WheelOfLifeElementDataItem> modelsList = null;
+
+            if (wheelDate.HasValue &&  wheelDate.Value.Date != DateTime.Now.Date)
+            {
+                var actualDate = await _dataService.GetActualWheelDateAsync(wheelDate.Value);
+
+                if (actualDate.Date == DateTime.Now.Date)
+                {
+                    modelsList = await _dataService.GetWheelAsync();
+                }
+                else
+                {
+                    modelsList = await _dataService.GetWheelMementoAsync(actualDate);
+                }
+            }
+            else
+            {
+                modelsList = await _dataService.GetWheelAsync();
+
+            }
+
             var mappedModel = _mapper.Map<IEnumerable<WheelOfLifeElementViewItem>>(modelsList);
 
             return mappedModel;
+        }
+
+        public async Task<DateTime> CreateWheelMementoAsync(DateTime now)
+        {
+            DateTime mementoDate = await _dataService.CreateWheelMementoAsync(now);
+
+            return mementoDate;
+        }
+
+        public async Task<IEnumerable<WheelOfLifeMementoDateViewItem>> GetWheelMementosAsync()
+        {
+            var dbMementos= await _dataService.GetMementosAsync();
+            var currentElements= await _dataService.GetWheelAsync();
+
+            var mappedMementos = _mapper.Map<IEnumerable<WheelOfLifeMementoEntity>>(dbMementos);
+            var mappedElements = _mapper.Map<IEnumerable<WheelOfLifeElementEntity>>(currentElements);
+
+            var wheel = new WheelOfLifeEntity();
+            wheel.Mementos = mappedMementos;
+            wheel.Elements = mappedElements;
+
+            IEnumerable<WheelOfLifeMementoDateValueObject> mementoDates = wheel.CreateMementoDates();
+            var returnMementos = _mapper.Map<IEnumerable<WheelOfLifeMementoDateViewItem>>(mementoDates);
+
+            return returnMementos;
         }
     }
 }

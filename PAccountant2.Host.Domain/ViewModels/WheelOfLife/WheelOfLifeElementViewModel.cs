@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace PAccountant2.Host.Domain.ViewModels.WheelOfLife
 {
@@ -9,6 +10,8 @@ namespace PAccountant2.Host.Domain.ViewModels.WheelOfLife
         public string Name { get; set; }
 
         public int Score { get; set; }
+
+        public DateTime Date { get; set; }
 
         public IEnumerable<WheelOfLifeProblemViewModel> Problems { get; set; }
     }
