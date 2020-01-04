@@ -15,4 +15,3 @@ C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BL
 C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Application.csproj.CopyComplete
 C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Application.dll
 C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Application.pdb
-C:\Users\Администратор\source\repos\PAccountantv2.1\PAccountant2.BLL.Application\obj\Debug\netcoreapp2.2\PAccountant2.BLL.Application.csproj.CoreCompileInputs.cache
