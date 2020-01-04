@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.WheelOfLife;
 using PAccountant2.BLL.Interfaces.WheelOfLife;
 using PAccountant2.Host.Domain.ViewModels.WheelOfLife;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace PAccountantv2.Host.Api.Controllers
 {
@@ -22,10 +24,20 @@ namespace PAccountantv2.Host.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] DateTime? wheelDate)
         {
-            var model = await _service.GetWheelAsync();
+            var model = await _service.GetWheelAsync(wheelDate);
             var mappedModel = _mapper.Map<IEnumerable<WheelOfLifeElementViewModel>>(model);
+
+            return Ok(mappedModel);
+        }
+
+        [HttpGet]
+        [Route("memento")]
+        public async Task<IActionResult> GetMementosDates()
+        {
+            IEnumerable<WheelOfLifeMementoDateViewItem> model = await _service.GetWheelMementosAsync();
+            var mappedModel = _mapper.Map<IEnumerable<WheelOfLifeMementoDateViewModel>>(model);
 
             return Ok(mappedModel);
         }
@@ -68,6 +80,15 @@ namespace PAccountantv2.Host.Api.Controllers
             await _service.FinishPlanAsync(problemId, planId);
 
             return Ok();
+        }
+
+        [HttpPost]
+        [Route("memento")]
+        public async Task<IActionResult> CreateCurrentWheelMemento()
+        {
+            DateTime mementoDate = await _service.CreateWheelMementoAsync(DateTime.Now);
+
+            return Ok(mementoDate);
         }
     }
 }

@@ -1,0 +1,39 @@
+﻿@model object
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+<div class='newProblem' style="display: none">
+    New problem
+    <input onclick="addProblem"/>
+</div>
+<div class="row">
+    <div class="col-2 memento-list"></div>
+    <div class="col-10">
+        <div id="chartdiv"></div>
+    </div>
+</div>
+
+<div class="elementsList container-fluid">
+    <div class="row row1">
+
+    </div>
+    <div class="row row2">
+
+    </div>
+    <div class="row row3">
+
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/radar.js"></script>
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<script src="http://localhost:51289/js/index.js"></script>
+<link href="http://localhost:51289/css/index.css" rel="stylesheet">

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PAccountant2.Common.Constants;
 using PAccountant2.DAL.DBO.Constants;
 using PAccountant2.DAL.DBO.Entities;
@@ -9,7 +8,7 @@ using PAccountant2.DAL.DBO.Entities.Credit;
 using PAccountant2.DAL.DBO.Entities.Currency;
 using PAccountant2.DAL.DBO.Entities.Investment;
 using PAccountant2.DAL.DBO.Entities.WheelOfLife;
-using PAccountant2.DAL.DBO.ManyToMany;
+using System.Collections.Generic;
 
 namespace PAccountant2.DAL.Context
 {
@@ -105,7 +104,7 @@ namespace PAccountant2.DAL.Context
 
             modelBuilder.Entity<WheelOfLifeMementoDbo>().ToTable(TablesNames.WheelOfLifeMemento);
             modelBuilder.Entity<WheelOfLifeMementoDbo>().Property(m => m.Id).UseSqlServerIdentityColumn();
-
+            modelBuilder.Entity<WheelOfLifeMementoDbo>().HasOne(m => m.Element).WithMany(e => e.Mementos).HasForeignKey(m => m.ElementId);
 
             modelBuilder.Entity<WheelOfLifeProblemDbo>().ToTable(TablesNames.WheelOfLifeProblem);
             modelBuilder.Entity<WheelOfLifeProblemDbo>().Property(pr => pr.Id).UseSqlServerIdentityColumn();
@@ -113,19 +112,6 @@ namespace PAccountant2.DAL.Context
 
             modelBuilder.Entity<WheelOfLifePlanDbo>().ToTable(TablesNames.WheelOfLifePlan);
             modelBuilder.Entity<WheelOfLifePlanDbo>().Property(pl => pl.Id).UseSqlServerIdentityColumn();
-
-            modelBuilder.Entity<WheelOfLifeElementMementoDbo>().ToTable(TablesNames.WheelOfLifeElementMemento);
-            modelBuilder.Entity<WheelOfLifeElementMementoDbo>().Property(em => em.Id).UseSqlServerIdentityColumn();
-            modelBuilder.Entity<WheelOfLifeElementMementoDbo>()
-                .HasOne(em => em.WheelElement)
-                .WithMany(el => el.ElementMementos)
-                .HasForeignKey(em => em.WheelElementId)
-                .HasConstraintName("ElementManyToManyFK");
-            modelBuilder.Entity<WheelOfLifeElementMementoDbo>()
-                .HasOne(em => em.WheelMemento)
-                .WithMany(m => m.ElementMementos)
-                .HasForeignKey(em => em.WheelMementoId)
-                .HasConstraintName("MementoManyToManyFK");
 
             modelBuilder.Entity<WheelOfLifeElementDbo>().HasData(new List<WheelOfLifeElementDbo>
             {

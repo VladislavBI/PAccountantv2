@@ -16,6 +16,10 @@ namespace PAccountant2.BLL.Interfaces.WheelOfLife
 
         Task FinishPlanAsync(int id, int planId);
         
-        Task<IEnumerable<WheelOfLifeElementViewItem>> GetWheelAsync();
+        Task<IEnumerable<WheelOfLifeElementViewItem>> GetWheelAsync(DateTime? wheelDate);
+
+        Task<DateTime> CreateWheelMementoAsync(DateTime now);
+
+        Task<IEnumerable<WheelOfLifeMementoDateViewItem>> GetWheelMementosAsync();
     }
 }
