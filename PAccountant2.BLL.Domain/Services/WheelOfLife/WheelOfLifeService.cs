@@ -95,7 +95,7 @@ namespace PAccountant2.BLL.Domain.Services.WheelOfLife
         public async Task<IEnumerable<WheelOfLifeElementViewItem>> GetWheelAsync(DateTime? wheelDate)
         {
             IEnumerable<WheelOfLifeElementDataItem> modelsList = null;
-
+            
             if (wheelDate.HasValue &&  wheelDate.Value.Date != DateTime.Now.Date)
             {
                 var actualDate = await _dataService.GetActualWheelDateAsync(wheelDate.Value);

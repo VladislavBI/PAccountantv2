@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PAccountant2.BLL.Interfaces.DTO.ViewItems.WheelOfLife;
 using PAccountant2.BLL.Interfaces.WheelOfLife;
 using PAccountant2.Host.Domain.ViewModels.WheelOfLife;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Routing.Constraints;
 
 namespace PAccountantv2.Host.Api.Controllers
 {

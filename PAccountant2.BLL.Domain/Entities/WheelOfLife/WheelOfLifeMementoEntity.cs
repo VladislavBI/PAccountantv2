@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace PAccountant2.BLL.Domain.Entities.WheelOfLife
 {
