@@ -12,7 +12,7 @@ namespace PAccountant2.BLL.Domain.Entities.WheelOfLife.Handlers
             IEnumerable<WheelOfLifeMementoEntity> mementos)
         {
 
-            if (elements == null || elements.Any())
+            if (elements == null || !elements.Any())
             {
                 throw new NullReferenceException("elements were not sent");
             }
