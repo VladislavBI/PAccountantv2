@@ -1,4 +1,4 @@
-const url = 'http://localhost:51289/api';
+const url = 'https://localhost:44316/api';
 let mementos = [];
 let chat = {};
 let chartData = {};
@@ -149,11 +149,17 @@ setValue = function(index, value) {
 addProblem = function (problem) {
     let plans = problem.plans.filter(x => !x.isFinished);
     let inProgress = "";
-
+    let expectedResult = "";
     if (plans.length > 0) {
         inProgress = "in-progress";
     }
-    $(`.prList${elementIndex}`).append(`<div style="margin-left:6px" class="col pr${problem.id} ${inProgress}">${problem.id}) ${problem.description}<div class="row plList${problem.id}" style="display: block;"></div></div>`);
+
+    if (problem.expectedResult) {
+        const date = new Date(problem.endDate);
+        expectedResult = `<span style='color:blue'>- ${problem.expectedResult} ${date.getDate()}:${date.getMonth()+1}:${date.getFullYear()}</span>`;
+    }
+
+    $(`.prList${elementIndex}`).append(`<div style="margin-left:6px" class="col pr${problem.id} ${inProgress}">${problem.id}) ${problem.description} ${expectedResult}<div class="row plList${problem.id}" style="display: block;"></div></div>`);
 
     for (var i = 0; i < plans.length; i++) {
         problemIndex = problem.id;

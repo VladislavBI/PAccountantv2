@@ -418,6 +418,10 @@ namespace PAccountant2.DAL.Migrations.Migrations
 
                     b.Property<int>("ElementId");
 
+                    b.Property<DateTime>("EndDate");
+
+                    b.Property<string>("ExpectedResult");
+
                     b.Property<bool>("IsFinished");
 
                     b.Property<int>("Value");

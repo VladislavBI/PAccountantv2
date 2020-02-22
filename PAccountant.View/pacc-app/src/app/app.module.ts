@@ -3,14 +3,25 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AccountComponent } from './account/account.component';
+import {RouterModule, Routes} from "@angular/router";
+
+const appRoutes: Routes = [
+  { path: 'accounting/account', component: AccountComponent },
+];
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    RouterModule.forRoot(
+      appRoutes,
+      { enableTracing: true } // <-- debugging purposes only
+    )
   ],
   providers: [],
   bootstrap: [AppComponent]

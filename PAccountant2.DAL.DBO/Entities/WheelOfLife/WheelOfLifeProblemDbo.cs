@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace PAccountant2.DAL.DBO.Entities.WheelOfLife
@@ -14,6 +15,10 @@ namespace PAccountant2.DAL.DBO.Entities.WheelOfLife
         public bool IsFinished { get; set; }
 
         public int ElementId { get; set; }
+
+        public string ExpectedResult { get; set; }
+
+        public DateTime EndDate { get; set; }
 
         public WheelOfLifeElementDbo Element { get; set; }
 

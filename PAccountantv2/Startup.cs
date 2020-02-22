@@ -73,6 +73,7 @@ namespace PAccountantv2.Host.Api
 
             log.AddFile($"logs/{DateTime.Now.ToShortDateString()}.txt", minimumLevel: LogLevel.Error);
 
+            app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
             app.UseAuthentication();
